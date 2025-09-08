@@ -1,3 +1,4 @@
+import "./globals.css";
 export const metadata = {
   title: "Villa Myassa — Ubud, Bali",
   description: "Villa contemporaine avec piscine privée au cœur d’Ubud. 3 chambres, 3,5 sdb. Réservez vos dates."
