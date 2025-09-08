@@ -1,8 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    // Only local images used; no remote patterns needed for now.
+    // Local images uniquement; rien à configurer ici pour l’instant.
   },
 };
 
