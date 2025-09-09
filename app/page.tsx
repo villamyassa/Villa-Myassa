@@ -65,16 +65,6 @@ const IMAGES = GALLERY_FILES.map((f, i) => ({
 
 ] as const;
 
-// alt automatique lisible
-const toAlt = (name: string) =>
-  name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
-
-// on génère le tableau attendu par la galerie
-const IMAGES = GALLERY_FILES.map((f, i) => ({
-  src: `/${f}`,            // fichiers dans /public/
-  alt: toAlt(f),
-  featured: i === 0,       // la 1re = image "héro"
-}));
 
 const DATA = {
   nom: "Villa Myassa",
