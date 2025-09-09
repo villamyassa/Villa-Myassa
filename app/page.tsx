@@ -8,6 +8,43 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+// --- Galerie : liste de fichiers (dans /public/) ---
+export const GALLERY_FILES = [
+  "001-hero-piscine.jpg",
+  "011-photo-11.jpg",
+  "012-photo-12.jpg",
+  "013-photo-13.jpg",
+  "014-photo-14.jpg",
+  "015-photo-15.jpg",
+  "016-photo-16.jpg",
+  "017-photo-17.jpg",
+  "002-salon.jpg",
+  "020-photo-20.jpg",
+  "022-photo-22.jpg",
+  "024-photo-24.jpg",
+  "026-photo-26.jpg",
+  "005-cuisine.jpg",
+  "029-photo-29.jpg",
+  "003-suite1.jpg",
+  "004-suite2.jpg",
+  "005-suite3.jpg",
+  "006-salle-de-bain.jpg",
+  "007-salle-de-bain2.jpg",
+  "008-salle-de-bain3.jpg",
+  "008-jardin.jpg",
+  "009-jardin-2.jpg",
+] as const;
+
+// alt automatique lisible
+const toAlt = (name: string) =>
+  name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
+
+// on génère le tableau attendu par la galerie
+const IMAGES = GALLERY_FILES.map((f, i) => ({
+  src: `/${f}`,            // fichiers dans /public/
+  alt: toAlt(f),
+  featured: i === 0,       // la 1re = image "héro"
+}));
 
 const DATA = {
   nom: "Villa Myassa",
@@ -32,15 +69,6 @@ const DATA = {
     "Moustiquaires"
   images: IMAGES,
 
-  { src: "/001-hero-piscine.jpg", alt: "Piscine privée entourée de verdure", caption: "Piscine privée — orientation Ouest", featured: true },
-  { src: "/002-salon.jpg", alt: "Salon ouvert sur la piscine", caption: "Salon ouvert — grande baie vitrée" },
-  { src: "/003-suite1.jpg", alt: "Suite 1 avec lit queen", caption: "Suite 1 — lit queen + sdb attenante" },
-  { src: "/004-suite2.jpg", alt: "Suite 2 avec lit queen", caption: "Suite 2 — lit queen + TV" },
-  { src: "/005-cuisine.jpg", alt: "Cuisine équipée moderne", caption: "Cuisine équipée — idéale long séjour" },
-  { src: "/006-facade-nuit.jpg", alt: "Façade et piscine illuminées la nuit", caption: "Ambiance nocturne — éclairage d’ambiance" },
-  { src: "/007-salle-de-bain.jpg", alt: "Salle de bain avec douche à l’italienne", caption: "Salle de bain — douche à l’italienne" },
-  { src: "/008-jardin.jpg", alt: "Jardin tropical et coin détente", caption: "Jardin tropical — coin détente" }
-],
 
   description: `À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, chacune équipée d’un lit queen‑size, d’une Smart TV, de la climatisation et d’une salle de bain attenante, offrent confort et intimité. Les espaces de vie s’ouvrent sur la piscine privée et un jardin apaisant — parfaits pour se détendre après une journée à explorer Ubud.`,
   tarifs: [
