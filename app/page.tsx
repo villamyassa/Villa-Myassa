@@ -47,10 +47,11 @@ const CAPTIONS: Record<string, string> = {
   "008-salle-de-bain3.jpg": "Salle de bain 3 — douche à l’italienne",
   "008-jardin.jpg": "Jardin tropical — coin détente",
   "009-jardin-2.jpg": "Jardin — deuxième espace extérieur",
-};
+}
 
 const toAlt = (name: string) =>
   name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
+
 
 // 👉 IMPORTANT: tes fichiers sont sous /public/images
 const PUBLIC_PREFIX = "/images";
