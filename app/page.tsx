@@ -8,23 +8,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-// --- Galerie : liste de fichiers (dans /public/) ---
+// --- Galerie (23 photos) ---
+// 1) Colle ce bloc sous les imports dans app/page.tsx
+// 2) Plus bas, dans const DATA = { ... }, remplace `images: [...]` par `images: IMAGES,`
+
 export const GALLERY_FILES = [
+  // ordre d’affichage (la 1re = visuel héros)
   "001-hero-piscine.jpg",
-  "011-photo-11.jpg",
-  "012-photo-12.jpg",
-  "013-photo-13.jpg",
-  "014-photo-14.jpg",
-  "015-photo-15.jpg",
-  "016-photo-16.jpg",
-  "017-photo-17.jpg",
   "002-salon.jpg",
-  "020-photo-20.jpg",
-  "022-photo-22.jpg",
-  "024-photo-24.jpg",
-  "026-photo-26.jpg",
   "005-cuisine.jpg",
-  "029-photo-29.jpg",
   "003-suite1.jpg",
   "004-suite2.jpg",
   "005-suite3.jpg",
@@ -33,6 +25,59 @@ export const GALLERY_FILES = [
   "008-salle-de-bain3.jpg",
   "008-jardin.jpg",
   "009-jardin-2.jpg",
+  "011-photo-11.jpg",
+  "012-photo-12.jpg",
+  "013-photo-13.jpg",
+  "014-photo-14.jpg",
+  "015-photo-15.jpg",
+  "016-photo-16.jpg",
+  "017-photo-17.jpg",
+  "020-photo-20.jpg",
+  "022-photo-22.jpg",
+  "024-photo-24.jpg",
+  "026-photo-26.jpg",
+  "029-photo-29.jpg",
+] as const;
+
+// Légendes optionnelles (ajoute/édite le texte à droite)
+const CAPTIONS: Record<string, string> = {
+  "001-hero-piscine.jpg": "Piscine privée — orientation Ouest",
+  "002-salon.jpg": "Salon ouvert — grande baie vitrée",
+  "005-cuisine.jpg": "Cuisine équipée — idéale long séjour",
+  "003-suite1.jpg": "Suite 1 — lit queen + salle de bain attenante",
+  "004-suite2.jpg": "Suite 2 — lit queen + TV",
+  "005-suite3.jpg": "Suite 3 — lit queen",
+  "006-salle-de-bain.jpg": "Salle de bain — douche à l’italienne",
+  "007-salle-de-bain2.jpg": "Salle de bain 2 — douche à l’italienne",
+  "008-salle-de-bain3.jpg": "Salle de bain 3 — douche à l’italienne",
+  "008-jardin.jpg": "Jardin tropical — coin détente",
+  "009-jardin-2.jpg": "Jardin — deuxième espace extérieur",
+  "011-photo-11.jpg": "Espace extérieur / terrasse",
+  "012-photo-12.jpg": "Détail décoration",
+  "013-photo-13.jpg": "Vue depuis la terrasse",
+  "014-photo-14.jpg": "Coin lecture / travail",
+  "015-photo-15.jpg": "Espace de vie lumineux",
+  "016-photo-16.jpg": "Vue jungle / nature",
+  "017-photo-17.jpg": "Ambiance nocturne — éclairage d’ambiance",
+  "020-photo-20.jpg": "Espace commun supplémentaire",
+  "022-photo-22.jpg": "Détail de la villa",
+  "024-photo-24.jpg": "Extérieur — perspective large",
+  "026-photo-26.jpg": "Terrasse / détente",
+  "029-photo-29.jpg": "Vue / extérieur additionnel",
+};
+
+// ALT automatique (lisible) à partir du nom de fichier
+const toAlt = (name: string) =>
+  name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
+
+// On génère le tableau attendu par la galerie
+const IMAGES = GALLERY_FILES.map((f, i) => ({
+  src: `/${f}`,               // fichiers placés dans /public/
+  alt: toAlt(f),
+  caption: CAPTIONS[f],
+  featured: i === 0,          // la 1re = image "héro"
+}));
+
 ] as const;
 
 // alt automatique lisible
@@ -67,7 +112,7 @@ const DATA = {
     "Espace de travail adapté (bureau)",
     "Coffre‑fort",
     "Moustiquaires"
-  images: IMAGES,
+images: IMAGES
 
 
   description: `À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, chacune équipée d’un lit queen‑size, d’une Smart TV, de la climatisation et d’une salle de bain attenante, offrent confort et intimité. Les espaces de vie s’ouvrent sur la piscine privée et un jardin apaisant — parfaits pour se détendre après une journée à explorer Ubud.`,
