@@ -63,7 +63,7 @@ const IMAGES = GALLERY_FILES.map((f, i) => ({
   featured: i === 0,              // la 1re = image "héro"
 }));
 
-] as const;
+
 
 
 const DATA = {
