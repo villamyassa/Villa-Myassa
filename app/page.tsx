@@ -30,8 +30,8 @@ const DATA = {
     "Espace de travail adapté (bureau)",
     "Coffre‑fort",
     "Moustiquaires"
-  ],
-  images: [
+  images: IMAGES,
+
   { src: "/001-hero-piscine.jpg", alt: "Piscine privée entourée de verdure", caption: "Piscine privée — orientation Ouest", featured: true },
   { src: "/002-salon.jpg", alt: "Salon ouvert sur la piscine", caption: "Salon ouvert — grande baie vitrée" },
   { src: "/003-suite1.jpg", alt: "Suite 1 avec lit queen", caption: "Suite 1 — lit queen + sdb attenante" },
