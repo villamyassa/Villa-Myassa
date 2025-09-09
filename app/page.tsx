@@ -118,33 +118,25 @@ const GalleryCard = ({ item }: { item: { src: string; alt: string; caption?: str
     whileInView={{ opacity: 1 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5 }}
-    className="relative overflow-hidden rounded-2xl shadow-sm group"
+    className="group"
   >
-    <div className="w-full h-64 relative">
-      <div className="relative overflow-hidden rounded-2xl shadow-sm group aspect-[4/3]">
-  <img
-    src={item.src}
-    alt={item.alt}
-    className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
-    loading="lazy"
-/>
-  {item.caption && (
-    <div className="absolute inset-x-0 bottom-0 p-3">
-      <div className="bg-black/45 backdrop-blur-sm rounded-xl px-3 py-1.5 text-sm text-white">
-        {item.caption}
-      </div>
+    <div className="relative overflow-hidden rounded-2xl shadow-sm aspect-[4/3]">
+      <img
+        src={item.src}
+        alt={item.alt}
+        className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
+        loading="lazy"
+      />
+      {item.caption && (
+        <div className="absolute inset-x-0 bottom-0 p-3">
+          <div className="bg-black/45 backdrop-blur-sm rounded-xl px-3 py-1.5 text-sm text-white">
+            {item.caption}
+          </div>
+        </div>
+      )}
     </div>
-  )}
-</div>
-    </div>
-    {item.caption && (
-      <div className="absolute inset-x-0 bottom-0 p-3">
-        <div className="bg-black/45 backdrop-blur-sm rounded-xl px-3 py-1.5 text-sm text-white">{item.caption}</div>
-      </div>
-    )}
   </motion.div>
-)
-
+);
 export default function Page() {
   const [form, setForm] = useState({ name: "", email: "", message: "" })
   const hero = (DATA.images.find((i: any) => (i as any).featured) || DATA.images[0]) as { src: string; alt: string }
@@ -179,12 +171,16 @@ export default function Page() {
 
       {/* Hero */}
       <section id="accueil" className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="h-[68vh] w-full relative">
-            <img src={hero.src} alt={hero.alt} className="object-cover absolute inset-0 w-full h-full" />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
-        </div>
+  <div className="absolute inset-0">  {/* ← supprime -z-10 */}
+    <img
+      src={hero.src}
+      alt={hero.alt}
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
+  </div>
+  ...
+</section>
         <div className="container mx-auto px-4 max-w-6xl h-[68vh] flex items-end pb-12">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-2xl">
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
