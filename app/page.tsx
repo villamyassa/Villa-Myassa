@@ -121,7 +121,21 @@ const GalleryCard = ({ item }: { item: { src: string; alt: string; caption?: str
     className="relative overflow-hidden rounded-2xl shadow-sm group"
   >
     <div className="w-full h-64 relative">
-      <Image src={item.src} alt={item.alt} fill className="object-cover transition-transform group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" /> unoptimized
+      <div className="relative overflow-hidden rounded-2xl shadow-sm group aspect-[4/3]">
+  <img
+    src={item.src}
+    alt={item.alt}
+    className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
+    loading="lazy"
+/>
+  {item.caption && (
+    <div className="absolute inset-x-0 bottom-0 p-3">
+      <div className="bg-black/45 backdrop-blur-sm rounded-xl px-3 py-1.5 text-sm text-white">
+        {item.caption}
+      </div>
+    </div>
+  )}
+</div>
     </div>
     {item.caption && (
       <div className="absolute inset-x-0 bottom-0 p-3">
