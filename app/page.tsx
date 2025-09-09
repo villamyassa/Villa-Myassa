@@ -121,7 +121,7 @@ const GalleryCard = ({ item }: { item: { src: string; alt: string; caption?: str
     className="relative overflow-hidden rounded-2xl shadow-sm group"
   >
     <div className="w-full h-64 relative">
-      <Image src={item.src} alt={item.alt} fill className="object-cover transition-transform group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
+      <Image src={item.src} alt={item.alt} fill className="object-cover transition-transform group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" /> unoptimized
     </div>
     {item.caption && (
       <div className="absolute inset-x-0 bottom-0 p-3">
@@ -167,7 +167,7 @@ export default function Page() {
       <section id="accueil" className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <div className="h-[68vh] w-full relative">
-            <Image src={hero.src} alt={hero.alt} fill className="object-cover" priority />
+            <Image src={hero.src} alt={hero.alt} fill className="object-cover" priority /> unoptimized 
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
         </div>
