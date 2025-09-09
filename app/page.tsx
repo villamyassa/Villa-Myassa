@@ -32,15 +32,16 @@ const DATA = {
     "Moustiquaires"
   ],
   images: [
-    { src: "/images/001-hero-piscine.jpg", alt: "Piscine privée entourée de verdure", caption: "Piscine privée — orientation Ouest", featured: true },
-    { src: "/images/002-salon.jpg", alt: "Salon ouvert sur la piscine", caption: "Salon ouvert — grande baie vitrée" },
-    { src: "/images/003-suite1.jpg", alt: "Suite 1 avec lit queen", caption: "Suite 1 — lit queen + sdb attenante" },
-    { src: "/images/004-suite2.jpg", alt: "Suite 2 avec lit queen", caption: "Suite 2 — lit queen + TV" },
-    { src: "/images/005-cuisine.jpg", alt: "Cuisine équipée moderne", caption: "Cuisine équipée — idéale long séjour" },
-    { src: "/images/006-facade-nuit.jpg", alt: "Façade et piscine illuminées la nuit", caption: "Ambiance nocturne — éclairage d’ambiance" },
-    { src: "/images/007-salle-de-bain.jpg", alt: "Salle de bain avec douche à l’italienne", caption: "Salle de bain — douche à l’italienne" },
-    { src: "/images/008-jardin.jpg", alt: "Jardin tropical et coin détente", caption: "Jardin tropical — coin détente" }
-  ],
+  { src: "/001-hero-piscine.jpg", alt: "Piscine privée entourée de verdure", caption: "Piscine privée — orientation Ouest", featured: true },
+  { src: "/002-salon.jpg", alt: "Salon ouvert sur la piscine", caption: "Salon ouvert — grande baie vitrée" },
+  { src: "/003-suite1.jpg", alt: "Suite 1 avec lit queen", caption: "Suite 1 — lit queen + sdb attenante" },
+  { src: "/004-suite2.jpg", alt: "Suite 2 avec lit queen", caption: "Suite 2 — lit queen + TV" },
+  { src: "/005-cuisine.jpg", alt: "Cuisine équipée moderne", caption: "Cuisine équipée — idéale long séjour" },
+  { src: "/006-facade-nuit.jpg", alt: "Façade et piscine illuminées la nuit", caption: "Ambiance nocturne — éclairage d’ambiance" },
+  { src: "/007-salle-de-bain.jpg", alt: "Salle de bain avec douche à l’italienne", caption: "Salle de bain — douche à l’italienne" },
+  { src: "/008-jardin.jpg", alt: "Jardin tropical et coin détente", caption: "Jardin tropical — coin détente" }
+],
+
   description: `À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, chacune équipée d’un lit queen‑size, d’une Smart TV, de la climatisation et d’une salle de bain attenante, offrent confort et intimité. Les espaces de vie s’ouvrent sur la piscine privée et un jardin apaisant — parfaits pour se détendre après une journée à explorer Ubud.`,
   tarifs: [
     { label: "Prix indicatif", prix: "À partir de Rp 2 941 990 / nuit", details: "Selon saisons et disponibilités" },
