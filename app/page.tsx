@@ -167,7 +167,7 @@ export default function Page() {
       <section id="accueil" className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <div className="h-[68vh] w-full relative">
-            <Image src={hero.src} alt={hero.alt} fill className="object-cover" priority /> unoptimized 
+            <img src={hero.src} alt={hero.alt} className="object-cover absolute inset-0 w-full h-full" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
         </div>
