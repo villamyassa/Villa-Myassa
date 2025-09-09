@@ -55,7 +55,7 @@ const CAPTIONS: Record<string, string> = {
 const toAlt = (name: string) =>
   name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
-const PUBLIC_PREFIX = "/images";
+const PUBLIC_PREFIX = "/photos";
 
 type GalleryItem = { src: string; alt: string; caption?: string; featured?: boolean };
 
