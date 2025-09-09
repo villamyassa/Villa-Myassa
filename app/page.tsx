@@ -8,12 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-// --- Galerie (23 photos) ---
-// 1) Colle ce bloc sous les imports dans app/page.tsx
-// 2) Plus bas, dans const DATA = { ... }, remplace `images: [...]` par `images: IMAGES,`
 
 export const GALLERY_FILES = [
-  // ordre d’affichage (la 1re = visuel héros)
   "001-hero-piscine.jpg",
   "002-salon.jpg",
   "005-cuisine.jpg",
@@ -39,7 +35,6 @@ export const GALLERY_FILES = [
   "029-photo-29.jpg",
 ] as const;
 
-// Légendes optionnelles (ajoute/édite le texte à droite)
 const CAPTIONS: Record<string, string> = {
   "001-hero-piscine.jpg": "Piscine privée — orientation Ouest",
   "002-salon.jpg": "Salon ouvert — grande baie vitrée",
@@ -52,30 +47,19 @@ const CAPTIONS: Record<string, string> = {
   "008-salle-de-bain3.jpg": "Salle de bain 3 — douche à l’italienne",
   "008-jardin.jpg": "Jardin tropical — coin détente",
   "009-jardin-2.jpg": "Jardin — deuxième espace extérieur",
-  "011-photo-11.jpg": "Espace extérieur / terrasse",
-  "012-photo-12.jpg": "Détail décoration",
-  "013-photo-13.jpg": "Vue depuis la terrasse",
-  "014-photo-14.jpg": "Coin lecture / travail",
-  "015-photo-15.jpg": "Espace de vie lumineux",
-  "016-photo-16.jpg": "Vue jungle / nature",
-  "017-photo-17.jpg": "Ambiance nocturne — éclairage d’ambiance",
-  "020-photo-20.jpg": "Espace commun supplémentaire",
-  "022-photo-22.jpg": "Détail de la villa",
-  "024-photo-24.jpg": "Extérieur — perspective large",
-  "026-photo-26.jpg": "Terrasse / détente",
-  "029-photo-29.jpg": "Vue / extérieur additionnel",
 };
 
-// ALT automatique (lisible) à partir du nom de fichier
 const toAlt = (name: string) =>
   name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
-// On génère le tableau attendu par la galerie
+// 👉 IMPORTANT: tes fichiers sont sous /public/images
+const PUBLIC_PREFIX = "/images";
+
 const IMAGES = GALLERY_FILES.map((f, i) => ({
-  src: `/${f}`,               // fichiers placés dans /public/
+  src: `${PUBLIC_PREFIX}/${f}`,   // <-- on pointe bien vers /images/xxx.jpg
   alt: toAlt(f),
   caption: CAPTIONS[f],
-  featured: i === 0,          // la 1re = image "héro"
+  featured: i === 0,              // la 1re = image "héro"
 }));
 
 ] as const;
