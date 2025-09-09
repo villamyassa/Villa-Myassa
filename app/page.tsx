@@ -1,15 +1,18 @@
-'use client'
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { MapPin, Mail, Phone, Waves, Car, CalendarDays, CheckCircle2, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { MapPin, Waves, Car, CalendarDays, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-export const GALLERY_FILES = [
+/* -------------------------------------------------------
+   1) PHOTOS (dans /public/images)
+------------------------------------------------------- */
+
+const GALLERY_FILES = [
   "001-hero-piscine.jpg",
   "002-salon.jpg",
   "005-cuisine.jpg",
@@ -47,24 +50,25 @@ const CAPTIONS: Record<string, string> = {
   "008-salle-de-bain3.jpg": "Salle de bain 3 — douche à l’italienne",
   "008-jardin.jpg": "Jardin tropical — coin détente",
   "009-jardin-2.jpg": "Jardin — deuxième espace extérieur",
-}
+};
 
 const toAlt = (name: string) =>
   name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
-
-// 👉 IMPORTANT: tes fichiers sont sous /public/images
 const PUBLIC_PREFIX = "/images";
 
-const IMAGES = GALLERY_FILES.map((f, i) => ({
-  src: `${PUBLIC_PREFIX}/${f}`,   // <-- on pointe bien vers /images/xxx.jpg
+type GalleryItem = { src: string; alt: string; caption?: string; featured?: boolean };
+
+const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
+  src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
   caption: CAPTIONS[f],
-  featured: i === 0,              // la 1re = image "héro"
+  featured: i === 0, // la 1re = image "héro"
 }));
 
-
-
+/* -------------------------------------------------------
+   2) DONNÉES AFFICHÉES
+------------------------------------------------------- */
 
 const DATA = {
   nom: "Villa Myassa",
@@ -81,38 +85,57 @@ const DATA = {
     "Climatisation",
     "Wifi haut débit",
     "Parking gratuit sur place",
-    "Cuisine toute équipée (four, plaques, réfrigérateur, grille‑pain, bouilloire)",
+    "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
     "Espace de travail adapté (bureau)",
-    "Coffre‑fort",
-    "Moustiquaires"
-images: IMAGES
-
-
-  description: `À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, chacune équipée d’un lit queen‑size, d’une Smart TV, de la climatisation et d’une salle de bain attenante, offrent confort et intimité. Les espaces de vie s’ouvrent sur la piscine privée et un jardin apaisant — parfaits pour se détendre après une journée à explorer Ubud.`,
+    "Coffre-fort",
+    "Moustiquaires",
+  ],
+  images: IMAGES,
+  description:
+    "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
   tarifs: [
-    { label: "Prix indicatif", prix: "À partir de Rp 2 941 990 / nuit", details: "Selon saisons et disponibilités" },
+    { label: "Prix indicatif", prix: "À partir de Rp 2 941 990 / nuit", details: "Selon saisons et disponibilités" },
     { label: "Séjours moyens", prix: "Sur demande", details: "Nettoyage et linge inclus" },
-    { label: "Long séjour", prix: "Sur demande", details: "Tarifs dégressifs possibles" }
+    { label: "Long séjour", prix: "Sur demande", details: "Tarifs dégressifs possibles" },
   ],
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
-  mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Bali&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
-}
+  mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
+};
 
-const Section = ({ id, title, subtitle, children }: { id: string; title: string; subtitle?: string; children: React.ReactNode }) => (
+/* -------------------------------------------------------
+   3) COMPOSANTS UI
+------------------------------------------------------- */
+
+const Section = ({
+  id,
+  title,
+  subtitle,
+  children,
+}: {
+  id: string;
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) => (
   <section id={id} className="py-20 scroll-mt-24">
     <div className="container mx-auto px-4 max-w-6xl">
-      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{title}</h2>
         {subtitle && <p className="text-neutral-500 mt-2 max-w-2xl">{subtitle}</p>}
       </motion.div>
       <div className="mt-10">{children}</div>
     </div>
   </section>
-)
+);
 
-const GalleryCard = ({ item }: { item: { src: string; alt: string; caption?: string } }) => (
+const GalleryCard = ({ item }: { item: GalleryItem }) => (
   <motion.div
     initial={{ opacity: 0 }}
     whileInView={{ opacity: 1 }}
@@ -137,33 +160,61 @@ const GalleryCard = ({ item }: { item: { src: string; alt: string; caption?: str
     </div>
   </motion.div>
 );
+
+/* -------------------------------------------------------
+   4) PAGE
+------------------------------------------------------- */
+
 export default function Page() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" })
-  const hero = (DATA.images.find((i: any) => (i as any).featured) || DATA.images[0]) as { src: string; alt: string }
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+
+  const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
+    src: string;
+    alt: string;
+  };
 
   const handleMailto = () => {
-    const subject = encodeURIComponent(`Demande d'informations — ${DATA.nom}`)
-    const body = encodeURIComponent(`Bonjour,\n\nJe souhaite me renseigner au sujet de ${DATA.nom}.\n\nNom: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`)
-    window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`
-  }
+    const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
+    const body = encodeURIComponent(
+      `Bonjour,\n\nJe souhaite me renseigner au sujet de ${DATA.nom}.\n\nNom: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`
+    );
+    window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
+  };
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div className="container mx-auto px-4 max-w-6xl flex items-center justify-between h-16">
-          <a href="#accueil" className="font-semibold text-lg">Villa Myassa</a>
+        <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
+          <a href="#accueil" className="font-semibold text-lg">
+            Villa Myassa
+          </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">Galerie</a>
-            <a href="#atouts" className="hover:underline">Atouts</a>
-            <a href="#tarifs" className="hover:underline">Tarifs</a>
-            <a href="#disponibilites" className="hover:underline">Disponibilités</a>
-            <a href="#localisation" className="hover:underline">Localisation</a>
-            <a href="#contact" className="hover:underline">Contact</a>
+            <a href="#galerie" className="hover:underline">
+              Galerie
+            </a>
+            <a href="#atouts" className="hover:underline">
+              Atouts
+            </a>
+            <a href="#tarifs" className="hover:underline">
+              Tarifs
+            </a>
+            <a href="#disponibilites" className="hover:underline">
+              Disponibilités
+            </a>
+            <a href="#localisation" className="hover:underline">
+              Localisation
+            </a>
+            <a href="#contact" className="hover:underline">
+              Contact
+            </a>
           </nav>
           <div className="flex items-center gap-2">
-            <Button asChild href="#contact">
-              <span className="inline-flex items-center"><CalendarDays className="mr-2 h-4 w-4" /> Réserver</span>
+            <Button asChild>
+              <a href="#contact">
+                <CalendarDays className="mr-2 h-4 w-4" />
+                Réserver
+              </a>
             </Button>
           </div>
         </div>
@@ -171,31 +222,39 @@ export default function Page() {
 
       {/* Hero */}
       <section id="accueil" className="relative overflow-hidden">
-  <div className="absolute inset-0">  {/* ← supprime -z-10 */}
-    <img
-      src={hero.src}
-      alt={hero.alt}
-      className="absolute inset-0 h-full w-full object-cover"
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
-  </div>
-  ...
-</section>
-        <div className="container mx-auto px-4 max-w-6xl h-[68vh] flex items-end pb-12">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-2xl">
+        {/* Fond image (pas de z-index négatif) */}
+        <div className="absolute inset-0">
+          <img src={hero.src} alt={hero.alt} className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
+        </div>
+
+        <div className="container mx-auto px-4 max-w-6xl h-[68vh] flex items-end pb-12 relative">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="max-w-2xl"
+          >
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
-              <Star className="h-4 w-4" /> Note (si dispo) — ex. 4.9/5
+              <Star className="h-4 w-4" /> Note (si dispo) – ex. 4.9/5
             </span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
-              {DATA.baseline}
-            </h1>
-            <p className="mt-3 text-base md:text-lg text-neutral-600">
+            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">{DATA.baseline}</h1>
+            <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
-              <Button variant="outline" size="lg" asChild href="#galerie">Voir la galerie</Button>
-              <Button variant="outline" size="lg" asChild href="https://bestay.co/villa/villa-myassa">Réserver sur Bestay</Button>
+              <Button size="lg" onClick={handleMailto}>
+                Demander les dates
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="#galerie">Voir la galerie</a>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
+                  Réserver sur Bestay
+                </a>
+              </Button>
             </div>
           </motion.div>
         </div>
@@ -204,17 +263,22 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title="Galerie" subtitle={`Aperçu des espaces de ${DATA.nom}`}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DATA.images.map((img, i) => (<GalleryCard key={i} item={img} />))}
+          {DATA.images.map((img, i) => (
+            <GalleryCard key={i} item={img} />
+          ))}
         </div>
       </Section>
 
       {/* Atouts */}
       <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {DATA.pointsForts.map((p, i) => (
             <Card key={i} className="rounded-2xl">
               <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2"><CheckCircle2 className="h-5 w-5" /> {p}</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5" />
+                  {p}
+                </CardTitle>
               </CardHeader>
             </Card>
           ))}
@@ -224,9 +288,7 @@ export default function Page() {
       {/* Description */}
       <Section id="description" title="Description">
         <Card className="rounded-2xl">
-          <CardContent className="prose max-w-none leading-relaxed">
-            <p className="whitespace-pre-line">{DATA.description}</p>
-          </CardContent>
+          <CardContent className="prose max-w-none leading-relaxed py-6">{DATA.description}</CardContent>
         </Card>
       </Section>
 
@@ -238,20 +300,20 @@ export default function Page() {
               <CardHeader>
                 <CardTitle className="text-xl">{t.label}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="py-4">
                 <p className="text-2xl font-semibold">{t.prix}</p>
-                <p className="text-neutral-500">{t.details}</p>
+                <p className="text-neutral-500 mt-1">{t.details}</p>
               </CardContent>
             </Card>
           ))}
         </div>
       </Section>
 
-      {/* Disponibilités */}
+      {/* Disponibilités (placeholder) */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
-          <CardContent>
-            <p className="text-neutral-600">Intégrez ici un calendrier (Google Calendar, Calendly, ou widget de réservation Bestay/Airbnb si disponible).</p>
+          <CardContent className="py-6 text-neutral-600">
+            Intégrez ici votre calendrier (Google Calendar, Calendly, ou widget Bestay/Airbnb si disponible).
           </CardContent>
         </Card>
       </Section>
@@ -260,55 +322,71 @@ export default function Page() {
       <Section id="localisation" title="Localisation" subtitle={DATA.localisation}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
-            <CardContent>
+            <CardContent className="py-6">
               <ul className="grid gap-2 py-4">
-                <li className="flex items-center gap-2"><MapPin className="h-5 w-5" /> {DATA.adresse}</li>
-                <li className="flex items-center gap-2"><Waves className="h-5 w-5" /> Plages / points d'intérêt à proximité (à compléter)</li>
-                <li className="flex items-center gap-2"><Car className="h-5 w-5" /> Accès / parking (à compléter)</li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5" /> {DATA.adresse}
+                </li>
+                <li className="flex items-center gap-2">
+                  <Waves className="h-5 w-5" /> Plages / points d’intérêt à proximité (à compléter)
+                </li>
+                <li className="flex items-center gap-2">
+                  <Car className="h-5 w-5" /> Accès / parking (à compléter)
+                </li>
               </ul>
             </CardContent>
           </Card>
           <Card className="rounded-2xl order-1 lg:order-2">
-            <CardContent>
+            <CardContent className="p-0">
               <div dangerouslySetInnerHTML={{ __html: DATA.mapsEmbed }} />
             </CardContent>
           </Card>
         </div>
       </Section>
 
-      {/* Règles & Annulation */}
-      <Section id="rules" title="Règles de la maison & Accessibilité" subtitle="Informations essentielles pour préparer votre séjour">
+      {/* Contact */}
+      <Section id="contact" title="Contact">
         <Card className="rounded-2xl">
-          <CardContent>
-            <ul className="grid gap-2 py-4">
-              <li><strong>Check‑in :</strong> à partir de 14:00 pour les villas 1–3 chambres (frais de check‑in tardif de IDR 200 000 après 20:00).</li>
-              <li><strong>Check‑out :</strong> 11:00 par défaut (départs 11:00–18:00 = 50% du tarif nuit ; après 18:00 = 100%).</li>
-              <li><strong>Transfert aéroport :</strong> service disponible ~500 000 IDR par voiture et par trajet.</li>
-              <li><strong>Stationnement :</strong> parking sur place (selon disponibilité).</li>
-            </ul>
-            <p className="text-sm text-neutral-500">Pour des besoins spécifiques d’accessibilité, merci de nous contacter avant la réservation.</p>
+          <CardContent className="py-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid gap-3">
+                <Input placeholder="Votre nom" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <Input
+                  placeholder="Votre email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+                <Textarea
+                  placeholder="Votre message"
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                />
+                <div className="flex gap-3">
+                  <Button onClick={handleMailto}>Envoyer par email</Button>
+                  <Button variant="outline" asChild>
+                    <a href={`mailto:${DATA.email}`}>Ouvrir votre messagerie</a>
+                  </Button>
+                </div>
+              </div>
+              <div className="text-sm text-neutral-600">
+                <p>
+                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+                </p>
+                <p>Téléphone : {DATA.telephone}</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </Section>
 
-      <Section id="cancellation" title="Politique d’annulation">
-        <Card className="rounded-2xl">
-          <CardContent className="prose max-w-none">
-            <ul>
-              <li><strong>60+ jours avant l’arrivée :</strong> remboursement intégral (moins ~3,5% de frais de transaction).</li>
-              <li><strong>À moins de 60 jours :</strong> non‑remboursable.</li>
-              <li><strong>Cas de force majeure :</strong> nous faisons de notre mieux pour proposer un report ou des aménagements (ex. deuil familial, catastrophes naturelles, maladie grave, problèmes de visa/immigration).</li>
-            </ul>
-            <p>Pour une réservation instantanée, vous pouvez passer par Bestay : <a className="underline" href="https://bestay.co/villa/villa-myassa" target="_blank">Page Villa Myassa</a>.</p>
-          </CardContent>
-        </Card>
-      </Section>
-
+      {/* Footer */}
       <footer className="py-10 border-t">
         <div className="container mx-auto px-4 max-w-6xl text-sm text-neutral-500">
           © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous droits réservés.
         </div>
       </footer>
     </div>
-  )
+  );
 }
