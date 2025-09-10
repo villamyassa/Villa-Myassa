@@ -50,32 +50,17 @@ const GALLERY_FILES = [
   "029-photo-29.jpg",
 ] as const;
 
-const CAPTIONS: Record<string, string> = {
-  "001-hero-piscine.jpg": "Piscine privée — orientation Ouest",
-  "002-salon.jpg": "Salon ouvert,
-  "005-cuisine.jpg": "Cuisine équipée — idéale long séjour",
-  "003-suite1.jpg": "Suite 1 — lit queen + salle de bain attenante",
-  "004-suite2.jpg": "Suite 2 — lit queen + TV",
-  "005-suite3.jpg": "Suite 3 — lit queen",
-  "006-salle-de-bain.jpg": "Salle de bain — baignoire extérieure",
-  "007-salle-de-bain2.jpg": "Salle de bain 2 — douche à l’italienne",
-  "008-salle-de-bain3.jpg": "Salle de bain 3 — baignoire extérieure",
-  "008-jardin.jpg": "Jardin tropical — coin détente",
-  "009-jardin-2.jpg": "Jardin — deuxième espace extérieur",
-};
-
 const toAlt = (name: string) =>
   name
     .replace(/^[0-9]+-/, "")
     .replace(/[-_]/g, " ")
     .replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
-type GalleryItem = { src: string; alt: string; caption?: string; featured?: boolean };
+type GalleryItem = { src: string; alt: string; featured?: boolean };
 
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
   src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
-  caption: CAPTIONS[f],
   featured: i === 0,
 }));
 
@@ -156,7 +141,7 @@ function GalleryCard({
   item,
   onOpen = () => {},
 }: {
-  item: { src: string; alt: string; caption?: string };
+  item: { src: string; alt: string };
   onOpen?: () => void;
 }) {
   return (
@@ -173,13 +158,6 @@ function GalleryCard({
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-        {item.caption && (
-          <div className="absolute inset-x-0 bottom-0 p-3">
-            <div className="bg-black/45 backdrop-blur rounded px-3 py-1.5 text-sm text-white">
-              {item.caption}
-            </div>
-          </div>
-        )}
       </button>
     </div>
   );
@@ -310,13 +288,13 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((img, i) => (
+          {IMAGES.map((img, i) => (
             <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
           ))}
         </div>
       </Section>
 
-      {/* Lightbox (robuste) */}
+      {/* Lightbox */}
       {lbIndex !== null && (
         <div
           ref={backdropRef}
@@ -324,20 +302,19 @@ export default function Page() {
           aria-modal="true"
           className="fixed inset-0 z-[999] bg-black/90"
           onMouseDown={(e) => {
-            // fermer uniquement si clic sur le fond (et pas sur le contenu)
             if (e.target === backdropRef.current) closeLb();
           }}
         >
-          {/* Contenu interactif */}
+          {/* Image */}
           <div className="pointer-events-auto absolute inset-0 flex items-center justify-center p-4">
             <img
-              src={images[lbIndex].src}
-              alt={images[lbIndex].alt}
+              src={IMAGES[lbIndex].src}
+              alt={IMAGES[lbIndex].alt}
               className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
             />
           </div>
 
-          {/* Bouton fermer */}
+          {/* Fermer */}
           <button
             type="button"
             onClick={closeLb}
