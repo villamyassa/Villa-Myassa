@@ -7,7 +7,6 @@ import {
   Waves,
   Car,
   CalendarDays,
-  Star,
   X,
   ChevronLeft,
   ChevronRight,
@@ -18,10 +17,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (dans /public/photos)  ← adapte si tes fichiers sont dans /public/images
+   1) PHOTOS (dans /public/photos)  ← si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
 ------------------------------------------------------- */
 
-// ⚠️ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images".
 const PUBLIC_PREFIX = "/photos";
 
 const GALLERY_FILES = [
@@ -158,6 +156,7 @@ function GalleryCard({
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
+        {/* aucune légende / overlay */}
       </button>
     </div>
   );
@@ -175,7 +174,7 @@ export default function Page() {
     alt: string;
   };
 
-  // Lightbox state
+  // Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
   const images = DATA.images;
   const backdropRef = useRef<HTMLDivElement | null>(null);
@@ -257,9 +256,7 @@ export default function Page() {
             transition={{ duration: 0.7 }}
             className="max-w-2xl"
           >
-            <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
-              <Star className="h-4 w-4" /> Note (si dispo) – ex. 4.9/5
-            </span>
+            {/* badge supprimé pour éviter toute "légende" */}
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
               {DATA.baseline}
             </h1>
@@ -294,7 +291,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Lightbox */}
+      {/* Lightbox (aucune légende) */}
       {lbIndex !== null && (
         <div
           ref={backdropRef}
@@ -305,7 +302,6 @@ export default function Page() {
             if (e.target === backdropRef.current) closeLb();
           }}
         >
-          {/* Image */}
           <div className="pointer-events-auto absolute inset-0 flex items-center justify-center p-4">
             <img
               src={IMAGES[lbIndex].src}
@@ -314,7 +310,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Fermer */}
           <button
             type="button"
             onClick={closeLb}
@@ -324,7 +319,6 @@ export default function Page() {
             <X className="h-6 w-6" />
           </button>
 
-          {/* Précédente */}
           <button
             type="button"
             onClick={(e) => {
@@ -337,7 +331,6 @@ export default function Page() {
             <ChevronLeft className="h-7 w-7" />
           </button>
 
-          {/* Suivante */}
           <button
             type="button"
             onClick={(e) => {
