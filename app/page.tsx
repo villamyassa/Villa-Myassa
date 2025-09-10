@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -18,8 +18,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (dans /public/photos)
+   1) PHOTOS (dans /public/photos)  ← adapte si tes fichiers sont dans /public/images
 ------------------------------------------------------- */
+
+// ⚠️ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images".
+const PUBLIC_PREFIX = "/photos";
 
 const GALLERY_FILES = [
   "001-hero-piscine.jpg",
@@ -67,19 +70,17 @@ const toAlt = (name: string) =>
     .replace(/[-_]/g, " ")
     .replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
-const PUBLIC_PREFIX = "/photos";
-
 type GalleryItem = { src: string; alt: string; caption?: string; featured?: boolean };
 
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
   src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
   caption: CAPTIONS[f],
-  featured: i === 0, // la 1re = image "héro"
+  featured: i === 0,
 }));
 
 /* -------------------------------------------------------
-   2) DONNÉES AFFICHÉES
+   2) DONNÉES
 ------------------------------------------------------- */
 
 const DATA = {
@@ -121,7 +122,7 @@ const DATA = {
 };
 
 /* -------------------------------------------------------
-   3) COMPOSANTS UI
+   3) UI
 ------------------------------------------------------- */
 
 const Section = ({
@@ -196,12 +197,13 @@ export default function Page() {
     alt: string;
   };
 
-  // Lightbox
+  // Lightbox state
   const [lbIndex, setLbIndex] = useState<number | null>(null);
   const images = DATA.images;
+  const backdropRef = useRef<HTMLDivElement | null>(null);
 
-  const closeLb = () => setLbIndex(null);
   const openLb = (i: number) => setLbIndex(i);
+  const closeLb = () => setLbIndex(null);
   const prevLb = () =>
     setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
   const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
@@ -209,13 +211,11 @@ export default function Page() {
   // ESC / ← → + blocage du scroll
   useEffect(() => {
     if (lbIndex === null) return;
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
-
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -242,24 +242,12 @@ export default function Page() {
             Villa Myassa
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">
-              Galerie
-            </a>
-            <a href="#atouts" className="hover:underline">
-              Atouts
-            </a>
-            <a href="#tarifs" className="hover:underline">
-              Tarifs
-            </a>
-            <a href="#disponibilites" className="hover:underline">
-              Disponibilités
-            </a>
-            <a href="#localisation" className="hover:underline">
-              Localisation
-            </a>
-            <a href="#contact" className="hover:underline">
-              Contact
-            </a>
+            <a href="#galerie" className="hover:underline">Galerie</a>
+            <a href="#atouts" className="hover:underline">Atouts</a>
+            <a href="#tarifs" className="hover:underline">Tarifs</a>
+            <a href="#disponibilites" className="hover:underline">Disponibilités</a>
+            <a href="#localisation" className="hover:underline">Localisation</a>
+            <a href="#contact" className="hover:underline">Contact</a>
           </nav>
           <div className="flex items-center gap-2">
             <Button asChild>
@@ -301,9 +289,7 @@ export default function Page() {
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>
-                Demander les dates
-              </Button>
+              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">Voir la galerie</a>
               </Button>
@@ -330,15 +316,28 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Lightbox */}
+      {/* Lightbox (robuste) */}
       {lbIndex !== null && (
         <div
+          ref={backdropRef}
           role="dialog"
           aria-modal="true"
           className="fixed inset-0 z-[999] bg-black/90"
-          onClick={closeLb}
+          onMouseDown={(e) => {
+            // fermer uniquement si clic sur le fond (et pas sur le contenu)
+            if (e.target === backdropRef.current) closeLb();
+          }}
         >
-          {/* Fermer */}
+          {/* Contenu interactif */}
+          <div className="pointer-events-auto absolute inset-0 flex items-center justify-center p-4">
+            <img
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
+              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+            />
+          </div>
+
+          {/* Bouton fermer */}
           <button
             type="button"
             onClick={closeLb}
@@ -360,16 +359,6 @@ export default function Page() {
           >
             <ChevronLeft className="h-7 w-7" />
           </button>
-
-          {/* Image */}
-          <div className="absolute inset-0 flex items-center justify-center p-4">
-            <img
-              src={images[lbIndex].src}
-              alt={images[lbIndex].alt}
-              onClick={(e) => e.stopPropagation()}
-              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
-            />
-          </div>
 
           {/* Suivante */}
           <button
@@ -432,7 +421,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Disponibilités (placeholder) */}
+      {/* Disponibilités */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
