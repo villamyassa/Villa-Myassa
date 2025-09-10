@@ -17,7 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (dans /public/photos)  ← si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
+   1) PHOTOS (dans /public/photos)
+   ⚠ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
 ------------------------------------------------------- */
 
 const PUBLIC_PREFIX = "/photos";
@@ -156,7 +157,7 @@ function GalleryCard({
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-        {/* aucune légende / overlay */}
+        {/* aucune légende */}
       </button>
     </div>
   );
@@ -176,14 +177,16 @@ export default function Page() {
 
   // Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
-  const images = DATA.images;
   const backdropRef = useRef<HTMLDivElement | null>(null);
 
   const openLb = (i: number) => setLbIndex(i);
   const closeLb = () => setLbIndex(null);
   const prevLb = () =>
-    setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
-  const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
+    setLbIndex((i) =>
+      i === null ? i : (i + DATA.images.length - 1) % DATA.images.length
+    );
+  const nextLb = () =>
+    setLbIndex((i) => (i === null ? i : (i + 1) % DATA.images.length));
 
   // ESC / ← → + blocage du scroll
   useEffect(() => {
@@ -200,7 +203,7 @@ export default function Page() {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
     };
-  }, [lbIndex, images.length]);
+  }, [lbIndex]);
 
   const handleMailto = () => {
     const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
@@ -237,27 +240,26 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section id="accueil" className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={hero.src}
-            alt={hero.alt}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
-        </div>
+      {/* HERO : image seule, aucun texte par-dessus */}
+      <section id="accueil">
+        <img
+          src={hero.src}
+          alt={hero.alt}
+          style={{ width: "100%", height: "68vh", objectFit: "cover", display: "block" }}
+        />
+      </section>
 
-        <div className="container mx-auto px-4 max-w-6xl h-[68vh] flex items-end pb-12 relative">
+      {/* Bloc texte sous le hero (pas sur l'image) */}
+      <section aria-label="Présentation" className="py-10">
+        <div className="container mx-auto px-4 max-w-6xl">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="max-w-2xl"
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl"
           >
-            {/* badge supprimé pour éviter toute "légende" */}
-            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
+            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
               {DATA.baseline}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
@@ -282,7 +284,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Galerie */}
+      {/* Galerie (aucune légende) */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {IMAGES.map((img, i) => (
