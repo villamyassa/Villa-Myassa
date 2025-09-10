@@ -69,7 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud — BALI",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -157,7 +157,6 @@ function GalleryCard({
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-        {/* aucune légende */}
       </button>
     </div>
   );
@@ -240,7 +239,7 @@ export default function Page() {
         </div>
       </header>
 
-      {/* HERO : image seule, aucun texte par-dessus */}
+      {/* HERO : image seule */}
       <section id="accueil">
         <img
           src={hero.src}
@@ -249,7 +248,7 @@ export default function Page() {
         />
       </section>
 
-      {/* Bloc texte sous le hero (pas sur l'image) */}
+      {/* Bloc texte sous le hero */}
       <section aria-label="Présentation" className="py-10">
         <div className="container mx-auto px-4 max-w-6xl">
           <motion.div
@@ -284,7 +283,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Galerie (aucune légende) */}
+      {/* Galerie */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {IMAGES.map((img, i) => (
@@ -293,7 +292,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Lightbox (aucune légende) */}
+      {/* Lightbox */}
       {lbIndex !== null && (
         <div
           ref={backdropRef}
