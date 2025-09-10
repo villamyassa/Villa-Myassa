@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
-   ⚠️ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
+   ⚠ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
 ------------------------------------------------------- */
 
 const PUBLIC_PREFIX = "/photos";
@@ -69,7 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud", // (non utilisé pour l’affichage du H1)
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud - BALI",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -85,7 +85,6 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
-    "Espace de travail adapté (bureau)",
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -157,7 +156,6 @@ function GalleryCard({
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-        {/* aucune légende */}
       </button>
     </div>
   );
@@ -221,7 +219,7 @@ export default function Page() {
           <a href="#accueil" className="font-semibold text-lg">
             Villa Myassa
           </a>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
+        <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#galerie" className="hover:underline">Galerie</a>
             <a href="#atouts" className="hover:underline">Atouts</a>
             <a href="#tarifs" className="hover:underline">Tarifs</a>
@@ -259,11 +257,9 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
-            {/* ✅ BALI forcé en dur ici */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              Villa contemporaine avec piscine privée au cœur d’Ubud - BALI
+              {DATA.baseline}
             </h1>
-
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
