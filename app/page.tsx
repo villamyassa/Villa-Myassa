@@ -1,9 +1,6 @@
 "use client";
 
-// ❗ Empêche la mise en cache et la génération statique sur Vercel/Next
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
+/* BUILD MARKER: vBALI-004 */
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -22,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (tes fichiers sont dans /public/images)
+   1) PHOTOS (dans /public/images)
 ------------------------------------------------------- */
 const PUBLIC_PREFIX = "/images";
 
@@ -71,7 +68,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 ------------------------------------------------------- */
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud", // le H1 ci-dessous ajoute BALI en dur
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -259,7 +256,7 @@ export default function Page() {
           >
             {/* ✅ BALI écrit en dur pour garantir l’affichage */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              Villa contemporaine avec piscine privée au cœur d’Ubud - BALI
+              Villa contemporaine avec piscine privée au cœur d’Ubud — BALI
             </h1>
 
             <p className="mt-3 text-base md:text-lg text-neutral-700">
@@ -280,6 +277,11 @@ export default function Page() {
                 </a>
               </Button>
             </div>
+
+            {/* Badge visuel pour confirmer l'update */}
+            <div className="mt-3 inline-flex items-center gap-2 text-xs bg-neutral-100 border rounded-full px-3 py-1">
+              <span>Build:</span> <code>vBALI-004</code>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -288,7 +290,7 @@ export default function Page() {
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {IMAGES.map((img, i) => (
-            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
+            <GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />
           ))}
         </div>
       </Section>
@@ -325,7 +327,7 @@ export default function Page() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              prevLb();
+              setLbIndex((i) => (i === null ? i : (i + IMAGES.length - 1) % IMAGES.length));
             }}
             aria-label="Image précédente"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
@@ -337,7 +339,7 @@ export default function Page() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              nextLb();
+              setLbIndex((i) => (i === null ? i : (i + 1) % IMAGES.length));
             }}
             aria-label="Image suivante"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
