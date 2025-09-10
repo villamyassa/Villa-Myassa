@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
-   ⚠ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
+   ⚠️ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
 ------------------------------------------------------- */
 
 const PUBLIC_PREFIX = "/photos";
@@ -69,7 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud - BALI",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud", // (non utilisé pour l’affichage du H1)
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -259,9 +259,11 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
+            {/* ✅ BALI forcé en dur ici */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              {DATA.baseline}
+              Villa contemporaine avec piscine privée au cœur d’Ubud - BALI
             </h1>
+
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
