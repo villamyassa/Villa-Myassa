@@ -69,7 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud - BALI",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud", // on ajoute " - BALI" à l'affichage si absent
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -85,6 +85,7 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
+    // "Espace de travail adapté (bureau)", // supprimé
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -211,6 +212,14 @@ export default function Page() {
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
 
+  // ✅ Baseline avec " - BALI " ajouté si manquant
+  const baselineText = /(^|[\s-])bali(\b|$)/i.test(DATA.baseline)
+    ? DATA.baseline
+    : `${DATA.baseline} - BALI`;
+
+  // ✅ Atouts sans "bureau", même si réintroduit par erreur dans DATA
+  const features = DATA.pointsForts.filter((p) => !/bureau/i.test(p));
+
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Nav */}
@@ -219,7 +228,7 @@ export default function Page() {
           <a href="#accueil" className="font-semibold text-lg">
             Villa Myassa
           </a>
-        <nav className="hidden md:flex items-center gap-6 text-sm">
+          <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#galerie" className="hover:underline">Galerie</a>
             <a href="#atouts" className="hover:underline">Atouts</a>
             <a href="#tarifs" className="hover:underline">Tarifs</a>
@@ -258,7 +267,7 @@ export default function Page() {
             className="max-w-3xl"
           >
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              {DATA.baseline}
+              {baselineText}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
@@ -352,7 +361,7 @@ export default function Page() {
         subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {DATA.pointsForts.map((p, i) => (
+          {features.map((p, i) => (
             <Card key={i} className="rounded-2xl">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
