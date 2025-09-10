@@ -52,14 +52,14 @@ const GALLERY_FILES = [
 
 const CAPTIONS: Record<string, string> = {
   "001-hero-piscine.jpg": "Piscine privée — orientation Ouest",
-  "002-salon.jpg": "Salon ouvert — grande baie vitrée",
+  "002-salon.jpg": "Salon ouvert,
   "005-cuisine.jpg": "Cuisine équipée — idéale long séjour",
   "003-suite1.jpg": "Suite 1 — lit queen + salle de bain attenante",
   "004-suite2.jpg": "Suite 2 — lit queen + TV",
   "005-suite3.jpg": "Suite 3 — lit queen",
-  "006-salle-de-bain.jpg": "Salle de bain — douche à l’italienne",
+  "006-salle-de-bain.jpg": "Salle de bain — baignoire extérieure",
   "007-salle-de-bain2.jpg": "Salle de bain 2 — douche à l’italienne",
-  "008-salle-de-bain3.jpg": "Salle de bain 3 — douche à l’italienne",
+  "008-salle-de-bain3.jpg": "Salle de bain 3 — baignoire extérieure",
   "008-jardin.jpg": "Jardin tropical — coin détente",
   "009-jardin-2.jpg": "Jardin — deuxième espace extérieur",
 };
