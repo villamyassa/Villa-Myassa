@@ -17,11 +17,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (dans /public/photos)
-   ⚠ Si tes fichiers sont dans /public/images, remplace "/photos" par "/images"
+   1) PHOTOS (par défaut dans /public/images)
+   ↳ Si besoin, remplace "/images" par "/photos"
 ------------------------------------------------------- */
 
-const PUBLIC_PREFIX = "/photos";
+const PUBLIC_PREFIX = "/images";
 
 const GALLERY_FILES = [
   "001-hero-piscine.jpg",
@@ -69,7 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud", // on ajoute " - BALI" à l'affichage si absent
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -85,7 +85,7 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
-    // "Espace de travail adapté (bureau)", // supprimé
+    // "Espace de travail adapté (bureau)"  ← supprimé
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -93,11 +93,7 @@ const DATA = {
   description:
     "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
   tarifs: [
-    {
-      label: "Prix indicatif",
-      prix: "À partir de Rp 2 941 990 / nuit",
-      details: "Selon saisons et disponibilités",
-    },
+    { label: "Prix indicatif", prix: "À partir de Rp 2 941 990 / nuit", details: "Selon saisons et disponibilités" },
     { label: "Séjours moyens", prix: "Sur demande", details: "Nettoyage et linge inclus" },
     { label: "Long séjour", prix: "Sur demande", details: "Tarifs dégressifs possibles" },
   ],
@@ -212,12 +208,7 @@ export default function Page() {
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
 
-  // ✅ Baseline avec " - BALI " ajouté si manquant
-  const baselineText = /(^|[\s-])bali(\b|$)/i.test(DATA.baseline)
-    ? DATA.baseline
-    : `${DATA.baseline} - BALI`;
-
-  // ✅ Atouts sans "bureau", même si réintroduit par erreur dans DATA
+  // ✅ Atouts sans "bureau" même si réintroduit par mégarde
   const features = DATA.pointsForts.filter((p) => !/bureau/i.test(p));
 
   return (
@@ -266,9 +257,11 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
+            {/* ✅ BALI écrit en dur */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              {baselineText}
+              Villa contemporaine avec piscine privée au cœur d’Ubud - BALI
             </h1>
+
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
