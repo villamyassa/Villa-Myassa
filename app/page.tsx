@@ -69,8 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  // La baseline d'origine (avec ou sans BALI). On ajoutera " - BALI" à l'affichage si absent.
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud - BALI",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -158,6 +157,7 @@ function GalleryCard({
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
+        {/* aucune légende */}
       </button>
     </div>
   );
@@ -213,11 +213,6 @@ export default function Page() {
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
 
-  // ✅ Toujours afficher " - BALI" après la baseline, même si elle ne l'a pas dans DATA
-  const baselineText = /(^|[\s-])bali(\b|$)/i.test(DATA.baseline)
-    ? DATA.baseline
-    : `${DATA.baseline} - BALI`;
-
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Nav */}
@@ -265,7 +260,7 @@ export default function Page() {
             className="max-w-3xl"
           >
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              {baselineText}
+              {DATA.baseline}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
