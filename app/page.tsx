@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Waves, Car, CalendarDays, Star } from "lucide-react";
+import { MapPin, Waves, Car, CalendarDays, Star, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -137,11 +137,11 @@ const Section = ({
 
 const GalleryCard = ({
   item,
-  onOpen,
+  onOpen = () => {},
 }: {
   item: { src: string; alt: string; caption?: string };
-  onOpen: () => void;
-}) => (
+  onOpen?: () => void;
+}) => (/* … */)
   <div className="relative overflow-hidden rounded-2xl shadow-sm group">
     <button
       type="button"
@@ -301,6 +301,55 @@ useEffect(() => {
     ))}
   </div>
 </section>
+{/* Lightbox */}
+{lbIndex !== null && (
+  <div
+    role="dialog"
+    aria-modal="true"
+    className="fixed inset-0 z-[999] bg-black/90"
+    onClick={closeLb}
+  >
+    {/* Bouton fermer */}
+    <button
+      type="button"
+      onClick={closeLb}
+      aria-label="Fermer"
+      className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
+    >
+      <X className="h-6 w-6" />
+    </button>
+
+    {/* Précédente */}
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); prevLb(); }}
+      aria-label="Image précédente"
+      className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+    >
+      <ChevronLeft className="h-7 w-7" />
+    </button>
+
+    {/* Image */}
+    <div className="absolute inset-0 flex items-center justify-center p-4">
+      <img
+        src={images[lbIndex].src}
+        alt={images[lbIndex].alt}
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+      />
+    </div>
+
+    {/* Suivante */}
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); nextLb(); }}
+      aria-label="Image suivante"
+      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+    >
+      <ChevronRight className="h-7 w-7" />
+    </button>
+  </div>
+)}
 
 
       {/* Atouts */}
