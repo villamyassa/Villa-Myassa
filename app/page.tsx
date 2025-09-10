@@ -1,15 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Waves, Car, CalendarDays, Star, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  MapPin,
+  Waves,
+  Car,
+  CalendarDays,
+  Star,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (dans /public/images)
+   1) PHOTOS (dans /public/photos)
 ------------------------------------------------------- */
 
 const GALLERY_FILES = [
@@ -53,7 +62,10 @@ const CAPTIONS: Record<string, string> = {
 };
 
 const toAlt = (name: string) =>
-  name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
+  name
+    .replace(/^[0-9]+-/, "")
+    .replace(/[-_]/g, " ")
+    .replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
 const PUBLIC_PREFIX = "/photos";
 
@@ -96,7 +108,11 @@ const DATA = {
   description:
     "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
   tarifs: [
-    { label: "Prix indicatif", prix: "À partir de Rp 2 941 990 / nuit", details: "Selon saisons et disponibilités" },
+    {
+      label: "Prix indicatif",
+      prix: "À partir de Rp 2 941 990 / nuit",
+      details: "Selon saisons et disponibilités",
+    },
     { label: "Séjours moyens", prix: "Sur demande", details: "Nettoyage et linge inclus" },
     { label: "Long séjour", prix: "Sur demande", details: "Tarifs dégressifs possibles" },
   ],
@@ -135,36 +151,38 @@ const Section = ({
   </section>
 );
 
-const GalleryCard = ({
+function GalleryCard({
   item,
   onOpen = () => {},
 }: {
   item: { src: string; alt: string; caption?: string };
   onOpen?: () => void;
-}) => (/* … */)
-  <div className="relative overflow-hidden rounded-2xl shadow-sm group">
-    <button
-      type="button"
-      onClick={onOpen}
-      className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
-      aria-label={`Voir ${item.alt} en plein écran`}
-    >
-      <img
-        src={item.src}
-        alt={item.alt}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        loading="lazy"
-      />
-      {item.caption && (
-        <div className="absolute inset-x-0 bottom-0 p-3">
-          <div className="bg-black/45 backdrop-blur rounded px-3 py-1.5 text-sm text-white">
-            {item.caption}
+}) {
+  return (
+    <div className="relative overflow-hidden rounded-2xl shadow-sm group">
+      <button
+        type="button"
+        onClick={onOpen}
+        className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
+        aria-label={`Voir ${item.alt} en plein écran`}
+      >
+        <img
+          src={item.src}
+          alt={item.alt}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+        {item.caption && (
+          <div className="absolute inset-x-0 bottom-0 p-3">
+            <div className="bg-black/45 backdrop-blur rounded px-3 py-1.5 text-sm text-white">
+              {item.caption}
+            </div>
           </div>
-        </div>
-      )}
-    </button>
-  </div>
-);
+        )}
+      </button>
+    </div>
+  );
+}
 
 /* -------------------------------------------------------
    4) PAGE
@@ -177,34 +195,35 @@ export default function Page() {
     src: string;
     alt: string;
   };
-const [lbIndex, setLbIndex] = useState<number | null>(null);
-const images = DATA.images; // raccourci utile
 
-const closeLb = () => setLbIndex(null);
-const openLb = (i: number) => setLbIndex(i);
-const prevLb = () =>
-  setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
-const nextLb = () =>
-  setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
+  // Lightbox
+  const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const images = DATA.images;
 
-// ESC / ← →  + bloquer le scroll en mode lightbox
-useEffect(() => {
-  if (lbIndex === null) return;
+  const closeLb = () => setLbIndex(null);
+  const openLb = (i: number) => setLbIndex(i);
+  const prevLb = () =>
+    setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
+  const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape") closeLb();
-    if (e.key === "ArrowLeft") prevLb();
-    if (e.key === "ArrowRight") nextLb();
-  };
+  // ESC / ← → + blocage du scroll
+  useEffect(() => {
+    if (lbIndex === null) return;
 
-  const prevOverflow = document.body.style.overflow;
-  document.body.style.overflow = "hidden";
-  window.addEventListener("keydown", onKey);
-  return () => {
-    document.body.style.overflow = prevOverflow;
-    window.removeEventListener("keydown", onKey);
-  };
-}, [lbIndex, images.length]);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLb();
+      if (e.key === "ArrowLeft") prevLb();
+      if (e.key === "ArrowRight") nextLb();
+    };
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [lbIndex, images.length]);
 
   const handleMailto = () => {
     const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
@@ -255,9 +274,12 @@ useEffect(() => {
 
       {/* Hero */}
       <section id="accueil" className="relative overflow-hidden">
-        {/* Fond image (pas de z-index négatif) */}
         <div className="absolute inset-0">
-          <img src={hero.src} alt={hero.alt} className="absolute inset-0 h-full w-full object-cover" />
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
         </div>
 
@@ -272,7 +294,9 @@ useEffect(() => {
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
               <Star className="h-4 w-4" /> Note (si dispo) – ex. 4.9/5
             </span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">{DATA.baseline}</h1>
+            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
+              {DATA.baseline}
+            </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
@@ -284,7 +308,11 @@ useEffect(() => {
                 <a href="#galerie">Voir la galerie</a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
+                <a
+                  href="https://bestay.co/villa/villa-myassa"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Réserver sur Bestay
                 </a>
               </Button>
@@ -294,66 +322,76 @@ useEffect(() => {
       </section>
 
       {/* Galerie */}
-     <section id="galerie" title="Galerie" /* ... */>
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    {images.map((img, i) => (
-      <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
-    ))}
-  </div>
-</section>
-{/* Lightbox */}
-{lbIndex !== null && (
-  <div
-    role="dialog"
-    aria-modal="true"
-    className="fixed inset-0 z-[999] bg-black/90"
-    onClick={closeLb}
-  >
-    {/* Bouton fermer */}
-    <button
-      type="button"
-      onClick={closeLb}
-      aria-label="Fermer"
-      className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
-    >
-      <X className="h-6 w-6" />
-    </button>
+      <Section id="galerie" title="Galerie">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {images.map((img, i) => (
+            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
+          ))}
+        </div>
+      </Section>
 
-    {/* Précédente */}
-    <button
-      type="button"
-      onClick={(e) => { e.stopPropagation(); prevLb(); }}
-      aria-label="Image précédente"
-      className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
-    >
-      <ChevronLeft className="h-7 w-7" />
-    </button>
+      {/* Lightbox */}
+      {lbIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[999] bg-black/90"
+          onClick={closeLb}
+        >
+          {/* Fermer */}
+          <button
+            type="button"
+            onClick={closeLb}
+            aria-label="Fermer"
+            className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
+          >
+            <X className="h-6 w-6" />
+          </button>
 
-    {/* Image */}
-    <div className="absolute inset-0 flex items-center justify-center p-4">
-      <img
-        src={images[lbIndex].src}
-        alt={images[lbIndex].alt}
-        onClick={(e) => e.stopPropagation()}
-        className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
-      />
-    </div>
+          {/* Précédente */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              prevLb();
+            }}
+            aria-label="Image précédente"
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+          >
+            <ChevronLeft className="h-7 w-7" />
+          </button>
 
-    {/* Suivante */}
-    <button
-      type="button"
-      onClick={(e) => { e.stopPropagation(); nextLb(); }}
-      aria-label="Image suivante"
-      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
-    >
-      <ChevronRight className="h-7 w-7" />
-    </button>
-  </div>
-)}
+          {/* Image */}
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <img
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+            />
+          </div>
 
+          {/* Suivante */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              nextLb();
+            }}
+            aria-label="Image suivante"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+          >
+            <ChevronRight className="h-7 w-7" />
+          </button>
+        </div>
+      )}
 
       {/* Atouts */}
-      <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
+      <Section
+        id="atouts"
+        title="Atouts & Équipements"
+        subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
+      >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {DATA.pointsForts.map((p, i) => (
             <Card key={i} className="rounded-2xl">
@@ -371,7 +409,9 @@ useEffect(() => {
       {/* Description */}
       <Section id="description" title="Description">
         <Card className="rounded-2xl">
-          <CardContent className="prose max-w-none leading-relaxed py-6">{DATA.description}</CardContent>
+          <CardContent className="prose max-w-none leading-relaxed py-6">
+            {DATA.description}
+          </CardContent>
         </Card>
       </Section>
 
@@ -396,7 +436,8 @@ useEffect(() => {
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
-            Intégrez ici votre calendrier (Google Calendar, Calendly, ou widget Bestay/Airbnb si disponible).
+            Intégrez ici votre calendrier (Google Calendar, Calendly, ou widget
+            Bestay/Airbnb si disponible).
           </CardContent>
         </Card>
       </Section>
@@ -433,7 +474,11 @@ useEffect(() => {
           <CardContent className="py-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input placeholder="Votre nom" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <Input
+                  placeholder="Votre nom"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
                 <Input
                   placeholder="Votre email"
                   type="email"
@@ -444,7 +489,9 @@ useEffect(() => {
                   placeholder="Votre message"
                   rows={5}
                   value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
                 />
                 <div className="flex gap-3">
                   <Button onClick={handleMailto}>Envoyer par email</Button>
@@ -455,7 +502,10 @@ useEffect(() => {
               </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+                  Email :{" "}
+                  <a className="underline" href={`mailto:${DATA.email}`}>
+                    {DATA.email}
+                  </a>
                 </p>
                 <p>Téléphone : {DATA.telephone}</p>
               </div>
@@ -467,7 +517,8 @@ useEffect(() => {
       {/* Footer */}
       <footer className="py-10 border-t">
         <div className="container mx-auto px-4 max-w-6xl text-sm text-neutral-500">
-          © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous droits réservés.
+          © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous
+          droits réservés.
         </div>
       </footer>
     </div>
