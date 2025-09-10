@@ -1,5 +1,10 @@
 "use client";
 
+// ❗ Empêche la mise en cache et la génération statique sur Vercel/Next
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -17,10 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (par défaut dans /public/images)
-   ↳ Si besoin, remplace "/images" par "/photos"
+   1) PHOTOS (tes fichiers sont dans /public/images)
 ------------------------------------------------------- */
-
 const PUBLIC_PREFIX = "/images";
 
 const GALLERY_FILES = [
@@ -66,10 +69,9 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 /* -------------------------------------------------------
    2) DONNÉES
 ------------------------------------------------------- */
-
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud", // le H1 ci-dessous ajoute BALI en dur
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -85,7 +87,7 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
-    // "Espace de travail adapté (bureau)"  ← supprimé
+    // "Espace de travail adapté (bureau)" (supprimé)
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -104,7 +106,6 @@ const DATA = {
 /* -------------------------------------------------------
    3) UI
 ------------------------------------------------------- */
-
 const Section = ({
   id,
   title,
@@ -161,7 +162,6 @@ function GalleryCard({
 /* -------------------------------------------------------
    4) PAGE
 ------------------------------------------------------- */
-
 export default function Page() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -183,7 +183,7 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % DATA.images.length));
 
-  // ESC / ← → + blocage du scroll
+  // ESC / ← → + blocage du scroll (quand la lightbox est ouverte)
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -208,7 +208,7 @@ export default function Page() {
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
 
-  // ✅ Atouts sans "bureau" même si réintroduit par mégarde
+  // Atouts : retire toute entrée contenant “bureau”
   const features = DATA.pointsForts.filter((p) => !/bureau/i.test(p));
 
   return (
@@ -257,7 +257,7 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
-            {/* ✅ BALI écrit en dur */}
+            {/* ✅ BALI écrit en dur pour garantir l’affichage */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
               Villa contemporaine avec piscine privée au cœur d’Ubud - BALI
             </h1>
