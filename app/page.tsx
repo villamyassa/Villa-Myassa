@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Waves, Car, CalendarDays, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -135,30 +135,35 @@ const Section = ({
   </section>
 );
 
-const GalleryCard = ({ item }: { item: GalleryItem }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className="group"
-  >
-    <div className="relative overflow-hidden rounded-2xl shadow-sm aspect-[4/3]">
+const GalleryCard = ({
+  item,
+  onOpen,
+}: {
+  item: { src: string; alt: string; caption?: string };
+  onOpen: () => void;
+}) => (
+  <div className="relative overflow-hidden rounded-2xl shadow-sm group">
+    <button
+      type="button"
+      onClick={onOpen}
+      className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
+      aria-label={`Voir ${item.alt} en plein écran`}
+    >
       <img
         src={item.src}
         alt={item.alt}
-        className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         loading="lazy"
       />
       {item.caption && (
         <div className="absolute inset-x-0 bottom-0 p-3">
-          <div className="bg-black/45 backdrop-blur-sm rounded-xl px-3 py-1.5 text-sm text-white">
+          <div className="bg-black/45 backdrop-blur rounded px-3 py-1.5 text-sm text-white">
             {item.caption}
           </div>
         </div>
       )}
-    </div>
-  </motion.div>
+    </button>
+  </div>
 );
 
 /* -------------------------------------------------------
@@ -172,6 +177,34 @@ export default function Page() {
     src: string;
     alt: string;
   };
+const [lbIndex, setLbIndex] = useState<number | null>(null);
+const images = DATA.images; // raccourci utile
+
+const closeLb = () => setLbIndex(null);
+const openLb = (i: number) => setLbIndex(i);
+const prevLb = () =>
+  setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
+const nextLb = () =>
+  setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
+
+// ESC / ← →  + bloquer le scroll en mode lightbox
+useEffect(() => {
+  if (lbIndex === null) return;
+
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === "Escape") closeLb();
+    if (e.key === "ArrowLeft") prevLb();
+    if (e.key === "ArrowRight") nextLb();
+  };
+
+  const prevOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+  window.addEventListener("keydown", onKey);
+  return () => {
+    document.body.style.overflow = prevOverflow;
+    window.removeEventListener("keydown", onKey);
+  };
+}, [lbIndex, images.length]);
 
   const handleMailto = () => {
     const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
@@ -261,13 +294,14 @@ export default function Page() {
       </section>
 
       {/* Galerie */}
-      <Section id="galerie" title="Galerie" subtitle={`Aperçu des espaces de ${DATA.nom}`}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DATA.images.map((img, i) => (
-            <GalleryCard key={i} item={img} />
-          ))}
-        </div>
-      </Section>
+     <section id="galerie" title="Galerie" /* ... */>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {images.map((img, i) => (
+      <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
+    ))}
+  </div>
+</section>
+
 
       {/* Atouts */}
       <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
