@@ -77,20 +77,6 @@ const DATA = {
   distance: "Jungle d’Ubud (Singakerta)",
   telephone: "(à compléter)",
   email: "contact@villamyassa.com",
-
-  // >>> IMPORTANT : item "Espace de travail adapté (bureau)" SUPPRIMÉ <<<
-  pointsForts: [
-    "Piscine privée",
-    "Climatisation",
-    "Wifi haut débit",
-    "Parking gratuit sur place",
-    "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
-    "TV / Smart TV dans les chambres",
-    "Salles de bain attenantes",
-    "Coffre-fort",
-    "Moustiquaires",
-  ],
-
   images: IMAGES,
   description:
     "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
@@ -106,6 +92,19 @@ const DATA = {
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 };
+
+/** Liste figée d'atouts : AUCUN "bureau" ici */
+const ATOUTS: string[] = [
+  "Piscine privée",
+  "Climatisation",
+  "Wifi haut débit",
+  "Parking gratuit sur place",
+  "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
+  "TV / Smart TV dans les chambres",
+  "Salles de bain attenantes",
+  "Coffre-fort",
+  "Moustiquaires",
+];
 
 /* -------------------------------------------------------
    3) COMPOSANTS
@@ -158,7 +157,7 @@ const GalleryCard = ({
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         loading="lazy"
       />
-      {/* AUCUNE LÉGENDE AFFICHÉE */}
+      {/* Aucune légende */}
     </button>
   </div>
 );
@@ -168,7 +167,7 @@ const GalleryCard = ({
 ------------------------------------------------------- */
 
 export default function Page() {
-  const buildTag = "vBALI-009";
+  const buildTag = "vBALI-010";
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -373,18 +372,16 @@ export default function Page() {
         subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {DATA.pointsForts
-            .filter((p) => !/bureau/i.test(p)) // garde-fou anti “bureau”
-            .map((p, i) => (
-              <Card key={i} className="rounded-2xl">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <CalendarDays className="h-5 w-5" />
-                    {p}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-            ))}
+          {ATOUTS.map((p, i) => (
+            <Card key={i} className="rounded-2xl">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5" />
+                  {p}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          ))}
         </div>
       </Section>
 
