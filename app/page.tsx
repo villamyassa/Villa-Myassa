@@ -18,9 +18,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
+   0) BUILD TAG (pour vérifier la bonne version en prod)
+------------------------------------------------------- */
+const BUILD_TAG = "vtour-2025-09-11-02";
+
+/* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
 ------------------------------------------------------- */
-
 const GALLERY_FILES = [
   "001-hero-piscine.jpg",
   "002-salon.jpg",
@@ -63,7 +67,6 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 /* -------------------------------------------------------
    2) DONNÉES AFFICHÉES
 ------------------------------------------------------- */
-
 const MATTERPORT_URL = "https://discover.matterport.com/space/xrHbRBnPwdy";
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 
@@ -103,7 +106,6 @@ const DATA = {
 /* -------------------------------------------------------
    3) COMPOSANTS UI
 ------------------------------------------------------- */
-
 const Section = ({
   id,
   title,
@@ -158,7 +160,6 @@ const GalleryCard = ({
 /* -------------------------------------------------------
    4) PAGE
 ------------------------------------------------------- */
-
 export default function Page() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -178,16 +179,13 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // ESC / ← →  + bloquer le scroll en mode lightbox
   useEffect(() => {
     if (lbIndex === null) return;
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
-
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -196,15 +194,6 @@ export default function Page() {
       window.removeEventListener("keydown", onKey);
     };
   }, [lbIndex, images.length]);
-
-  // --- FAILSAFE : auto-redirect si ?tour=1 ou #tour
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const u = new URL(window.location.href);
-    if (u.searchParams.get("tour") === "1" || u.hash === "#tour") {
-      window.location.href = MATTERPORT_URL; // même onglet, donc jamais bloqué
-    }
-  }, []);
 
   const handleMailto = () => {
     const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
@@ -331,8 +320,7 @@ export default function Page() {
           </a>
         </div>
         <p className="mt-3 text-sm text-neutral-500">
-          Astuce : ajoutez <code>?tour=1</code> à l’URL pour forcer la redirection immédiate vers la visite
-          (<code>www.villamyassa.com?tour=1</code>) ou <code>#tour</code> (<code>www.villamyassa.com#tour</code>).
+          Test rapide : ajoutez <code>?tour=1</code> à l’URL (<code>www.villamyassa.com/?tour=1</code>) — vous devez être redirigé(e) immédiatement vers Matterport.
         </p>
       </Section>
 
@@ -347,13 +335,7 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[999] bg-black/90"
-          onClick={closeLb}
-        >
-          {/* Fermer */}
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
           <button
             type="button"
             onClick={closeLb}
@@ -363,7 +345,6 @@ export default function Page() {
             <X className="h-6 w-6" />
           </button>
 
-          {/* Précédente */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); prevLb(); }}
@@ -373,7 +354,6 @@ export default function Page() {
             <ChevronLeft className="h-7 w-7" />
           </button>
 
-          {/* Image */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
               src={images[lbIndex].src}
@@ -383,7 +363,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Suivante */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); nextLb(); }}
@@ -518,6 +497,7 @@ export default function Page() {
       <footer className="py-10 border-t">
         <div className="container mx-auto px-4 max-w-6xl text-sm text-neutral-500">
           © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous droits réservés.
+          <span className="ml-2 text-xs text-neutral-400">build: {BUILD_TAG}</span>
         </div>
       </footer>
     </div>
