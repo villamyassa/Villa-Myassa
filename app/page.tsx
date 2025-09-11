@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
   Waves,
   Car,
   CalendarDays,
+  Star,
   X,
   ChevronLeft,
   ChevronRight,
@@ -17,13 +18,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   BUILD MARKER (vBALI-008)
+   1) PHOTOS (stockées dans /public/photos)
 ------------------------------------------------------- */
-
-/* -------------------------------------------------------
-   1) PHOTOS (dans /public/images)
-------------------------------------------------------- */
-const PUBLIC_PREFIX = "/images";
 
 const GALLERY_FILES = [
   "001-hero-piscine.jpg",
@@ -57,19 +53,32 @@ const toAlt = (name: string) =>
     .replace(/[-_]/g, " ")
     .replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
+const PUBLIC_PREFIX = "/photos";
+
 type GalleryItem = { src: string; alt: string; featured?: boolean };
 
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
   src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
-  featured: i === 0,
+  featured: i === 0, // la 1re = image "héro"
 }));
 
 /* -------------------------------------------------------
    2) DONNÉES
 ------------------------------------------------------- */
+
 const DATA = {
-  // ...
+  nom: "Villa Myassa",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
+  localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
+  capacite: "3 chambres (lits queen)",
+  chambres: "3.5 salles de bain",
+  sallesDeBain: "3.5 sdb",
+  distance: "Jungle d’Ubud (Singakerta)",
+  telephone: "(à compléter)",
+  email: "contact@villamyassa.com",
+
+  // >>> IMPORTANT : item "Espace de travail adapté (bureau)" SUPPRIMÉ <<<
   pointsForts: [
     "Piscine privée",
     "Climatisation",
@@ -81,14 +90,16 @@ const DATA = {
     "Coffre-fort",
     "Moustiquaires",
   ],
-  // ...
-};
 
   images: IMAGES,
   description:
     "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
   tarifs: [
-    { label: "Prix indicatif", prix: "À partir de Rp 2 941 990 / nuit", details: "Selon saisons et disponibilités" },
+    {
+      label: "Prix indicatif",
+      prix: "À partir de Rp 2 941 990 / nuit",
+      details: "Selon saisons et disponibilités",
+    },
     { label: "Séjours moyens", prix: "Sur demande", details: "Nettoyage et linge inclus" },
     { label: "Long séjour", prix: "Sur demande", details: "Tarifs dégressifs possibles" },
   ],
@@ -97,8 +108,9 @@ const DATA = {
 };
 
 /* -------------------------------------------------------
-   3) UI
+   3) COMPOSANTS
 ------------------------------------------------------- */
+
 const Section = ({
   id,
   title,
@@ -126,36 +138,38 @@ const Section = ({
   </section>
 );
 
-function GalleryCard({
+const GalleryCard = ({
   item,
   onOpen = () => {},
 }: {
   item: { src: string; alt: string };
   onOpen?: () => void;
-}) {
-  return (
-    <div className="relative overflow-hidden rounded-2xl shadow-sm group">
-      <button
-        type="button"
-        onClick={onOpen}
-        className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
-        aria-label={`Voir ${item.alt} en plein écran`}
-      >
-        <img
-          src={item.src}
-          alt={item.alt}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-        />
-      </button>
-    </div>
-  );
-}
+}) => (
+  <div className="relative overflow-hidden rounded-2xl shadow-sm group">
+    <button
+      type="button"
+      onClick={onOpen}
+      className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
+      aria-label={`Voir ${item.alt} en plein écran`}
+    >
+      <img
+        src={item.src}
+        alt={item.alt}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
+      {/* AUCUNE LÉGENDE AFFICHÉE */}
+    </button>
+  </div>
+);
 
 /* -------------------------------------------------------
    4) PAGE
 ------------------------------------------------------- */
+
 export default function Page() {
+  const buildTag = "vBALI-009";
+
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
@@ -163,27 +177,25 @@ export default function Page() {
     alt: string;
   };
 
+  const images = DATA.images;
+
   // Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
-  const backdropRef = useRef<HTMLDivElement | null>(null);
-
-  const openLb = (i: number) => setLbIndex(i);
   const closeLb = () => setLbIndex(null);
+  const openLb = (i: number) => setLbIndex(i);
   const prevLb = () =>
-    setLbIndex((i) =>
-      i === null ? i : (i + DATA.images.length - 1) % DATA.images.length
-    );
-  const nextLb = () =>
-    setLbIndex((i) => (i === null ? i : (i + 1) % DATA.images.length));
+    setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
+  const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // ESC / ← → + blocage du scroll quand la lightbox est ouverte
   useEffect(() => {
     if (lbIndex === null) return;
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
+
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -191,7 +203,7 @@ export default function Page() {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
     };
-  }, [lbIndex]);
+  }, [lbIndex, images.length]);
 
   const handleMailto = () => {
     const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
@@ -200,9 +212,6 @@ export default function Page() {
     );
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
-
-  // ✅ Sécurité supplémentaire : on exclut tout item contenant “bureau”
-  const features = DATA.pointsForts.filter((p) => !/bureau/i.test(p));
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
@@ -213,12 +222,24 @@ export default function Page() {
             Villa Myassa
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">Galerie</a>
-            <a href="#atouts" className="hover:underline">Atouts</a>
-            <a href="#tarifs" className="hover:underline">Tarifs</a>
-            <a href="#disponibilites" className="hover:underline">Disponibilités</a>
-            <a href="#localisation" className="hover:underline">Localisation</a>
-            <a href="#contact" className="hover:underline">Contact</a>
+            <a href="#galerie" className="hover:underline">
+              Galerie
+            </a>
+            <a href="#atouts" className="hover:underline">
+              Atouts
+            </a>
+            <a href="#tarifs" className="hover:underline">
+              Tarifs
+            </a>
+            <a href="#disponibilites" className="hover:underline">
+              Disponibilités
+            </a>
+            <a href="#localisation" className="hover:underline">
+              Localisation
+            </a>
+            <a href="#contact" className="hover:underline">
+              Contact
+            </a>
           </nav>
           <div className="flex items-center gap-2">
             <Button asChild>
@@ -231,39 +252,42 @@ export default function Page() {
         </div>
       </header>
 
-      {/* HERO : image seule */}
-      <section id="accueil">
-        <img
-          src={hero.src}
-          alt={hero.alt}
-          style={{ width: "100%", height: "68vh", objectFit: "cover", display: "block" }}
-        />
-      </section>
+      {/* Hero */}
+      <section id="accueil" className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
+        </div>
 
-      {/* Bloc texte sous le hero */}
-      <section aria-label="Présentation" className="py-10">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-6xl h-[68vh] flex items-end pb-12 relative">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl"
+            transition={{ duration: 0.7 }}
+            className="max-w-2xl"
           >
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              Villa contemporaine avec piscine privée au cœur d’Ubud — <strong>BALI</strong>
+            <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
+              <Star className="h-4 w-4" />
+              Build: {buildTag}
+            </span>
+
+            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
+              {DATA.baseline}
             </h1>
 
-            {/* Build badge */}
-            <div className="mt-2 inline-flex items-center gap-2 text-xs bg-neutral-100 border rounded-full px-3 py-1">
-              <span>Build:</span> <code>vBALI-008</code>
-            </div>
-
-            <p className="mt-4 text-base md:text-lg text-neutral-700">
+            <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
+
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
+              <Button size="lg" onClick={handleMailto}>
+                Demander les dates
+              </Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">Voir la galerie</a>
               </Button>
@@ -284,8 +308,8 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {IMAGES.map((img, i) => (
-            <GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />
+          {images.map((img, i) => (
+            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
           ))}
         </div>
       </Section>
@@ -293,22 +317,11 @@ export default function Page() {
       {/* Lightbox */}
       {lbIndex !== null && (
         <div
-          ref={backdropRef}
           role="dialog"
           aria-modal="true"
           className="fixed inset-0 z-[999] bg-black/90"
-          onMouseDown={(e) => {
-            if (e.target === backdropRef.current) closeLb();
-          }}
+          onClick={closeLb}
         >
-          <div className="pointer-events-auto absolute inset-0 flex items-center justify-center p-4">
-            <img
-              src={IMAGES[lbIndex].src}
-              alt={IMAGES[lbIndex].alt}
-              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
-            />
-          </div>
-
           <button
             type="button"
             onClick={closeLb}
@@ -322,7 +335,7 @@ export default function Page() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              setLbIndex((i) => (i === null ? i : (i + IMAGES.length - 1) % IMAGES.length));
+              prevLb();
             }}
             aria-label="Image précédente"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
@@ -330,11 +343,20 @@ export default function Page() {
             <ChevronLeft className="h-7 w-7" />
           </button>
 
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <img
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+            />
+          </div>
+
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              setLbIndex((i) => (i === null ? i : (i + 1) % IMAGES.length));
+              nextLb();
             }}
             aria-label="Image suivante"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
@@ -345,26 +367,26 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-<Section
-  id="atouts"
-  title="Atouts & Équipements"
-  subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
->
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {DATA.pointsForts
-      .filter((p) => !/bureau/i.test(p)) // garde-fou anti “bureau”
-      .map((p, i) => (
-        <Card key={i} className="rounded-2xl">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <CalendarDays className="h-5 w-5" />
-              {p}
-            </CardTitle>
-          </CardHeader>
-        </Card>
-      ))}
-  </div>
-</Section>
+      <Section
+        id="atouts"
+        title="Atouts & Équipements"
+        subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {DATA.pointsForts
+            .filter((p) => !/bureau/i.test(p)) // garde-fou anti “bureau”
+            .map((p, i) => (
+              <Card key={i} className="rounded-2xl">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <CalendarDays className="h-5 w-5" />
+                    {p}
+                  </CardTitle>
+                </CardHeader>
+              </Card>
+            ))}
+        </div>
+      </Section>
 
       {/* Description */}
       <Section id="description" title="Description">
@@ -392,7 +414,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Disponibilités */}
+      {/* Disponibilités (placeholder) */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
@@ -412,7 +434,8 @@ export default function Page() {
                   <MapPin className="h-5 w-5" /> {DATA.adresse}
                 </li>
                 <li className="flex items-center gap-2">
-                  <Waves className="h-5 w-5" /> Plages / points d’intérêt à proximité (à compléter)
+                  <Waves className="h-5 w-5" /> Plages / points d’intérêt à proximité
+                  (à compléter)
                 </li>
                 <li className="flex items-center gap-2">
                   <Car className="h-5 w-5" /> Accès / parking (à compléter)
@@ -420,6 +443,7 @@ export default function Page() {
               </ul>
             </CardContent>
           </Card>
+
           <Card className="rounded-2xl order-1 lg:order-2">
             <CardContent className="p-0">
               <div dangerouslySetInnerHTML={{ __html: DATA.mapsEmbed }} />
@@ -449,10 +473,9 @@ export default function Page() {
                   placeholder="Votre message"
                   rows={5}
                   value={form.message}
-                  onChange={(e) =>
-                    setForm({ ...form, message: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
                 />
+
                 <div className="flex gap-3">
                   <Button onClick={handleMailto}>Envoyer par email</Button>
                   <Button variant="outline" asChild>
@@ -460,6 +483,7 @@ export default function Page() {
                   </Button>
                 </div>
               </div>
+
               <div className="text-sm text-neutral-600">
                 <p>
                   Email :{" "}
@@ -477,8 +501,7 @@ export default function Page() {
       {/* Footer */}
       <footer className="py-10 border-t">
         <div className="container mx-auto px-4 max-w-6xl text-sm text-neutral-500">
-          © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous
-          droits réservés.
+          © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous droits réservés.
         </div>
       </footer>
     </div>
