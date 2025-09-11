@@ -171,6 +171,7 @@ export default function Page() {
   const BUILD = "vBALI-016";
 
 
+
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
