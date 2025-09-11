@@ -1,17 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  MapPin,
-  Waves,
-  Car,
-  CalendarDays,
-  Star,
-  X,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { MapPin, Waves, Car, CalendarDays, Star, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -66,7 +57,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud — BALI",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -82,7 +73,6 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
-    // "Espace de travail adapté (bureau)", // <- supprimé volontairement
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -94,9 +84,12 @@ const DATA = {
     { label: "Séjours moyens", prix: "Sur demande", details: "Nettoyage et linge inclus" },
     { label: "Long séjour", prix: "Sur demande", details: "Tarifs dégressifs possibles" },
   ],
-  adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
+  adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali, 80571 Ubud, Indonesia",
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 };
+
+/* URL de la visite 3D : remplace par le lien direct (Matterport/Kuula/etc.) si Bestay te le fournit */
+const TOUR_IFRAME_SRC = "https://bestay.co/villa/villa-myassa#virtual-tour";
 
 /* -------------------------------------------------------
    3) COMPOSANTS UI
@@ -129,7 +122,13 @@ const Section = ({
   </section>
 );
 
-const GalleryCard = ({ item, onOpen = () => {} }: { item: { src: string; alt: string }; onOpen?: () => void }) => (
+const GalleryCard = ({
+  item,
+  onOpen = () => {},
+}: {
+  item: { src: string; alt: string };
+  onOpen?: () => void;
+}) => (
   <div className="relative overflow-hidden rounded-2xl shadow-sm group">
     <button
       type="button"
@@ -205,6 +204,7 @@ export default function Page() {
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#galerie" className="hover:underline">Galerie</a>
+            <a href="#visite3d" className="hover:underline">Visite 3D</a>
             <a href="#atouts" className="hover:underline">Atouts</a>
             <a href="#tarifs" className="hover:underline">Tarifs</a>
             <a href="#disponibilites" className="hover:underline">Disponibilités</a>
@@ -240,9 +240,7 @@ export default function Page() {
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
               <Star className="h-4 w-4" /> Note (si dispo) – ex. 4.9/5
             </span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
-              {DATA.baseline} – BALI
-            </h1>
+            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">{DATA.baseline}</h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
@@ -264,7 +262,7 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DATA.images.map((img, i) => (
+          {images.map((img, i) => (
             <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
           ))}
         </div>
@@ -311,35 +309,53 @@ export default function Page() {
         </div>
       )}
 
-      {/* Atouts */}
+      {/* Visite 3D */}
       <Section
-        id="atouts"
-        title="Atouts & Équipements"
-        subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
+        id="visite3d"
+        title="Visite 3D"
+        subtitle="Parcourez la villa comme si vous y étiez (peut s’ouvrir dans un nouvel onglet si l’intégration est bloquée)."
       >
+        <div className="rounded-2xl overflow-hidden shadow">
+          <div className="aspect-video w-full bg-black">
+            <iframe
+              src={TOUR_IFRAME_SRC}
+              title="Visite 3D Villa Myassa"
+              className="w-full h-full"
+              allow="xr-spatial-tracking; gyroscope; accelerometer; autoplay; fullscreen"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <Button asChild variant="outline" size="lg">
+            <a href={TOUR_IFRAME_SRC} target="_blank" rel="noreferrer">Ouvrir la visite 3D</a>
+          </Button>
+        </div>
+      </Section>
+
+      {/* Atouts */}
+      <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {DATA.pointsForts
-            // <— filet de sécurité : on exclut toute occurrence d'“espace de travail”
-            .filter((p) => !p.toLowerCase().includes("espace de travail"))
-            .map((p, i) => (
-              <Card key={i} className="rounded-2xl">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <CalendarDays className="h-5 w-5" />
-                    {p}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-            ))}
+          {DATA.pointsForts.map((p, i) => (
+            <Card key={i} className="rounded-2xl">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5" />
+                  {p}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          ))}
         </div>
       </Section>
 
       {/* Description */}
       <Section id="description" title="Description">
         <Card className="rounded-2xl">
-          <CardContent className="prose max-w-none leading-relaxed py-6">
-            {DATA.description}
-          </CardContent>
+          <CardContent className="prose max-w-none leading-relaxed py-6">{DATA.description}</CardContent>
         </Card>
       </Section>
 
@@ -401,11 +417,7 @@ export default function Page() {
           <CardContent className="py-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input
-                  placeholder="Votre nom"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
+                <Input placeholder="Votre nom" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
                 <Input
                   placeholder="Votre email"
                   type="email"
@@ -427,10 +439,7 @@ export default function Page() {
               </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  Email :{" "}
-                  <a className="underline" href={`mailto:${DATA.email}`}>
-                    {DATA.email}
-                  </a>
+                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
                 </p>
                 <p>Téléphone : {DATA.telephone}</p>
               </div>
