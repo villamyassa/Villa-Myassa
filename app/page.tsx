@@ -168,7 +168,8 @@ function GalleryCard({
 ------------------------------------------------------- */
 
 export default function Page() {
-  const BUILD = "vBALI-014";
+  const BUILD = "vBALI-016";
+
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
