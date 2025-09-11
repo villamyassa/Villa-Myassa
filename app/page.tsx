@@ -343,24 +343,36 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-      <Section
-        id="atouts"
-        title="Atouts & Équipements"
-        subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {ATOUTS.map((p, i) => (
-            <Card key={i} className="rounded-2xl">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <CalendarDays className="h-5 w-5" />
-                  {p}
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      </Section>
+     {/* Atouts */}
+<Section
+  id="atouts"
+  title="Atouts & Équipements"
+  subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
+>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {[
+      "Piscine privée",
+      "Climatisation",
+      "Wifi haut débit",
+      "Parking gratuit sur place",
+      "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
+      "TV / Smart TV dans les chambres",
+      "Salles de bain attenantes",
+      "Coffre-fort",
+      "Moustiquaires",
+    ].map((label, i) => (
+      <Card key={i} className="rounded-2xl">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <CalendarDays className="h-5 w-5" />
+            {label}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+    ))}
+  </div>
+</Section>
+
 
       {/* Description */}
       <Section id="description" title="Description">
