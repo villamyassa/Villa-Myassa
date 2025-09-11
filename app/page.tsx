@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -11,8 +11,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Rotate3D,
-  PlayCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -84,6 +82,7 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
+    // "Espace de travail adapté (bureau)", // SUPPRIMÉ
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -97,13 +96,6 @@ const DATA = {
   ],
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
-
-  // >>> VIRTUAL TOUR
-  virtualTour: {
-    url: "https://discover.matterport.com/space/xrHbRBnPwdy", // lien direct Matterport
-    fallbackUrl: "https://bestay.co/villa/villa-myassa", // secours si besoin
-    cover: "/photos/virtual-tour-cover.jpg", // image à ajouter dans /public/photos/
-  },
 };
 
 /* -------------------------------------------------------
@@ -173,8 +165,9 @@ export default function Page() {
     alt: string;
   };
 
-  const images = DATA.images;
+  // Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const images = DATA.images;
 
   const closeLb = () => setLbIndex(null);
   const openLb = (i: number) => setLbIndex(i);
@@ -219,11 +212,11 @@ export default function Page() {
             Villa Myassa
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#visite-3d" className="hover:underline">
-              Visite 3D
-            </a>
             <a href="#galerie" className="hover:underline">
               Galerie
+            </a>
+            <a href="#virtualtour" className="hover:underline">
+              Visite 3D
             </a>
             <a href="#atouts" className="hover:underline">
               Atouts
@@ -270,7 +263,9 @@ export default function Page() {
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
               <Star className="h-4 w-4" /> Note (si dispo) – ex. 4.9/5
             </span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">{DATA.baseline}</h1>
+            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
+              {DATA.baseline}
+            </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
@@ -291,50 +286,8 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Visite 3D */}
-      <Section
-        id="visite-3d"
-        title="Visite 3D (360°)"
-        subtitle="Explorez la villa en immersion — ouvre la visite dans un nouvel onglet."
-      >
-        <a
-          href={DATA.virtualTour.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative block rounded-2xl overflow-hidden"
-        >
-          <img
-            src={DATA.virtualTour.cover || hero.src}
-            alt="Vignette du tour 3D de la villa"
-            className="w-full h-[420px] object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-          />
-          {/* Overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-            <Rotate3D className="w-10 h-10 drop-shadow-md" />
-            <span className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur">
-              <PlayCircle className="w-4 h-4" />
-              Ouvrir la visite 3D
-            </span>
-          </div>
-        </a>
-
-        <p className="mt-3 text-sm text-neutral-600">
-          Si la visite ne s’ouvre pas, vous pouvez aussi{" "}
-          <a
-            href={DATA.virtualTour.fallbackUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            l’ouvrir sur Bestay
-          </a>
-          .
-        </p>
-      </Section>
-
       {/* Galerie */}
-      <Section id="galerie" title="Galerie">
+      <Section id="galerie" title="Galerie" subtitle={`Aperçu des espaces de ${DATA.nom}`}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((img, i) => (
             <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
@@ -350,7 +303,7 @@ export default function Page() {
           className="fixed inset-0 z-[999] bg-black/90"
           onClick={closeLb}
         >
-          {/* Fermer */}
+          {/* Bouton fermer */}
           <button
             type="button"
             onClick={closeLb}
@@ -391,6 +344,47 @@ export default function Page() {
           </button>
         </div>
       )}
+
+      {/* Visite 3D */}
+      <Section
+        id="virtualtour"
+        title="Visite 3D"
+        subtitle="Explorez la villa en immersion – cliquez pour ouvrir le tour 3D"
+      >
+        <a
+          href="https://discover.matterport.com/space/xrHbRBnPwdy"
+          target="_blank"
+          rel="noreferrer"
+          className="group block"
+          aria-label="Ouvrir le tour 3D Matterport"
+        >
+          {/* NOTE : aspect-[16/9] (et pas aspect-video) pour garantir la hauteur */}
+          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl shadow bg-neutral-200">
+            <img
+              src="/photos/virtual-tour-cover.jpg?v=3"
+              alt="Couverture du tour 3D"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+              loading="eager"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-neutral-900 shadow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-neutral-900">
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+                <span className="font-medium">Lancer la visite 3D</span>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <p className="mt-3 text-sm text-neutral-500">
+          Le visuel est facultatif. Cliquez sur la carte pour ouvrir la visite 3D sur Matterport.
+        </p>
+      </Section>
 
       {/* Atouts */}
       <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
@@ -473,7 +467,11 @@ export default function Page() {
           <CardContent className="py-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input placeholder="Votre nom" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <Input
+                  placeholder="Votre nom"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
                 <Input
                   placeholder="Votre email"
                   type="email"
