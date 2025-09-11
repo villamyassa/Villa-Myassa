@@ -18,14 +18,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /** ----------------------------------------------------
- *  Désactive l’ISR & tout cache côté Vercel
- *  (oblige un rendu dynamique)
+ *  Forcer le rendu dynamique (pas d’ISR / cache page)
  * --------------------------------------------------- */
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 /* -------------------------------------------------------
-   1) PHOTOS (stockées dans /public/photos)
+   1) PHOTOS (dans /public/photos)
 ------------------------------------------------------- */
 
 const GALLERY_FILES = [
@@ -93,8 +92,8 @@ const DATA = {
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 };
 
-/** Liste figée d’atouts SANS “Espace de travail adapté (bureau)” */
-const ATOUTS: string[] = [
+/** Liste figée SANS “Espace de travail … (bureau)” */
+const ATOUTS_BASE: string[] = [
   "Piscine privée",
   "Climatisation",
   "Wifi haut débit",
@@ -105,6 +104,11 @@ const ATOUTS: string[] = [
   "Coffre-fort",
   "Moustiquaires",
 ];
+
+/** Filtre de sécurité (si jamais un texte semblable se glissait) */
+const ATOUTS = ATOUTS_BASE.filter(
+  (t) => !/travail|bureau/i.test(t)
+);
 
 /* -------------------------------------------------------
    3) COMPOSANTS
@@ -166,7 +170,7 @@ const GalleryCard = ({
 ------------------------------------------------------- */
 
 export default function Page() {
-  const buildTag = "vBALI-011";
+  const buildTag = "vBALI-012";
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
@@ -182,7 +186,7 @@ export default function Page() {
   const prevLb = () => setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
   const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // Bloque le scroll + flèches clavier quand la lightbox est ouverte
+  // Bloquer le scroll + flèches clavier quand la lightbox est ouverte
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -199,16 +203,24 @@ export default function Page() {
     };
   }, [lbIndex, images.length]);
 
-  // GARDE “anti-bureau” : au cas où un vieux HTML serait servi, on supprime l’item côté client.
+  // Super garde côté client + observer : supprime tout nœud contenant le texte interdit
   useEffect(() => {
-    const badText = "Espace de travail adapté (bureau)";
     const root = document.getElementById("atouts");
     if (!root) return;
-    const candidates = root.querySelectorAll("*");
-    candidates.forEach((el) => {
-      const t = (el.textContent || "").trim();
-      if (t.includes(badText)) el.remove();
-    });
+
+    const bad = /(Espace\s*de\s*travail|bureau)/i;
+    const sweep = () => {
+      root.querySelectorAll("*").forEach((el) => {
+        if (bad.test((el.textContent || "").trim())) el.remove();
+      });
+    };
+
+    // nettoyage immédiat
+    sweep();
+    // nettoyage si le DOM change (hydratation / CDN obsolète)
+    const obs = new MutationObserver(sweep);
+    obs.observe(root, { childList: true, subtree: true });
+    return () => obs.disconnect();
   }, []);
 
   const handleMailto = () => {
@@ -221,12 +233,15 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
+      {/* Petit badge build pour confirmer le bon déploiement */}
+      <div className="fixed top-2 right-2 z-[9999] rounded bg-black/70 text-white text-xs px-2 py-1">
+        {buildTag}
+      </div>
+
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
-          <a href="#accueil" className="font-semibold text-lg">
-            Villa Myassa
-          </a>
+          <a href="#accueil" className="font-semibold text-lg">Villa Myassa</a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#galerie" className="hover:underline">Galerie</a>
             <a href="#atouts" className="hover:underline">Atouts</a>
@@ -263,7 +278,7 @@ export default function Page() {
           >
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
               <Star className="h-4 w-4" />
-              Build: vBALI-011
+              Build actif : {buildTag}
             </span>
 
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
@@ -338,7 +353,11 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-      <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
+      <Section
+        id="atouts"
+        title="Atouts & Équipements"
+        subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
+      >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {ATOUTS.map((p, i) => (
             <Card key={i} className="rounded-2xl">
@@ -356,7 +375,9 @@ export default function Page() {
       {/* Description */}
       <Section id="description" title="Description">
         <Card className="rounded-2xl">
-          <CardContent className="prose max-w-none leading-relaxed py-6">{DATA.description}</CardContent>
+          <CardContent className="prose max-w-none leading-relaxed py-6">
+            {DATA.description}
+          </CardContent>
         </Card>
       </Section>
 
@@ -365,7 +386,9 @@ export default function Page() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {DATA.tarifs.map((t, i) => (
             <Card key={i} className="rounded-2xl">
-              <CardHeader><CardTitle className="text-xl">{t.label}</CardTitle></CardHeader>
+              <CardHeader>
+                <CardTitle className="text-xl">{t.label}</CardTitle>
+              </CardHeader>
               <CardContent className="py-4">
                 <p className="text-2xl font-semibold">{t.prix}</p>
                 <p className="text-neutral-500 mt-1">{t.details}</p>
