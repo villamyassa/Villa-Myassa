@@ -69,16 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
    2) DONNÉES
 ------------------------------------------------------- */
 const DATA = {
-  nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud - BALI",
-  localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
-  capacite: "3 chambres (lits queen)",
-  chambres: "3.5 salles de bain",
-  sallesDeBain: "3.5 sdb",
-  distance: "Jungle d’Ubud (Singakerta)",
-  telephone: "(à compléter)",
-  email: "contact@villamyassa.com",
-  // ⬇️ L'item “Espace de travail adapté (bureau)” a été RETIRÉ
+  // ...
   pointsForts: [
     "Piscine privée",
     "Climatisation",
@@ -90,6 +81,9 @@ const DATA = {
     "Coffre-fort",
     "Moustiquaires",
   ],
+  // ...
+};
+
   images: IMAGES,
   description:
     "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
@@ -351,24 +345,26 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-      <Section
-        id="atouts"
-        title="Atouts & Équipements"
-        subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {features.map((p, i) => (
-            <Card key={i} className="rounded-2xl">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <CalendarDays className="h-5 w-5" />
-                  {p}
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      </Section>
+<Section
+  id="atouts"
+  title="Atouts & Équipements"
+  subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
+>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {DATA.pointsForts
+      .filter((p) => !/bureau/i.test(p)) // garde-fou anti “bureau”
+      .map((p, i) => (
+        <Card key={i} className="rounded-2xl">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <CalendarDays className="h-5 w-5" />
+              {p}
+            </CardTitle>
+          </CardHeader>
+        </Card>
+      ))}
+  </div>
+</Section>
 
       {/* Description */}
       <Section id="description" title="Description">
