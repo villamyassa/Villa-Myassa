@@ -53,8 +53,8 @@ const toAlt = (name: string) =>
 type GalleryItem = { src: string; alt: string; featured?: boolean };
 
 // Par défaut on pointe /photos ; on basculera sur /images en onError au besoin.
-const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
-  src: `/photos/${f}`,
+onst IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
+  src: `/photos/${f}?v=${ASSET_VER}`,
   alt: toAlt(f),
   featured: i === 0,
 }));
@@ -168,8 +168,8 @@ function GalleryCard({
 ------------------------------------------------------- */
 
 export default function Page() {
-  const BUILD = "vBALI-016";
-
+  const BUILD = "vBALI-017";
+const ASSET_VER = "v017";
 
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
