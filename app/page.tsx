@@ -57,7 +57,7 @@ type GalleryItem = { src: string; alt: string; featured?: boolean };
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
   src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
-  featured: i === 0, // la 1re = image "héro"
+  featured: i === 0,
 }));
 
 /* -------------------------------------------------------
@@ -82,7 +82,7 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
-    // "Espace de travail adapté (bureau)", // SUPPRIMÉ
+    // "Espace de travail adapté (bureau)"  // supprimé
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -176,16 +176,13 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // ESC / ← →  + bloquer le scroll en mode lightbox
   useEffect(() => {
     if (lbIndex === null) return;
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
-
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -212,27 +209,13 @@ export default function Page() {
             Villa Myassa
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">
-              Galerie
-            </a>
-            <a href="#virtualtour" className="hover:underline">
-              Visite 3D
-            </a>
-            <a href="#atouts" className="hover:underline">
-              Atouts
-            </a>
-            <a href="#tarifs" className="hover:underline">
-              Tarifs
-            </a>
-            <a href="#disponibilites" className="hover:underline">
-              Disponibilités
-            </a>
-            <a href="#localisation" className="hover:underline">
-              Localisation
-            </a>
-            <a href="#contact" className="hover:underline">
-              Contact
-            </a>
+            <a href="#galerie" className="hover:underline">Galerie</a>
+            <a href="#virtualtour" className="hover:underline">Visite 3D</a>
+            <a href="#atouts" className="hover:underline">Atouts</a>
+            <a href="#tarifs" className="hover:underline">Tarifs</a>
+            <a href="#disponibilites" className="hover:underline">Disponibilités</a>
+            <a href="#localisation" className="hover:underline">Localisation</a>
+            <a href="#contact" className="hover:underline">Contact</a>
           </nav>
           <div className="flex items-center gap-2">
             <Button asChild>
@@ -270,9 +253,7 @@ export default function Page() {
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>
-                Demander les dates
-              </Button>
+              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">Voir la galerie</a>
               </Button>
@@ -297,13 +278,7 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[999] bg-black/90"
-          onClick={closeLb}
-        >
-          {/* Bouton fermer */}
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
           <button
             type="button"
             onClick={closeLb}
@@ -313,7 +288,6 @@ export default function Page() {
             <X className="h-6 w-6" />
           </button>
 
-          {/* Précédente */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); prevLb(); }}
@@ -323,7 +297,6 @@ export default function Page() {
             <ChevronLeft className="h-7 w-7" />
           </button>
 
-          {/* Image */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
               src={images[lbIndex].src}
@@ -333,7 +306,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Suivante */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); nextLb(); }}
@@ -345,45 +317,45 @@ export default function Page() {
         </div>
       )}
 
-      {/* Visite 3D */}
+      {/* Visite 3D – VERSION SIMPLE QUI A MARCHÉ */}
       <Section
         id="virtualtour"
         title="Visite 3D"
-        subtitle="Explorez la villa en immersion – cliquez pour ouvrir le tour 3D"
+        subtitle="Cliquez pour ouvrir la visite immersive sur Matterport"
       >
         <a
           href="https://discover.matterport.com/space/xrHbRBnPwdy"
           target="_blank"
           rel="noreferrer"
-          className="group block"
-          aria-label="Ouvrir le tour 3D Matterport"
+          className="block"
         >
-          {/* NOTE : aspect-[16/9] (et pas aspect-video) pour garantir la hauteur */}
-          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl shadow bg-neutral-200">
+          {/* Image facultative : si absente, on garde le bouton en dessous */}
+          <div className="relative w-full aspect-video overflow-hidden rounded-2xl shadow bg-neutral-200">
             <img
-              src="/photos/virtual-tour-cover.jpg?v=3"
-              alt="Couverture du tour 3D"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              src="/photos/virtual-tour-cover.jpg?v=1"
+              alt="Couverture de la visite 3D"
+              className="absolute inset-0 h-full w-full object-cover"
               onError={(e) => {
+                // si l'image n'existe pas, on la masque
                 (e.currentTarget as HTMLImageElement).style.display = "none";
               }}
               loading="eager"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-neutral-900 shadow">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-neutral-900">
-                  <path d="M8 5v14l11-7z"></path>
-                </svg>
-                <span className="font-medium">Lancer la visite 3D</span>
-              </span>
-            </div>
           </div>
         </a>
 
-        <p className="mt-3 text-sm text-neutral-500">
-          Le visuel est facultatif. Cliquez sur la carte pour ouvrir la visite 3D sur Matterport.
-        </p>
+        {/* Bouton clair, même si l'image est absente */}
+        <div className="mt-4 flex justify-center">
+          <Button size="lg" asChild>
+            <a
+              href="https://discover.matterport.com/space/xrHbRBnPwdy"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ouvrir la visite 3D
+            </a>
+          </Button>
+        </div>
       </Section>
 
       {/* Atouts */}
@@ -426,7 +398,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Disponibilités (placeholder) */}
+      {/* Disponibilités */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
