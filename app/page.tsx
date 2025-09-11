@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -16,12 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-/** ----------------------------------------------------
- *  Forcer le rendu dynamique (pas d’ISR / cache page)
- * --------------------------------------------------- */
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
 
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
@@ -105,10 +99,8 @@ const ATOUTS_BASE: string[] = [
   "Moustiquaires",
 ];
 
-/** Filtre de sécurité (si jamais un texte semblable se glissait) */
-const ATOUTS = ATOUTS_BASE.filter(
-  (t) => !/travail|bureau/i.test(t)
-);
+/** Filet de sécurité si jamais un texte similaire se glissait */
+const ATOUTS = ATOUTS_BASE.filter((t) => !/travail|bureau/i.test(t));
 
 /* -------------------------------------------------------
    3) COMPOSANTS
@@ -123,7 +115,7 @@ const Section = ({
   id: string;
   title: string;
   subtitle?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) => (
   <section id={id} className="py-20 scroll-mt-24">
     <div className="container mx-auto px-4 max-w-6xl">
@@ -170,7 +162,7 @@ const GalleryCard = ({
 ------------------------------------------------------- */
 
 export default function Page() {
-  const buildTag = "vBALI-012";
+  const buildTag = "vBALI-013";
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
@@ -203,7 +195,7 @@ export default function Page() {
     };
   }, [lbIndex, images.length]);
 
-  // Super garde côté client + observer : supprime tout nœud contenant le texte interdit
+  // Super garde côté client : supprime tout nœud contenant “travail/bureau”
   useEffect(() => {
     const root = document.getElementById("atouts");
     if (!root) return;
@@ -215,9 +207,7 @@ export default function Page() {
       });
     };
 
-    // nettoyage immédiat
-    sweep();
-    // nettoyage si le DOM change (hydratation / CDN obsolète)
+    sweep(); // nettoyage immédiat
     const obs = new MutationObserver(sweep);
     obs.observe(root, { childList: true, subtree: true });
     return () => obs.disconnect();
@@ -233,7 +223,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* Petit badge build pour confirmer le bon déploiement */}
+      {/* Badge build pour vérifier la version */}
       <div className="fixed top-2 right-2 z-[9999] rounded bg-black/70 text-white text-xs px-2 py-1">
         {buildTag}
       </div>
