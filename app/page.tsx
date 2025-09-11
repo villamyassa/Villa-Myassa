@@ -208,8 +208,8 @@ export default function Page() {
             Villa Myassa
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">Galerie</a>
             <a href="#virtualtour" className="hover:underline">Visite 3D</a>
+            <a href="#galerie" className="hover:underline">Galerie</a>
             <a href="#atouts" className="hover:underline">Atouts</a>
             <a href="#tarifs" className="hover:underline">Tarifs</a>
             <a href="#disponibilites" className="hover:underline">Disponibilités</a>
@@ -256,6 +256,16 @@ export default function Page() {
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">Voir la galerie</a>
               </Button>
+              {/* >>> Bouton Visite 3D TOUJOURS visible */}
+              <Button variant="outline" size="lg" asChild>
+                <a
+                  href="https://discover.matterport.com/space/xrHbRBnPwdy"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Visite 3D
+                </a>
+              </Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
                   Réserver sur Bestay
@@ -265,6 +275,39 @@ export default function Page() {
           </motion.div>
         </div>
       </section>
+
+      {/* Visite 3D — version 100% fiable (pas d'image) */}
+      <Section
+        id="virtualtour"
+        title="Visite 3D"
+        subtitle="Cliquez pour ouvrir la visite immersive (nouvel onglet)"
+      >
+        <Card className="rounded-2xl">
+          <CardContent className="py-8 text-center">
+            <p className="text-lg">Explorez la villa en visite virtuelle 360°.</p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <Button size="lg" asChild>
+                <a
+                  href="https://discover.matterport.com/space/xrHbRBnPwdy"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Ouvrir la visite 3D (Matterport)
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <a
+                  href="https://bestay.co/villa/villa-myassa"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Voir sur Bestay
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </Section>
 
       {/* Galerie */}
       <Section id="galerie" title="Galerie" subtitle={`Aperçu des espaces de ${DATA.nom}`}>
@@ -315,41 +358,6 @@ export default function Page() {
           </button>
         </div>
       )}
-
-      {/* Visite 3D – Version ultra robuste (toujours visible) */}
-      <Section
-        id="virtualtour"
-        title="Visite 3D"
-        subtitle="Cliquez pour ouvrir la visite immersive (nouvel onglet)"
-      >
-        <Card className="rounded-2xl">
-          <CardContent className="py-8 text-center">
-            <p className="text-lg">
-              Explorez la villa en visite virtuelle 360°.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <Button size="lg" asChild>
-                <a
-                  href="https://discover.matterport.com/space/xrHbRBnPwdy"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ouvrir la visite 3D (Matterport)
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a
-                  href="https://bestay.co/villa/villa-myassa"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Voir sur Bestay
-                </a>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </Section>
 
       {/* Atouts */}
       <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
