@@ -88,11 +88,16 @@ const DATA = {
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 };
 
-/* URL de la visite 3D : remplace par le lien direct (Matterport/Kuula/etc.) si Bestay te le fournit */
-const TOUR_IFRAME_SRC = "https://bestay.co/villa/villa-myassa#virtual-tour";
+/* -------------------------------------------------------
+   3) VISITE 3D (Matterport)
+   Modèle fourni : https://discover.matterport.com/space/xrHbRBnPwdy
+   Embed officiel :
+------------------------------------------------------- */
+const TOUR_IFRAME_SRC =
+  "https://my.matterport.com/show/?m=xrHbRBnPwdy&play=1&qs=1&brand=0";
 
 /* -------------------------------------------------------
-   3) COMPOSANTS UI
+   4) COMPOSANTS UI
 ------------------------------------------------------- */
 
 const Section = ({
@@ -147,7 +152,7 @@ const GalleryCard = ({
 );
 
 /* -------------------------------------------------------
-   4) PAGE
+   5) PAGE
 ------------------------------------------------------- */
 
 export default function Page() {
@@ -313,15 +318,15 @@ export default function Page() {
       <Section
         id="visite3d"
         title="Visite 3D"
-        subtitle="Parcourez la villa comme si vous y étiez (peut s’ouvrir dans un nouvel onglet si l’intégration est bloquée)."
+        subtitle="Parcourez la villa comme si vous y étiez."
       >
         <div className="rounded-2xl overflow-hidden shadow">
           <div className="aspect-video w-full bg-black">
             <iframe
               src={TOUR_IFRAME_SRC}
-              title="Visite 3D Villa Myassa"
+              title="Visite 3D Villa Myassa (Matterport)"
               className="w-full h-full"
-              allow="xr-spatial-tracking; gyroscope; accelerometer; autoplay; fullscreen"
+              allow="xr-spatial-tracking; gyroscope; accelerometer; autoplay; fullscreen; vr"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
