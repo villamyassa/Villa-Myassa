@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   PHOTOS — supporte /public/photos ET /public/images
+   1) PHOTOS (dans /public/photos)
 ------------------------------------------------------- */
 
 const GALLERY_FILES = [
@@ -50,28 +50,42 @@ const GALLERY_FILES = [
 const toAlt = (name: string) =>
   name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
+const PUBLIC_PREFIX = "/photos";
+
 type GalleryItem = { src: string; alt: string; featured?: boolean };
 
-// Par défaut on pointe /photos ; on basculera sur /images en onError au besoin.
-onst IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
-  src: `/photos/${f}?v=${ASSET_VER}`,
+const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
+  src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
-  featured: i === 0,
+  featured: i === 0, // la 1re = image "héro"
 }));
 
 /* -------------------------------------------------------
-   DONNÉES
+   2) DONNÉES AFFICHÉES
 ------------------------------------------------------- */
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud — BALI",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
+  sallesDeBain: "3.5 sdb",
   distance: "Jungle d’Ubud (Singakerta)",
   telephone: "(à compléter)",
   email: "contact@villamyassa.com",
+  pointsForts: [
+    "Piscine privée",
+    "Climatisation",
+    "Wifi haut débit",
+    "Parking gratuit sur place",
+    "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
+    "TV / Smart TV dans les chambres",
+    "Salles de bain attenantes",
+    // "Espace de travail adapté (bureau)", // <- supprimé volontairement
+    "Coffre-fort",
+    "Moustiquaires",
+  ],
   images: IMAGES,
   description:
     "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
@@ -84,21 +98,8 @@ const DATA = {
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 };
 
-// Atouts FIGÉS (pas de “bureau” possible)
-const ATOUTS: string[] = [
-  "Piscine privée",
-  "Climatisation",
-  "Wifi haut débit",
-  "Parking gratuit sur place",
-  "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
-  "TV / Smart TV dans les chambres",
-  "Salles de bain attenantes",
-  "Coffre-fort",
-  "Moustiquaires",
-];
-
 /* -------------------------------------------------------
-   COMPOSANTS
+   3) COMPOSANTS UI
 ------------------------------------------------------- */
 
 const Section = ({
@@ -110,7 +111,7 @@ const Section = ({
   id: string;
   title: string;
   subtitle?: string;
-  children: ReactNode;
+  children: React.ReactNode;
 }) => (
   <section id={id} className="py-20 scroll-mt-24">
     <div className="container mx-auto px-4 max-w-6xl">
@@ -128,50 +129,29 @@ const Section = ({
   </section>
 );
 
-function GalleryCard({
-  item,
-  onOpen,
-}: {
-  item: { src: string; alt: string };
-  onOpen: () => void;
-}) {
-  // Fallback auto vers /images si le fichier n’est pas dans /photos
-  const onImgError: React.ReactEventHandler<HTMLImageElement> = (e) => {
-    const el = e.currentTarget;
-    if (el.dataset.tried === "1") return; // évite la boucle
-    el.dataset.tried = "1";
-    el.src = el.src.replace("/photos/", "/images/");
-  };
-
-  return (
-    <div className="relative overflow-hidden rounded-2xl shadow-sm group">
-      <button
-        type="button"
-        onClick={onOpen}
-        className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
-        aria-label={`Voir ${item.alt} en plein écran`}
-      >
-        <img
-          src={item.src}
-          alt={item.alt}
-          onError={onImgError}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-        />
-      </button>
-    </div>
-  );
-}
+const GalleryCard = ({ item, onOpen = () => {} }: { item: { src: string; alt: string }; onOpen?: () => void }) => (
+  <div className="relative overflow-hidden rounded-2xl shadow-sm group">
+    <button
+      type="button"
+      onClick={onOpen}
+      className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
+      aria-label={`Voir ${item.alt} en plein écran`}
+    >
+      <img
+        src={item.src}
+        alt={item.alt}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
+    </button>
+  </div>
+);
 
 /* -------------------------------------------------------
-   PAGE
+   4) PAGE
 ------------------------------------------------------- */
 
 export default function Page() {
-  const BUILD = "vBALI-017";
-const ASSET_VER = "v017";
-
-
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
@@ -179,24 +159,25 @@ const ASSET_VER = "v017";
     alt: string;
   };
 
-  const images = DATA.images;
-
   // Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const images = DATA.images;
+
   const closeLb = () => setLbIndex(null);
   const openLb = (i: number) => setLbIndex(i);
-  const prevLb = () =>
-    setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
-  const nextLb = () =>
-    setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
+  const prevLb = () => setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
+  const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
+  // ESC / ← →  + bloquer le scroll en mode lightbox
   useEffect(() => {
     if (lbIndex === null) return;
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
+
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -216,11 +197,6 @@ const ASSET_VER = "v017";
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* Badge build bien visible */}
-      <div className="fixed top-2 right-2 z-[9999] rounded bg-black/70 text-white text-xs px-2 py-1">
-        {BUILD}
-      </div>
-
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
@@ -228,27 +204,14 @@ const ASSET_VER = "v017";
             Villa Myassa
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">
-              Galerie
-            </a>
-            <a href="#atouts" className="hover:underline">
-              Atouts
-            </a>
-            <a href="#tarifs" className="hover:underline">
-              Tarifs
-            </a>
-            <a href="#disponibilites" className="hover:underline">
-              Disponibilités
-            </a>
-            <a href="#localisation" className="hover:underline">
-              Localisation
-            </a>
-            <a href="#contact" className="hover:underline">
-              Contact
-            </a>
+            <a href="#galerie" className="hover:underline">Galerie</a>
+            <a href="#atouts" className="hover:underline">Atouts</a>
+            <a href="#tarifs" className="hover:underline">Tarifs</a>
+            <a href="#disponibilites" className="hover:underline">Disponibilités</a>
+            <a href="#localisation" className="hover:underline">Localisation</a>
+            <a href="#contact" className="hover:underline">Contact</a>
           </nav>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-neutral-500 hidden sm:inline">Build: {BUILD}</span>
             <Button asChild>
               <a href="#contact">
                 <CalendarDays className="mr-2 h-4 w-4" />
@@ -262,17 +225,7 @@ const ASSET_VER = "v017";
       {/* Hero */}
       <section id="accueil" className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={hero.src}
-            alt={hero.alt}
-            className="absolute inset-0 h-full w-full object-cover"
-            onError={(e) => {
-              const el = e.currentTarget;
-              if (el.dataset.tried === "1") return;
-              el.dataset.tried = "1";
-              el.src = el.src.replace("/photos/", "/images/");
-            }}
-          />
+          <img src={hero.src} alt={hero.alt} className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
         </div>
 
@@ -285,30 +238,21 @@ const ASSET_VER = "v017";
             className="max-w-2xl"
           >
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
-              <Star className="h-4 w-4" /> Build actif : {BUILD}
+              <Star className="h-4 w-4" /> Note (si dispo) – ex. 4.9/5
             </span>
-
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
-              {DATA.baseline}
+              {DATA.baseline} – BALI
             </h1>
-
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
-
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>
-                Demander les dates
-              </Button>
+              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">Voir la galerie</a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <a
-                  href="https://bestay.co/villa/villa-myassa"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
                   Réserver sur Bestay
                 </a>
               </Button>
@@ -320,7 +264,7 @@ const ASSET_VER = "v017";
       {/* Galerie */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((img, i) => (
+          {DATA.images.map((img, i) => (
             <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
           ))}
         </div>
@@ -328,12 +272,7 @@ const ASSET_VER = "v017";
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[999] bg-black/90"
-          onClick={closeLb}
-        >
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
           <button
             type="button"
             onClick={closeLb}
@@ -345,10 +284,7 @@ const ASSET_VER = "v017";
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              prevLb();
-            }}
+            onClick={(e) => { e.stopPropagation(); prevLb(); }}
             aria-label="Image précédente"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -360,22 +296,13 @@ const ASSET_VER = "v017";
               src={images[lbIndex].src}
               alt={images[lbIndex].alt}
               onClick={(e) => e.stopPropagation()}
-              onError={(e) => {
-                const el = e.currentTarget;
-                if (el.dataset.tried === "1") return;
-                el.dataset.tried = "1";
-                el.src = el.src.replace("/photos/", "/images/");
-              }}
               className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
             />
           </div>
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              nextLb();
-            }}
+            onClick={(e) => { e.stopPropagation(); nextLb(); }}
             aria-label="Image suivante"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -391,16 +318,19 @@ const ASSET_VER = "v017";
         subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {ATOUTS.map((p, i) => (
-            <Card key={i} className="rounded-2xl">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <CalendarDays className="h-5 w-5" />
-                  {p}
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          ))}
+          {DATA.pointsForts
+            // <— filet de sécurité : on exclut toute occurrence d'“espace de travail”
+            .filter((p) => !p.toLowerCase().includes("espace de travail"))
+            .map((p, i) => (
+              <Card key={i} className="rounded-2xl">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <CalendarDays className="h-5 w-5" />
+                    {p}
+                  </CardTitle>
+                </CardHeader>
+              </Card>
+            ))}
         </div>
       </Section>
 
@@ -430,7 +360,7 @@ const ASSET_VER = "v017";
         </div>
       </Section>
 
-      {/* Disponibilités */}
+      {/* Disponibilités (placeholder) */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
