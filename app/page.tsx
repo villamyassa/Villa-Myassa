@@ -90,8 +90,6 @@ const DATA = {
 
 /* -------------------------------------------------------
    3) VISITE 3D (Matterport)
-   Modèle fourni : https://discover.matterport.com/space/xrHbRBnPwdy
-   Embed officiel :
 ------------------------------------------------------- */
 const TOUR_IFRAME_SRC =
   "https://my.matterport.com/show/?m=xrHbRBnPwdy&play=1&qs=1&brand=0";
@@ -315,23 +313,18 @@ export default function Page() {
       )}
 
       {/* Visite 3D */}
-      <Section
-        id="visite3d"
-        title="Visite 3D"
-        subtitle="Parcourez la villa comme si vous y étiez."
-      >
-        <div className="rounded-2xl overflow-hidden shadow">
-          <div className="aspect-video w-full bg-black">
-            <iframe
-              src={TOUR_IFRAME_SRC}
-              title="Visite 3D Villa Myassa (Matterport)"
-              className="w-full h-full"
-              allow="xr-spatial-tracking; gyroscope; accelerometer; autoplay; fullscreen; vr"
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+      <Section id="visite3d" title="Visite 3D" subtitle="Parcourez la villa comme si vous y étiez.">
+        {/* hauteur explicite pour garantir l’affichage partout */}
+        <div className="relative w-full h-[60vh] sm:h-[70vh] min-h-[360px] rounded-2xl overflow-hidden shadow bg-black">
+          <iframe
+            src={TOUR_IFRAME_SRC}
+            title="Visite 3D Villa Myassa (Matterport)"
+            className="absolute inset-0 w-full h-full"
+            allow="xr-spatial-tracking; gyroscope; accelerometer; autoplay; fullscreen; vr"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
 
         <div className="mt-4">
