@@ -2,7 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Waves, Car, CalendarDays, Star, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  MapPin,
+  Waves,
+  Car,
+  CalendarDays,
+  Star,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Rotate3D,
+  PlayCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -48,7 +59,7 @@ type GalleryItem = { src: string; alt: string; featured?: boolean };
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
   src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
-  featured: i === 0,
+  featured: i === 0, // la 1re = image "héro"
 }));
 
 /* -------------------------------------------------------
@@ -57,7 +68,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud — BALI",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -84,17 +95,19 @@ const DATA = {
     { label: "Séjours moyens", prix: "Sur demande", details: "Nettoyage et linge inclus" },
     { label: "Long séjour", prix: "Sur demande", details: "Tarifs dégressifs possibles" },
   ],
-  adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali, 80571 Ubud, Indonesia",
+  adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
+
+  // >>> VIRTUAL TOUR
+  virtualTour: {
+    url: "https://discover.matterport.com/space/xrHbRBnPwdy", // lien direct Matterport
+    fallbackUrl: "https://bestay.co/villa/villa-myassa", // secours si besoin
+    cover: "/photos/virtual-tour-cover.jpg", // image à ajouter dans /public/photos/
+  },
 };
 
 /* -------------------------------------------------------
-   3) VISITE 3D (Matterport)
-------------------------------------------------------- */
-const TOUR_URL = "https://my.matterport.com/show/?m=xrHbRBnPwdy&play=1&qs=1&brand=0&mls=0";
-
-/* -------------------------------------------------------
-   4) COMPOSANTS UI
+   3) COMPOSANTS UI
 ------------------------------------------------------- */
 
 const Section = ({
@@ -149,7 +162,7 @@ const GalleryCard = ({
 );
 
 /* -------------------------------------------------------
-   5) PAGE
+   4) PAGE
 ------------------------------------------------------- */
 
 export default function Page() {
@@ -160,22 +173,26 @@ export default function Page() {
     alt: string;
   };
 
-  // Lightbox
-  const [lbIndex, setLbIndex] = useState<number | null>(null);
   const images = DATA.images;
+  const [lbIndex, setLbIndex] = useState<number | null>(null);
 
   const closeLb = () => setLbIndex(null);
   const openLb = (i: number) => setLbIndex(i);
-  const prevLb = () => setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
-  const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
+  const prevLb = () =>
+    setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
+  const nextLb = () =>
+    setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
+  // ESC / ← →  + bloquer le scroll en mode lightbox
   useEffect(() => {
     if (lbIndex === null) return;
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
+
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -198,19 +215,38 @@ export default function Page() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
-          <a href="#accueil" className="font-semibold text-lg">Villa Myassa</a>
+          <a href="#accueil" className="font-semibold text-lg">
+            Villa Myassa
+          </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">Galerie</a>
-            <a href="#visite3d" className="hover:underline">Visite 3D</a>
-            <a href="#atouts" className="hover:underline">Atouts</a>
-            <a href="#tarifs" className="hover:underline">Tarifs</a>
-            <a href="#disponibilites" className="hover:underline">Disponibilités</a>
-            <a href="#localisation" className="hover:underline">Localisation</a>
-            <a href="#contact" className="hover:underline">Contact</a>
+            <a href="#visite-3d" className="hover:underline">
+              Visite 3D
+            </a>
+            <a href="#galerie" className="hover:underline">
+              Galerie
+            </a>
+            <a href="#atouts" className="hover:underline">
+              Atouts
+            </a>
+            <a href="#tarifs" className="hover:underline">
+              Tarifs
+            </a>
+            <a href="#disponibilites" className="hover:underline">
+              Disponibilités
+            </a>
+            <a href="#localisation" className="hover:underline">
+              Localisation
+            </a>
+            <a href="#contact" className="hover:underline">
+              Contact
+            </a>
           </nav>
           <div className="flex items-center gap-2">
             <Button asChild>
-              <a href="#contact"><CalendarDays className="mr-2 h-4 w-4" />Réserver</a>
+              <a href="#contact">
+                <CalendarDays className="mr-2 h-4 w-4" />
+                Réserver
+              </a>
             </Button>
           </div>
         </div>
@@ -239,10 +275,16 @@ export default function Page() {
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
-              <Button variant="outline" size="lg" asChild><a href="#galerie">Voir la galerie</a></Button>
+              <Button size="lg" onClick={handleMailto}>
+                Demander les dates
+              </Button>
               <Button variant="outline" size="lg" asChild>
-                <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">Réserver sur Bestay</a>
+                <a href="#galerie">Voir la galerie</a>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
+                  Réserver sur Bestay
+                </a>
               </Button>
             </div>
           </motion.div>
@@ -250,53 +292,105 @@ export default function Page() {
       </section>
 
       {/* Visite 3D */}
-      <Section id="visite3d" title="Visite 3D" subtitle="Parcourez la villa comme si vous y étiez.">
-        {/* Styles inline pour forcer l’affichage partout */}
-        <div
-          className="rounded-2xl overflow-hidden shadow bg-black"
-          style={{ position: "relative", width: "100%", height: "70vh", minHeight: 360 }}
+      <Section
+        id="visite-3d"
+        title="Visite 3D (360°)"
+        subtitle="Explorez la villa en immersion — ouvre la visite dans un nouvel onglet."
+      >
+        <a
+          href={DATA.virtualTour.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative block rounded-2xl overflow-hidden"
         >
-          <iframe
-            src={TORUR_URL /* typo guard below fixes at compile time */ as unknown as string}
-            title="Visite 3D Villa Myassa (Matterport)"
-            allow="xr-spatial-tracking; gyroscope; accelerometer; autoplay; fullscreen; vr"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            frameBorder={0}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+          <img
+            src={DATA.virtualTour.cover || hero.src}
+            alt="Vignette du tour 3D de la villa"
+            className="w-full h-[420px] object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
-        </div>
-        <div className="mt-4">
-          <Button asChild variant="outline" size="lg">
-            <a href={TOUR_URL} target="_blank" rel="noreferrer">Ouvrir la visite 3D dans un nouvel onglet</a>
-          </Button>
-        </div>
+          {/* Overlay */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+            <Rotate3D className="w-10 h-10 drop-shadow-md" />
+            <span className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur">
+              <PlayCircle className="w-4 h-4" />
+              Ouvrir la visite 3D
+            </span>
+          </div>
+        </a>
+
+        <p className="mt-3 text-sm text-neutral-600">
+          Si la visite ne s’ouvre pas, vous pouvez aussi{" "}
+          <a
+            href={DATA.virtualTour.fallbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            l’ouvrir sur Bestay
+          </a>
+          .
+        </p>
       </Section>
-      {/* NOTE: the "TORUR_URL" above is a typo-proof cast; real URL is TOUR_URL */}
-    </div>
-  );
-}
 
-// Quick fix to ensure the correct constant is used (avoids JSX parsing issues if you paste fast)
-const TORUR_URL = TOUR_URL;
-
-/* ---------------------- RESTE DE LA PAGE ---------------------- */
-
-export function RestOfPage() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const images = DATA.images;
-
-  return (
-    <>
       {/* Galerie */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((img, i) => (
-            <GalleryCard key={i} item={img} onOpen={() => {}} />
+            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
           ))}
         </div>
       </Section>
+
+      {/* Lightbox */}
+      {lbIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[999] bg-black/90"
+          onClick={closeLb}
+        >
+          {/* Fermer */}
+          <button
+            type="button"
+            onClick={closeLb}
+            aria-label="Fermer"
+            className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
+          >
+            <X className="h-6 w-6" />
+          </button>
+
+          {/* Précédente */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); prevLb(); }}
+            aria-label="Image précédente"
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+          >
+            <ChevronLeft className="h-7 w-7" />
+          </button>
+
+          {/* Image */}
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <img
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+            />
+          </div>
+
+          {/* Suivante */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); nextLb(); }}
+            aria-label="Image suivante"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+          >
+            <ChevronRight className="h-7 w-7" />
+          </button>
+        </div>
+      )}
 
       {/* Atouts */}
       <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
@@ -338,7 +432,7 @@ export function RestOfPage() {
         </div>
       </Section>
 
-      {/* Disponibilités */}
+      {/* Disponibilités (placeholder) */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
@@ -393,15 +487,7 @@ export function RestOfPage() {
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                 />
                 <div className="flex gap-3">
-                  <Button onClick={() => {
-                    const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
-                    const body = encodeURIComponent(
-                      `Bonjour,\n\nJe souhaite me renseigner au sujet de ${DATA.nom}.\n\nNom: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`
-                    );
-                    window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
-                  }}>
-                    Envoyer par email
-                  </Button>
+                  <Button onClick={handleMailto}>Envoyer par email</Button>
                   <Button variant="outline" asChild>
                     <a href={`mailto:${DATA.email}`}>Ouvrir votre messagerie</a>
                   </Button>
@@ -409,7 +495,10 @@ export function RestOfPage() {
               </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+                  Email :{" "}
+                  <a className="underline" href={`mailto:${DATA.email}`}>
+                    {DATA.email}
+                  </a>
                 </p>
                 <p>Téléphone : {DATA.telephone}</p>
               </div>
@@ -424,6 +513,6 @@ export function RestOfPage() {
           © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous droits réservés.
         </div>
       </footer>
-    </>
+    </div>
   );
 }
