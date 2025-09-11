@@ -82,7 +82,6 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
-    // "Espace de travail adapté (bureau)"  // supprimé
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -317,45 +316,39 @@ export default function Page() {
         </div>
       )}
 
-      {/* Visite 3D – VERSION SIMPLE QUI A MARCHÉ */}
+      {/* Visite 3D – Version ultra robuste (toujours visible) */}
       <Section
         id="virtualtour"
         title="Visite 3D"
-        subtitle="Cliquez pour ouvrir la visite immersive sur Matterport"
+        subtitle="Cliquez pour ouvrir la visite immersive (nouvel onglet)"
       >
-        <a
-          href="https://discover.matterport.com/space/xrHbRBnPwdy"
-          target="_blank"
-          rel="noreferrer"
-          className="block"
-        >
-          {/* Image facultative : si absente, on garde le bouton en dessous */}
-          <div className="relative w-full aspect-video overflow-hidden rounded-2xl shadow bg-neutral-200">
-            <img
-              src="/photos/virtual-tour-cover.jpg?v=1"
-              alt="Couverture de la visite 3D"
-              className="absolute inset-0 h-full w-full object-cover"
-              onError={(e) => {
-                // si l'image n'existe pas, on la masque
-                (e.currentTarget as HTMLImageElement).style.display = "none";
-              }}
-              loading="eager"
-            />
-          </div>
-        </a>
-
-        {/* Bouton clair, même si l'image est absente */}
-        <div className="mt-4 flex justify-center">
-          <Button size="lg" asChild>
-            <a
-              href="https://discover.matterport.com/space/xrHbRBnPwdy"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Ouvrir la visite 3D
-            </a>
-          </Button>
-        </div>
+        <Card className="rounded-2xl">
+          <CardContent className="py-8 text-center">
+            <p className="text-lg">
+              Explorez la villa en visite virtuelle 360°.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <Button size="lg" asChild>
+                <a
+                  href="https://discover.matterport.com/space/xrHbRBnPwdy"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Ouvrir la visite 3D (Matterport)
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <a
+                  href="https://bestay.co/villa/villa-myassa"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Voir sur Bestay
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </Section>
 
       {/* Atouts */}
