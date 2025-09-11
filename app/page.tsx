@@ -218,6 +218,13 @@ export default function Page() {
     }, 50);
   };
 
+  // --------- CORRECTION anti-404 pour la cover "Visite 3D"
+  // - Si DATA.virtualTour.cover est absent OU renvoie 404, la cover bascule sur le hero.
+  const coverSrc =
+    (DATA.virtualTour.cover?.startsWith("/")
+      ? DATA.virtualTour.cover
+      : `${PUBLIC_PREFIX}/${DATA.virtualTour.cover}`) || hero.src;
+
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Nav */}
@@ -315,7 +322,11 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={DATA.virtualTour.cover || hero.src}
+              src={coverSrc || hero.src}
+              onError={(e) => {
+                // si l'image renvoie 404 / erreur réseau, on tombe sur le hero
+                e.currentTarget.src = hero.src;
+              }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
