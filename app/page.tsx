@@ -1,7 +1,5 @@
 "use client";
 
-/* BUILD MARKER: vBALI-004 */
-
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -17,6 +15,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
+/* -------------------------------------------------------
+   BUILD MARKER (vBALI-007) — doit s'afficher sous le H1
+------------------------------------------------------- */
 
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/images)
@@ -68,7 +70,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 ------------------------------------------------------- */
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud - BALI",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
@@ -84,7 +86,6 @@ const DATA = {
     "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
     "TV / Smart TV dans les chambres",
     "Salles de bain attenantes",
-    // "Espace de travail adapté (bureau)" (supprimé)
     "Coffre-fort",
     "Moustiquaires",
   ],
@@ -205,7 +206,7 @@ export default function Page() {
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
 
-  // Atouts : retire toute entrée contenant “bureau”
+  // Atouts : retire toute entrée contenant “bureau” (sécurité si réintroduit par erreur)
   const features = DATA.pointsForts.filter((p) => !/bureau/i.test(p));
 
   return (
@@ -254,12 +255,17 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
-            {/* ✅ BALI écrit en dur pour garantir l’affichage */}
+            {/* ✅ BALI en dur (impossible qu'il disparaisse) */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-              Villa contemporaine avec piscine privée au cœur d’Ubud — BALI
+              Villa contemporaine avec piscine privée au cœur d’Ubud — <strong>BALI</strong>
             </h1>
 
-            <p className="mt-3 text-base md:text-lg text-neutral-700">
+            {/* Badge build pour vérifier la version */}
+            <div className="mt-2 inline-flex items-center gap-2 text-xs bg-neutral-100 border rounded-full px-3 py-1">
+              <span>Build:</span> <code>vBALI-007</code>
+            </div>
+
+            <p className="mt-4 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -276,11 +282,6 @@ export default function Page() {
                   Réserver sur Bestay
                 </a>
               </Button>
-            </div>
-
-            {/* Badge visuel pour confirmer l'update */}
-            <div className="mt-3 inline-flex items-center gap-2 text-xs bg-neutral-100 border rounded-full px-3 py-1">
-              <span>Build:</span> <code>vBALI-004</code>
             </div>
           </motion.div>
         </div>
