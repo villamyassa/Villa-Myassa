@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   BUILD MARKER (vBALI-007) — doit s'afficher sous le H1
+   BUILD MARKER (vBALI-008)
 ------------------------------------------------------- */
 
 /* -------------------------------------------------------
@@ -78,6 +78,7 @@ const DATA = {
   distance: "Jungle d’Ubud (Singakerta)",
   telephone: "(à compléter)",
   email: "contact@villamyassa.com",
+  // ⬇️ L'item “Espace de travail adapté (bureau)” a été RETIRÉ
   pointsForts: [
     "Piscine privée",
     "Climatisation",
@@ -181,7 +182,7 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % DATA.images.length));
 
-  // ESC / ← → + blocage du scroll (quand la lightbox est ouverte)
+  // ESC / ← → + blocage du scroll quand la lightbox est ouverte
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -206,7 +207,7 @@ export default function Page() {
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
 
-  // Atouts : retire toute entrée contenant “bureau” (sécurité si réintroduit par erreur)
+  // ✅ Sécurité supplémentaire : on exclut tout item contenant “bureau”
   const features = DATA.pointsForts.filter((p) => !/bureau/i.test(p));
 
   return (
@@ -255,14 +256,13 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
-            {/* ✅ BALI en dur (impossible qu'il disparaisse) */}
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
               Villa contemporaine avec piscine privée au cœur d’Ubud — <strong>BALI</strong>
             </h1>
 
-            {/* Badge build pour vérifier la version */}
+            {/* Build badge */}
             <div className="mt-2 inline-flex items-center gap-2 text-xs bg-neutral-100 border rounded-full px-3 py-1">
-              <span>Build:</span> <code>vBALI-007</code>
+              <span>Build:</span> <code>vBALI-008</code>
             </div>
 
             <p className="mt-4 text-base md:text-lg text-neutral-700">
