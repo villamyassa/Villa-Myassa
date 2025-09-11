@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /* -------------------------------------------------------
-   1) PHOTOS (dans /public/photos)
+   PHOTOS — supporte /public/photos ET /public/images
 ------------------------------------------------------- */
 
 const GALLERY_FILES = [
@@ -50,27 +50,25 @@ const GALLERY_FILES = [
 const toAlt = (name: string) =>
   name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
-const PUBLIC_PREFIX = "/photos";
-
 type GalleryItem = { src: string; alt: string; featured?: boolean };
 
+// Par défaut on pointe /photos ; on basculera sur /images en onError au besoin.
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
-  src: `${PUBLIC_PREFIX}/${f}`,
+  src: `/photos/${f}`,
   alt: toAlt(f),
   featured: i === 0,
 }));
 
 /* -------------------------------------------------------
-   2) DONNÉES
+   DONNÉES
 ------------------------------------------------------- */
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud — BALI",
   localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
   capacite: "3 chambres (lits queen)",
   chambres: "3.5 salles de bain",
-  sallesDeBain: "3.5 sdb",
   distance: "Jungle d’Ubud (Singakerta)",
   telephone: "(à compléter)",
   email: "contact@villamyassa.com",
@@ -86,8 +84,8 @@ const DATA = {
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 };
 
-/** Liste figée SANS “Espace de travail … (bureau)” */
-const ATOUTS_BASE: string[] = [
+// Atouts FIGÉS (pas de “bureau” possible)
+const ATOUTS: string[] = [
   "Piscine privée",
   "Climatisation",
   "Wifi haut débit",
@@ -99,11 +97,8 @@ const ATOUTS_BASE: string[] = [
   "Moustiquaires",
 ];
 
-/** Filet de sécurité si jamais un texte similaire se glissait */
-const ATOUTS = ATOUTS_BASE.filter((t) => !/travail|bureau/i.test(t));
-
 /* -------------------------------------------------------
-   3) COMPOSANTS
+   COMPOSANTS
 ------------------------------------------------------- */
 
 const Section = ({
@@ -133,52 +128,66 @@ const Section = ({
   </section>
 );
 
-const GalleryCard = ({
+function GalleryCard({
   item,
-  onOpen = () => {},
+  onOpen,
 }: {
   item: { src: string; alt: string };
-  onOpen?: () => void;
-}) => (
-  <div className="relative overflow-hidden rounded-2xl shadow-sm group">
-    <button
-      type="button"
-      onClick={onOpen}
-      className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
-      aria-label={`Voir ${item.alt} en plein écran`}
-    >
-      <img
-        src={item.src}
-        alt={item.alt}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        loading="lazy"
-      />
-    </button>
-  </div>
-);
+  onOpen: () => void;
+}) {
+  // Fallback auto vers /images si le fichier n’est pas dans /photos
+  const onImgError: React.ReactEventHandler<HTMLImageElement> = (e) => {
+    const el = e.currentTarget;
+    if (el.dataset.tried === "1") return; // évite la boucle
+    el.dataset.tried = "1";
+    el.src = el.src.replace("/photos/", "/images/");
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl shadow-sm group">
+      <button
+        type="button"
+        onClick={onOpen}
+        className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
+        aria-label={`Voir ${item.alt} en plein écran`}
+      >
+        <img
+          src={item.src}
+          alt={item.alt}
+          onError={onImgError}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+      </button>
+    </div>
+  );
+}
 
 /* -------------------------------------------------------
-   4) PAGE
+   PAGE
 ------------------------------------------------------- */
 
 export default function Page() {
-  const buildTag = "vBALI-013";
+  const BUILD = "vBALI-014";
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+
   const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
     src: string;
     alt: string;
   };
+
   const images = DATA.images;
 
   // Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
   const closeLb = () => setLbIndex(null);
   const openLb = (i: number) => setLbIndex(i);
-  const prevLb = () => setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
-  const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
+  const prevLb = () =>
+    setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
+  const nextLb = () =>
+    setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // Bloquer le scroll + flèches clavier quand la lightbox est ouverte
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -195,24 +204,6 @@ export default function Page() {
     };
   }, [lbIndex, images.length]);
 
-  // Super garde côté client : supprime tout nœud contenant “travail/bureau”
-  useEffect(() => {
-    const root = document.getElementById("atouts");
-    if (!root) return;
-
-    const bad = /(Espace\s*de\s*travail|bureau)/i;
-    const sweep = () => {
-      root.querySelectorAll("*").forEach((el) => {
-        if (bad.test((el.textContent || "").trim())) el.remove();
-      });
-    };
-
-    sweep(); // nettoyage immédiat
-    const obs = new MutationObserver(sweep);
-    obs.observe(root, { childList: true, subtree: true });
-    return () => obs.disconnect();
-  }, []);
-
   const handleMailto = () => {
     const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
     const body = encodeURIComponent(
@@ -223,24 +214,39 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* Badge build pour vérifier la version */}
+      {/* Badge build bien visible */}
       <div className="fixed top-2 right-2 z-[9999] rounded bg-black/70 text-white text-xs px-2 py-1">
-        {buildTag}
+        {BUILD}
       </div>
 
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
-          <a href="#accueil" className="font-semibold text-lg">Villa Myassa</a>
+          <a href="#accueil" className="font-semibold text-lg">
+            Villa Myassa
+          </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#galerie" className="hover:underline">Galerie</a>
-            <a href="#atouts" className="hover:underline">Atouts</a>
-            <a href="#tarifs" className="hover:underline">Tarifs</a>
-            <a href="#disponibilites" className="hover:underline">Disponibilités</a>
-            <a href="#localisation" className="hover:underline">Localisation</a>
-            <a href="#contact" className="hover:underline">Contact</a>
+            <a href="#galerie" className="hover:underline">
+              Galerie
+            </a>
+            <a href="#atouts" className="hover:underline">
+              Atouts
+            </a>
+            <a href="#tarifs" className="hover:underline">
+              Tarifs
+            </a>
+            <a href="#disponibilites" className="hover:underline">
+              Disponibilités
+            </a>
+            <a href="#localisation" className="hover:underline">
+              Localisation
+            </a>
+            <a href="#contact" className="hover:underline">
+              Contact
+            </a>
           </nav>
           <div className="flex items-center gap-2">
+            <span className="text-xs text-neutral-500 hidden sm:inline">Build: {BUILD}</span>
             <Button asChild>
               <a href="#contact">
                 <CalendarDays className="mr-2 h-4 w-4" />
@@ -254,7 +260,17 @@ export default function Page() {
       {/* Hero */}
       <section id="accueil" className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={hero.src} alt={hero.alt} className="absolute inset-0 h-full w-full object-cover" />
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={(e) => {
+              const el = e.currentTarget;
+              if (el.dataset.tried === "1") return;
+              el.dataset.tried = "1";
+              el.src = el.src.replace("/photos/", "/images/");
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
         </div>
 
@@ -267,8 +283,7 @@ export default function Page() {
             className="max-w-2xl"
           >
             <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
-              <Star className="h-4 w-4" />
-              Build actif : {buildTag}
+              <Star className="h-4 w-4" /> Build actif : {BUILD}
             </span>
 
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
@@ -280,10 +295,18 @@ export default function Page() {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
-              <Button variant="outline" size="lg" asChild><a href="#galerie">Voir la galerie</a></Button>
+              <Button size="lg" onClick={handleMailto}>
+                Demander les dates
+              </Button>
               <Button variant="outline" size="lg" asChild>
-                <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
+                <a href="#galerie">Voir la galerie</a>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a
+                  href="https://bestay.co/villa/villa-myassa"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Réserver sur Bestay
                 </a>
               </Button>
@@ -303,7 +326,12 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[999] bg-black/90"
+          onClick={closeLb}
+        >
           <button
             type="button"
             onClick={closeLb}
@@ -315,7 +343,10 @@ export default function Page() {
 
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); prevLb(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              prevLb();
+            }}
             aria-label="Image précédente"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -327,13 +358,22 @@ export default function Page() {
               src={images[lbIndex].src}
               alt={images[lbIndex].alt}
               onClick={(e) => e.stopPropagation()}
+              onError={(e) => {
+                const el = e.currentTarget;
+                if (el.dataset.tried === "1") return;
+                el.dataset.tried = "1";
+                el.src = el.src.replace("/photos/", "/images/");
+              }}
               className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
             />
           </div>
 
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); nextLb(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              nextLb();
+            }}
             aria-label="Image suivante"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -343,36 +383,24 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-     {/* Atouts */}
-<Section
-  id="atouts"
-  title="Atouts & Équipements"
-  subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
->
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {[
-      "Piscine privée",
-      "Climatisation",
-      "Wifi haut débit",
-      "Parking gratuit sur place",
-      "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
-      "TV / Smart TV dans les chambres",
-      "Salles de bain attenantes",
-      "Coffre-fort",
-      "Moustiquaires",
-    ].map((label, i) => (
-      <Card key={i} className="rounded-2xl">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <CalendarDays className="h-5 w-5" />
-            {label}
-          </CardTitle>
-        </CardHeader>
-      </Card>
-    ))}
-  </div>
-</Section>
-
+      <Section
+        id="atouts"
+        title="Atouts & Équipements"
+        subtitle="Tout ce dont vous avez besoin pour un séjour réussi"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {ATOUTS.map((p, i) => (
+            <Card key={i} className="rounded-2xl">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5" />
+                  {p}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      </Section>
 
       {/* Description */}
       <Section id="description" title="Description">
@@ -415,9 +443,15 @@ export default function Page() {
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-6">
               <ul className="grid gap-2 py-4">
-                <li className="flex items-center gap-2"><MapPin className="h-5 w-5" /> {DATA.adresse}</li>
-                <li className="flex items-center gap-2"><Waves className="h-5 w-5" /> Plages / points d’intérêt à proximité (à compléter)</li>
-                <li className="flex items-center gap-2"><Car className="h-5 w-5" /> Accès / parking (à compléter)</li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5" /> {DATA.adresse}
+                </li>
+                <li className="flex items-center gap-2">
+                  <Waves className="h-5 w-5" /> Plages / points d’intérêt à proximité (à compléter)
+                </li>
+                <li className="flex items-center gap-2">
+                  <Car className="h-5 w-5" /> Accès / parking (à compléter)
+                </li>
               </ul>
             </CardContent>
           </Card>
@@ -435,17 +469,38 @@ export default function Page() {
           <CardContent className="py-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input placeholder="Votre nom" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                <Input placeholder="Votre email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                <Textarea placeholder="Votre message" rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                <Input
+                  placeholder="Votre nom"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                <Input
+                  placeholder="Votre email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+                <Textarea
+                  placeholder="Votre message"
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                />
                 <div className="flex gap-3">
                   <Button onClick={handleMailto}>Envoyer par email</Button>
-                  <Button variant="outline" asChild><a href={`mailto:${DATA.email}`}>Ouvrir votre messagerie</a></Button>
+                  <Button variant="outline" asChild>
+                    <a href={`mailto:${DATA.email}`}>Ouvrir votre messagerie</a>
+                  </Button>
                 </div>
               </div>
               <div className="text-sm text-neutral-600">
-                <p> Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a></p>
-                <p> Téléphone : {DATA.telephone}</p>
+                <p>
+                  Email :{" "}
+                  <a className="underline" href={`mailto:${DATA.email}`}>
+                    {DATA.email}
+                  </a>
+                </p>
+                <p>Téléphone : {DATA.telephone}</p>
               </div>
             </div>
           </CardContent>
