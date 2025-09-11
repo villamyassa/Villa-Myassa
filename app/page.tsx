@@ -357,40 +357,50 @@ export default function Page() {
 
       {/* Visite 3D */}
       <Section
-        id="virtualtour"
-        title="Visite 3D"
-        subtitle="Explorez la villa en immersion – cliquez pour ouvrir le tour 3D"
-      >
-        <a
-          href={TOUR.url}
-          target="_blank"
-          rel="noreferrer"
-          className="group block relative"
-          aria-label="Ouvrir le tour 3D Matterport"
-        >
-          <div className="relative overflow-hidden rounded-2xl shadow">
-            <img
-              src={TOUR.cover}
-              alt="Couverture du tour 3D"
-              className="w-full aspect-video object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-            />
-            {/* Overlay + Play */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-neutral-900 shadow">
-                <PlayCircle className="h-5 w-5" />
-                <span className="font-medium">Lancer la visite 3D</span>
-              </span>
-            </div>
-          </div>
-        </a>
-        <p className="mt-3 text-sm text-neutral-500">
-          Si le visuel ne s’affiche pas, vérifie que le fichier
-          <code className="mx-1 px-1 rounded bg-neutral-100">/public/photos/virtual-tour-cover.jpg</code>
-          existe bien (nom exact).
-        </p>
-      </Section>
+  id="virtualtour"
+  title="Visite 3D"
+  subtitle="Explorez la villa en immersion – cliquez pour ouvrir le tour 3D"
+>
+  <a
+    href="https://discover.matterport.com/space/xrHbRBnPwdy"
+    target="_blank"
+    rel="noreferrer"
+    className="group block"
+    aria-label="Ouvrir le tour 3D Matterport"
+  >
+    {/* ⚠️ Wrapper avec aspect ratio, donc visible même si l'image ne charge pas */}
+    <div className="relative w-full aspect-video overflow-hidden rounded-2xl shadow bg-neutral-200">
+      {/* L’image est ABSOLUTE. Si elle ne charge pas, le wrapper garde la hauteur */}
+      <img
+        src="/photos/virtual-tour-cover.jpg?v=2" // petit cache-buster
+        alt="Couverture du tour 3D"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        onError={(e) => {
+          // si l'image échoue, on la masque mais la carte reste visible
+          (e.currentTarget as HTMLImageElement).style.display = "none";
+        }}
+        loading="eager"
+      />
 
+      {/* Overlay + bouton Play */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-neutral-900 shadow">
+          {/* Icône Play “visuel” sans dépendance à l’image */}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-neutral-900">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          <span className="font-medium">Lancer la visite 3D</span>
+        </span>
+      </div>
+    </div>
+  </a>
+
+  <p className="mt-3 text-sm text-neutral-500">
+    Si le visuel ne s’affiche pas, ce n’est pas grave : cliquez quand même sur la carte pour ouvrir la visite 3D.
+    Le fichier attendu est <code className="mx-1 px-1 rounded bg-neutral-100">/public/photos/virtual-tour-cover.jpg</code>.
+  </p>
+</Section>
       {/* Atouts */}
       <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
