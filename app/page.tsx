@@ -64,6 +64,9 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
    2) DONNÉES AFFICHÉES
 ------------------------------------------------------- */
 
+const MATTERPORT_URL = "https://discover.matterport.com/space/xrHbRBnPwdy";
+const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
+
 const DATA = {
   nom: "Villa Myassa",
   baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
@@ -175,13 +178,16 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
+  // ESC / ← →  + bloquer le scroll en mode lightbox
   useEffect(() => {
     if (lbIndex === null) return;
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
+
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -190,6 +196,15 @@ export default function Page() {
       window.removeEventListener("keydown", onKey);
     };
   }, [lbIndex, images.length]);
+
+  // --- FAILSAFE : auto-redirect si ?tour=1 ou #tour
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const u = new URL(window.location.href);
+    if (u.searchParams.get("tour") === "1" || u.hash === "#tour") {
+      window.location.href = MATTERPORT_URL; // même onglet, donc jamais bloqué
+    }
+  }, []);
 
   const handleMailto = () => {
     const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
@@ -217,6 +232,12 @@ export default function Page() {
             <a href="#contact" className="hover:underline">Contact</a>
           </nav>
           <div className="flex items-center gap-2">
+            <a
+              href={MATTERPORT_URL}
+              className="hidden md:inline-block rounded-lg border px-3 py-2 text-sm hover:bg-neutral-50"
+            >
+              Visite 3D (même onglet)
+            </a>
             <Button asChild>
               <a href="#contact">
                 <CalendarDays className="mr-2 h-4 w-4" />
@@ -252,22 +273,25 @@ export default function Page() {
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
-              <Button variant="outline" size="lg" asChild>
-                <a href="#galerie">Voir la galerie</a>
+              <Button size="lg" onClick={handleMailto}>
+                Demander les dates
               </Button>
-              {/* >>> Bouton Visite 3D TOUJOURS visible */}
+              <a
+                href={MATTERPORT_URL}
+                className="rounded-lg border px-4 py-2 text-sm md:text-base hover:bg-neutral-50"
+              >
+                Visite 3D (même onglet)
+              </a>
+              <a
+                href={MATTERPORT_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg border px-4 py-2 text-sm md:text-base hover:bg-neutral-50"
+              >
+                Visite 3D (nouvel onglet)
+              </a>
               <Button variant="outline" size="lg" asChild>
-                <a
-                  href="https://discover.matterport.com/space/xrHbRBnPwdy"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Visite 3D
-                </a>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
+                <a href={BESTAY_URL} target="_blank" rel="noreferrer">
                   Réserver sur Bestay
                 </a>
               </Button>
@@ -276,37 +300,40 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Visite 3D — version 100% fiable (pas d'image) */}
+      {/* Visite 3D — liens simples et robustes */}
       <Section
         id="virtualtour"
         title="Visite 3D"
-        subtitle="Cliquez pour ouvrir la visite immersive (nouvel onglet)"
+        subtitle="Ouvrez la visite dans ce même onglet (imparable), ou dans un nouvel onglet."
       >
-        <Card className="rounded-2xl">
-          <CardContent className="py-8 text-center">
-            <p className="text-lg">Explorez la villa en visite virtuelle 360°.</p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <Button size="lg" asChild>
-                <a
-                  href="https://discover.matterport.com/space/xrHbRBnPwdy"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ouvrir la visite 3D (Matterport)
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a
-                  href="https://bestay.co/villa/villa-myassa"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Voir sur Bestay
-                </a>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href={MATTERPORT_URL}
+            className="rounded-lg border px-4 py-2 hover:bg-neutral-50"
+          >
+            Ouvrir la visite 3D (même onglet)
+          </a>
+          <a
+            href={MATTERPORT_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-lg border px-4 py-2 hover:bg-neutral-50"
+          >
+            Ouvrir la visite 3D (nouvel onglet)
+          </a>
+          <a
+            href={BESTAY_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-lg border px-4 py-2 hover:bg-neutral-50"
+          >
+            Voir sur Bestay
+          </a>
+        </div>
+        <p className="mt-3 text-sm text-neutral-500">
+          Astuce : ajoutez <code>?tour=1</code> à l’URL pour forcer la redirection immédiate vers la visite
+          (<code>www.villamyassa.com?tour=1</code>) ou <code>#tour</code> (<code>www.villamyassa.com#tour</code>).
+        </p>
       </Section>
 
       {/* Galerie */}
@@ -320,7 +347,13 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[999] bg-black/90"
+          onClick={closeLb}
+        >
+          {/* Fermer */}
           <button
             type="button"
             onClick={closeLb}
@@ -330,6 +363,7 @@ export default function Page() {
             <X className="h-6 w-6" />
           </button>
 
+          {/* Précédente */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); prevLb(); }}
@@ -339,6 +373,7 @@ export default function Page() {
             <ChevronLeft className="h-7 w-7" />
           </button>
 
+          {/* Image */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
               src={images[lbIndex].src}
@@ -348,6 +383,7 @@ export default function Page() {
             />
           </div>
 
+          {/* Suivante */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); nextLb(); }}
