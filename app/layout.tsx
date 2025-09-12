@@ -1,24 +1,49 @@
-// app/layout.tsx
+/* app/layout.tsx — Server Component (OK pour export metadata) */
+import type { Metadata } from "next";
 import "./globals.css";
-import { Inter, Playfair_Display } from "next/font/google";
-import { useState } from "react";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-serif",
-});
+const site = "https://www.villamyassa.com/";
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL(site),
   title: "Villa Myassa — Ubud, Bali | Private Pool Villa",
   description:
-    "Modern villa with private pool in the heart of Ubud – BALI. 3 bedrooms, 3.5 bathrooms. Book on Bestay.",
+    "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI. 3 chambres, 3.5 sdb. Réservez sur Bestay.",
+  alternates: {
+    canonical: site,
+    languages: {
+      fr: `${site}?lang=fr`,
+      en: `${site}?lang=en`,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: site,
+    title: "Villa Myassa — Ubud, Bali | Private Pool Villa",
+    description:
+      "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI. 3 chambres, 3.5 sdb. Réservez sur Bestay.",
+    images: [
+      {
+        url: "/photos/001-hero-piscine.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Villa Myassa – Piscine privée",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Villa Myassa — Ubud, Bali | Private Pool Villa",
+    description:
+      "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI. 3 chambres, 3.5 sdb.",
+    images: ["/photos/001-hero-piscine.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="min-h-screen">{children}</body>
+    <html lang="fr">
+      <body className="min-h-screen bg-white text-neutral-900">{children}</body>
     </html>
   );
 }
