@@ -88,8 +88,20 @@ const DATA = {
     "Moustiquaires",
   ],
   images: IMAGES,
-  description:
-    "À l’entrée, une élégante fontaine menant à un bassin de poissons vous guide vers la villa, posée au cœur de la jungle d’Ubud. Les trois chambres, décorées avec goût, offrent chacune leur salle de bain. Les espaces de vie ouverts s’articulent autour d’une piscine privée – parfaite pour se rafraîchir après une journée d’exploration. Idéale pour des séjours en famille ou entre amis.",
+
+  // 🔁 Description mise à jour (ton texte)
+  description: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
+
+Les trois chambres raffinées de la Villa Myassa disposent chacune d'un lit queen-size, d'une Smart TV, de la climatisation et d'une salle de bain attenante. La chambre principale vous enchantera avec sa moustiquaire à baldaquin et sa baignoire extérieure, la deuxième chambre vous rafraîchira avec sa douche extérieure, tandis que la troisième chambre offre une expérience de bain semi-extérieure.
+
+La Villa Myassa allie harmonieusement intérieur et extérieur avec ses espaces ouverts et aérés, naturellement rafraîchis par une ventilation transversale et des ventilateurs de plafond. Une magnifique carte balinaise en bois agrémente le confortable salon, idéal pour se réunir ou se détendre. La salle à manger peut accueillir confortablement six personnes, tandis que la cuisine moderne avec îlot central invite les convives à concocter des repas mémorables.
+
+Sortez de la Villa Myassa et pénétrez dans votre oasis privée, où une piscine étincelante, couronnée d'une statue de Bouddha, vous attend. Le coin salon en contrebas (Sunken) offre une vue imprenable sur l'eau, tandis que deux chaises longues flottantes invitent à la détente. Installez-vous dans le gazebo balinais « bale bengong », drapé de rideaux blancs pour d'excellents massages. Deux chaises longues supplémentaires donnent sur le jardin luxuriant, tandis que la douche extérieure de la piscine complète ce paradis tropical.
+
+L'emplacement privilégié de la Villa Myassa à Singakerta vous place aux portes de la scène culturelle dynamique d'Ubud. Explorez la célèbre Forêt des Singes, visitez le palais historique d'Ubud, plongez dans la scène artistique locale et découvrez d'innombrables restaurants et boutiques, le tout à proximité de votre sanctuaire privé.
+
+Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et découvrez l'alliance de l'élégance moderne et de la magie mystique de la jungle balinaise.`,
+
   tarifs: [
     { label: "Prix indicatif", prix: "À partir de Rp 2 941 990 / nuit", details: "Selon saisons et disponibilités" },
     { label: "Séjours moyens", prix: "Sur demande", details: "Nettoyage et linge inclus" },
@@ -100,9 +112,9 @@ const DATA = {
 
   // >>> VIRTUAL TOUR
   virtualTour: {
-    url: "https://discover.matterport.com/space/xrHbRBnPwdy", // lien direct Matterport
-    fallbackUrl: "https://bestay.co/villa/villa-myassa", // lien Bestay
-    cover: "/photos/virtual-tour-cover.jpg", // image à placer dans /public/photos/
+    url: "https://discover.matterport.com/space/xrHbRBnPwdy",
+    fallbackUrl: "https://bestay.co/villa/villa-myassa",
+    cover: "/photos/virtual-tour-cover.jpg",
   },
 };
 
@@ -218,7 +230,7 @@ export default function Page() {
     }, 50);
   };
 
-  // Source de la vignette 3D (fallback si 404)
+  // Source de la vignette 3D (fallback si besoin)
   const coverSrc =
     (DATA.virtualTour.cover?.startsWith("/")
       ? DATA.virtualTour.cover
@@ -266,9 +278,8 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero SANS opacité ni overlay, texte en dessous */}
+      {/* Hero SANS overlay, texte en dessous */}
       <section id="accueil">
-        {/* Image plein écran (juste la photo) */}
         <div className="w-full">
           <img
             src={hero.src}
@@ -277,7 +288,6 @@ export default function Page() {
           />
         </div>
 
-        {/* Texte & boutons APRES l'image */}
         <div className="container mx-auto px-4 max-w-6xl py-10">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -312,6 +322,15 @@ export default function Page() {
         </div>
       </section>
 
+      {/* 📌 Description déplacée AVANT la Visite 3D */}
+      <Section id="description" title="Description">
+        <Card className="rounded-2xl">
+          <CardContent className="prose max-w-none leading-relaxed py-6 whitespace-pre-line">
+            {DATA.description}
+          </CardContent>
+        </Card>
+      </Section>
+
       {/* Visite 3D */}
       <Section
         id="visite-3d"
@@ -329,9 +348,7 @@ export default function Page() {
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
               src={coverSrc || hero.src}
-              onError={(e) => {
-                e.currentTarget.src = hero.src;
-              }}
+              onError={(e) => { e.currentTarget.src = hero.src; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -370,13 +387,7 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[999] bg-black/90"
-          onClick={closeLb}
-        >
-          {/* Fermer */}
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
           <button
             type="button"
             onClick={closeLb}
@@ -386,7 +397,6 @@ export default function Page() {
             <X className="h-6 w-6" />
           </button>
 
-          {/* Précédente */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); prevLb(); }}
@@ -396,7 +406,6 @@ export default function Page() {
             <ChevronLeft className="h-7 w-7" />
           </button>
 
-          {/* Image */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
               src={images[lbIndex].src}
@@ -406,7 +415,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Suivante */}
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); nextLb(); }}
@@ -434,13 +442,6 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Description */}
-      <Section id="description" title="Description">
-        <Card className="rounded-2xl">
-          <CardContent className="prose max-w-none leading-relaxed py-6">{DATA.description}</CardContent>
-        </Card>
-      </Section>
-
       {/* Tarifs */}
       <Section id="tarifs" title="Tarifs" subtitle="Indiquez vos grilles selon la saison">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -458,7 +459,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Disponibilités (placeholder) */}
+      {/* Disponibilités */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
@@ -525,10 +526,7 @@ export default function Page() {
               </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  Email :{" "}
-                  <a className="underline" href={`mailto:${DATA.email}`}>
-                    {DATA.email}
-                  </a>
+                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
                 </p>
                 <p>Téléphone : {DATA.telephone}</p>
               </div>
