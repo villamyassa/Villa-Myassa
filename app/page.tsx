@@ -525,11 +525,10 @@ export default function Page() {
                 </div>
               </div>
               <div className="text-sm text-neutral-600">
-                <p>
-                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
-                </p>
-                <p>Téléphone : {DATA.telephone}</p>
-              </div>
+  <p>
+    Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+  </p>
+</div>
             </div>
           </CardContent>
         </Card>
