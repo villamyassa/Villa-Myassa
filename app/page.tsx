@@ -102,7 +102,7 @@ const DATA = {
   virtualTour: {
     url: "https://discover.matterport.com/space/xrHbRBnPwdy", // lien direct Matterport
     fallbackUrl: "https://bestay.co/villa/villa-myassa", // lien Bestay
-    cover: "/photos/virtual-tour-cover.jpg", // image à placer dans /public/photos/
+    cover: "/photos/virtual-tour-cover.jpg?v=2", // image à placer dans /public/photos/
   },
 };
 
