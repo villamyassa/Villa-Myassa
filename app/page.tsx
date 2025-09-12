@@ -89,7 +89,6 @@ const DATA = {
   ],
   images: IMAGES,
 
-  // 🔁 Description mise à jour (ton texte)
   description: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
 
 Les trois chambres raffinées de la Villa Myassa disposent chacune d'un lit queen-size, d'une Smart TV, de la climatisation et d'une salle de bain attenante. La chambre principale vous enchantera avec sa moustiquaire à baldaquin et sa baignoire extérieure, la deuxième chambre vous rafraîchira avec sa douche extérieure, tandis que la troisième chambre offre une expérience de bain semi-extérieure.
@@ -230,11 +229,17 @@ export default function Page() {
     }, 50);
   };
 
-  // Source de la vignette 3D (fallback si besoin)
+  // Source vignette 3D
   const coverSrc =
     (DATA.virtualTour.cover?.startsWith("/")
       ? DATA.virtualTour.cover
       : `${PUBLIC_PREFIX}/${DATA.virtualTour.cover}`) || hero.src;
+
+  // ---- Description "Lire plus" ----
+  const paragraphs = DATA.description.trim().split(/\n\s*\n/).map((p) => p.trim());
+  const firstTwo = paragraphs.slice(0, 2);
+  const rest = paragraphs.slice(2);
+  const [showMore, setShowMore] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
@@ -322,11 +327,45 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 📌 Description déplacée AVANT la Visite 3D */}
+      {/* 📌 Description (avec LIRE PLUS) — AVANT la Visite 3D */}
       <Section id="description" title="Description">
         <Card className="rounded-2xl">
-          <CardContent className="prose max-w-none leading-relaxed py-6 whitespace-pre-line">
-            {DATA.description}
+          <CardContent className="py-6">
+            <div className="prose max-w-none leading-relaxed">
+              {firstTwo.map((p, i) => (
+                <p key={i} className="mb-4">
+                  {p}
+                </p>
+              ))}
+
+              {/* Zone extensible */}
+              {rest.length > 0 && (
+                <>
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
+                      showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                    aria-hidden={!showMore}
+                  >
+                    {rest.map((p, i) => (
+                      <p key={`rest-${i}`} className="mb-4">
+                        {p}
+                      </p>
+                    ))}
+                  </div>
+
+                  <div className="mt-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowMore((v) => !v)}
+                      aria-expanded={showMore}
+                    >
+                      {showMore ? "LIRE MOINS" : "LIRE PLUS"}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
           </CardContent>
         </Card>
       </Section>
