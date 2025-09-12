@@ -19,15 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-/** ----------------------------------------------------------------
- *  (NOUVEAU) Import statique de la cover 3D depuis /public/photos
- *  => Next inclut le fichier dans le bundle et renvoie un chemin
- *     fingerprinté (plus de 404 CDN).
- * ---------------------------------------------------------------- */
-import cover3D from "@/public/photos/virtual-tour-cover.jpg";
-// cover3D est un StaticImageData { src: string, width, height, ... }
-const COVER_3D_SRC = (cover3D as any)?.src ?? "/photos/virtual-tour-cover.jpg";
-
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
 ------------------------------------------------------- */
@@ -107,12 +98,11 @@ const DATA = {
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 
+  // >>> VIRTUAL TOUR
   virtualTour: {
-    url: "https://discover.matterport.com/space/xrHbRBnPwdy",
-    fallbackUrl: "https://bestay.co/villa/villa-myassa",
-    // la valeur ci-dessous n’est plus utilisée pour l’affichage,
-    // mais on la garde en info/documentation :
-    cover: "/photos/virtual-tour-cover.jpg",
+    url: "https://discover.matterport.com/space/xrHbRBnPwdy", // lien direct Matterport
+    fallbackUrl: "https://bestay.co/villa/villa-myassa", // lien Bestay
+    cover: "/photos/virtual-tour-cover.jpg", // image à placer dans /public/photos/
   },
 };
 
@@ -228,6 +218,12 @@ export default function Page() {
     }, 50);
   };
 
+  // Source de la vignette 3D (fallback si 404)
+  const coverSrc =
+    (DATA.virtualTour.cover?.startsWith("/")
+      ? DATA.virtualTour.cover
+      : `${PUBLIC_PREFIX}/${DATA.virtualTour.cover}`) || hero.src;
+
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Nav */}
@@ -270,25 +266,32 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section id="accueil" className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={hero.src} alt={hero.alt} className="absolute inset-0 h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
+      {/* Hero SANS opacité ni overlay, texte en dessous */}
+      <section id="accueil">
+        {/* Image plein écran (juste la photo) */}
+        <div className="w-full">
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            className="w-full h-[60vh] md:h-[70vh] object-cover"
+          />
         </div>
 
-        <div className="container mx-auto px-4 max-w-6xl h-[68vh] flex items	end pb-12 relative">
+        {/* Texte & boutons APRES l'image */}
+        <div className="container mx-auto px-4 max-w-6xl py-10">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="max-w-2xl"
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl"
           >
-            <span className="inline-flex items-center gap-2 text-sm bg-white/80 backdrop-blur px-3 py-1 rounded-full border">
+            <span className="inline-flex items-center gap-2 text-sm bg-white px-3 py-1 rounded-full border">
               <Star className="h-4 w-4" /> Note (si dispo) – ex. 4.9/5
             </span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">{DATA.baseline}</h1>
+            <h1 className="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
+              {DATA.baseline}
+            </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
@@ -325,7 +328,10 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={COVER_3D_SRC}
+              src={coverSrc || hero.src}
+              onError={(e) => {
+                e.currentTarget.src = hero.src;
+              }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -364,7 +370,13 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[999] bg-black/90"
+          onClick={closeLb}
+        >
+          {/* Fermer */}
           <button
             type="button"
             onClick={closeLb}
@@ -374,18 +386,17 @@ export default function Page() {
             <X className="h-6 w-6" />
           </button>
 
+          {/* Précédente */}
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              prevLb();
-            }}
+            onClick={(e) => { e.stopPropagation(); prevLb(); }}
             aria-label="Image précédente"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
             <ChevronLeft className="h-7 w-7" />
           </button>
 
+          {/* Image */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
               src={images[lbIndex].src}
@@ -395,12 +406,10 @@ export default function Page() {
             />
           </div>
 
+          {/* Suivante */}
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              nextLb();
-            }}
+            onClick={(e) => { e.stopPropagation(); nextLb(); }}
             aria-label="Image suivante"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -449,7 +458,7 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Disponibilités */}
+      {/* Disponibilités (placeholder) */}
       <Section id="disponibilites" title="Disponibilités">
         <Card className="rounded-2xl">
           <CardContent className="py-6 text-neutral-600">
@@ -516,7 +525,10 @@ export default function Page() {
               </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+                  Email :{" "}
+                  <a className="underline" href={`mailto:${DATA.email}`}>
+                    {DATA.email}
+                  </a>
                 </p>
                 <p>Téléphone : {DATA.telephone}</p>
               </div>
@@ -525,6 +537,7 @@ export default function Page() {
         </Card>
       </Section>
 
+      {/* Footer */}
       <footer className="py-10 border-t">
         <div className="container mx-auto px-4 max-w-6xl text-sm text-neutral-500">
           © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous droits réservés.
