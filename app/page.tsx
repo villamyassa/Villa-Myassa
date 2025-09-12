@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
 ------------------------------------------------------- */
+
 const GALLERY_FILES = [
   "001-hero-piscine.jpg",
   "002-salon.jpg",
@@ -52,6 +53,7 @@ const toAlt = (name: string) =>
   name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
 const PUBLIC_PREFIX = "/photos";
+
 type GalleryItem = { src: string; alt: string; featured?: boolean };
 
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
@@ -63,6 +65,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 /* -------------------------------------------------------
    2) DONNÉES AFFICHÉES
 ------------------------------------------------------- */
+
 const DATA = {
   nom: "Villa Myassa",
   baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
@@ -116,6 +119,7 @@ Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et décou
 /* -------------------------------------------------------
    3) COMPOSANTS UI
 ------------------------------------------------------- */
+
 const Section = ({
   id,
   title,
@@ -170,6 +174,7 @@ const GalleryCard = ({
 /* -------------------------------------------------------
    4) PAGE
 ------------------------------------------------------- */
+
 export default function Page() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -234,6 +239,7 @@ export default function Page() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
+          {/* >>> Titre plus gros + belle police */}
           <a href="#accueil" className="select-none">
             <span className="block text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none">
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
@@ -241,13 +247,27 @@ export default function Page() {
           </a>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#visite-3d" className="hover:underline">Visite 3D</a>
-            <a href="#galerie" className="hover:underline">Galerie</a>
-            <a href="#atouts" className="hover:underline">Atouts</a>
-            <a href="#tarifs" className="hover:underline">Tarifs</a>
-            {/* lien Disponibilités supprimé */}
-            <a href="#localisation" className="hover:underline">Localisation</a>
-            <a href="#contact" className="hover:underline">Contact</a>
+            <a href="#visite-3d" className="hover:underline">
+              Visite 3D
+            </a>
+            <a href="#galerie" className="hover:underline">
+              Galerie
+            </a>
+            <a href="#atouts" className="hover:underline">
+              Atouts
+            </a>
+            <a href="#tarifs" className="hover:underline">
+              Tarifs
+            </a>
+            <a href="#disponibilites" className="hover:underline">
+              Disponibilités
+            </a>
+            <a href="#localisation" className="hover:underline">
+              Localisation
+            </a>
+            <a href="#contact" className="hover:underline">
+              Contact
+            </a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -269,7 +289,11 @@ export default function Page() {
       {/* Hero SANS overlay, texte en dessous */}
       <section id="accueil">
         <div className="w-full">
-          <img src={hero.src} alt={hero.alt} className="w-full h-[60vh] md:h-[70vh] object-cover" />
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            className="w-full h-[60vh] md:h-[70vh] object-cover"
+          />
         </div>
 
         <div className="container mx-auto px-4 max-w-6xl py-10">
@@ -290,8 +314,12 @@ export default function Page() {
               {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button size="lg" onClick={handleMailto}>Demander les dates</Button>
-              <Button variant="outline" size="lg" asChild><a href="#galerie">Voir la galerie</a></Button>
+              <Button size="lg" onClick={handleMailto}>
+                Demander les dates
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="#galerie">Voir la galerie</a>
+              </Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
                   Réserver sur Bestay
@@ -307,7 +335,11 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (<p key={i} className="mb-4">{p}</p>))}
+              {firstTwo.map((p, i) => (
+                <p key={i} className="mb-4">
+                  {p}
+                </p>
+              ))}
               {rest.length > 0 && (
                 <>
                   <div
@@ -316,10 +348,18 @@ export default function Page() {
                     }`}
                     aria-hidden={!showMore}
                   >
-                    {rest.map((p, i) => (<p key={`rest-${i}`} className="mb-4">{p}</p>))}
+                    {rest.map((p, i) => (
+                      <p key={`rest-${i}`} className="mb-4">
+                        {p}
+                      </p>
+                    ))}
                   </div>
                   <div className="mt-2">
-                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowMore((v) => !v)}
+                      aria-expanded={showMore}
+                    >
                       {showMore ? "LIRE MOINS" : "LIRE PLUS"}
                     </Button>
                   </div>
@@ -378,16 +418,24 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => openLb(i)} />))}
+          {images.map((img, i) => (
+            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
+          ))}
         </div>
       </Section>
 
       {/* Lightbox */}
       {lbIndex !== null && (
         <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
-          <button type="button" onClick={closeLb} aria-label="Fermer" className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white">
+          <button
+            type="button"
+            onClick={closeLb}
+            aria-label="Fermer"
+            className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
+          >
             <X className="h-6 w-6" />
           </button>
+
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); prevLb(); }}
@@ -396,9 +444,16 @@ export default function Page() {
           >
             <ChevronLeft className="h-7 w-7" />
           </button>
+
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            <img src={images[lbIndex].src} alt={images[lbIndex].alt]} onClick={(e) => e.stopPropagation()} className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl" />
+            <img
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+            />
           </div>
+
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); nextLb(); }}
@@ -443,7 +498,14 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Disponibilités SUPPRIMÉE */}
+      {/* Disponibilités */}
+      <Section id="disponibilites" title="Disponibilités">
+        <Card className="rounded-2xl">
+          <CardContent className="py-6 text-neutral-600">
+            Intégrez ici votre calendrier (Google Calendar, Calendly, ou widget Bestay/Airbnb si disponible).
+          </CardContent>
+        </Card>
+      </Section>
 
       {/* Localisation */}
       <Section id="localisation" title="Localisation" subtitle={DATA.localisation}>
@@ -451,9 +513,15 @@ export default function Page() {
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-6">
               <ul className="grid gap-2 py-4">
-                <li className="flex items-center gap-2"><MapPin className="h-5 w-5" /> {DATA.adresse}</li>
-                <li className="flex items-center gap-2"><Waves className="h-5 w-5" /> Plages / points d’intérêt à proximité (à compléter)</li>
-                <li className="flex items-center gap-2"><Car className="h-5 w-5" /> Accès / parking (à compléter)</li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5" /> {DATA.adresse}
+                </li>
+                <li className="flex items-center gap-2">
+                  <Waves className="h-5 w-5" /> Plages / points d’intérêt à proximité (à compléter)
+                </li>
+                <li className="flex items-center gap-2">
+                  <Car className="h-5 w-5" /> Accès / parking (à compléter)
+                </li>
               </ul>
             </CardContent>
           </Card>
@@ -471,16 +539,34 @@ export default function Page() {
           <CardContent className="py-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input placeholder="Votre nom" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                <Input placeholder="Votre email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                <Textarea placeholder="Votre message" rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                <Input
+                  placeholder="Votre nom"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                <Input
+                  placeholder="Votre email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+                <Textarea
+                  placeholder="Votre message"
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                />
                 <div className="flex gap-3">
                   <Button onClick={handleMailto}>Envoyer par email</Button>
-                  <Button variant="outline" asChild><a href={`mailto:${DATA.email}`}>Ouvrir votre messagerie</a></Button>
+                  <Button variant="outline" asChild>
+                    <a href={`mailto:${DATA.email}`}>Ouvrir votre messagerie</a>
+                  </Button>
                 </div>
               </div>
               <div className="text-sm text-neutral-600">
-                <p>Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a></p>
+                <p>
+                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+                </p>
                 <p>Téléphone : {DATA.telephone}</p>
               </div>
             </div>
