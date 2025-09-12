@@ -4,16 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
-  Waves,
-  Car,
   CalendarDays,
-  Star,
   X,
   ChevronLeft,
   ChevronRight,
   Rotate3D,
   PlayCircle,
-  Languages,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -80,7 +76,6 @@ const TEXTS = {
     capacity: "3 chambres (lits queen)",
     baths: "3.5 salles de bain",
     area: "Jungle d’Ubud (Singakerta)",
-    ratingHint: "Note (si dispo) – ex. 4.9/5",
     ctaDates: "Demander les dates",
     ctaGallery: "Voir la galerie",
     ctaReserve: "Réserver sur Bestay",
@@ -105,8 +100,6 @@ const TEXTS = {
     locationTitle: "Localisation",
     address:
       "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
-    proximity: "Plages / points d’intérêt à proximité (à compléter)",
-    access: "Accès / parking (à compléter)",
     contactTitle: "Contact",
     emailLabel: "Email :",
     email: "contact@villamyassa.com",
@@ -139,7 +132,6 @@ Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et décou
     capacity: "3 bedrooms (queen beds)",
     baths: "3.5 bathrooms",
     area: "Ubud Jungle (Singakerta)",
-    ratingHint: "Rating (if available) – e.g. 4.9/5",
     ctaDates: "Ask for dates",
     ctaGallery: "View gallery",
     ctaReserve: "Book on Bestay",
@@ -164,8 +156,6 @@ Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et décou
     locationTitle: "Location",
     address:
       "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
-    proximity: "Nearby beaches / points of interest (to complete)",
-    access: "Access / parking (to complete)",
     contactTitle: "Contact",
     emailLabel: "Email:",
     email: "contact@villamyassa.com",
@@ -254,14 +244,13 @@ const GalleryCard = ({
    5) PAGE
 ------------------------------------------------------- */
 export default function Page() {
-  // Langue (FR par défaut ou ?lang=en)
+  // Langue
   const [lang, setLang] = useState<Lang>("fr");
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
     const q = sp.get("lang");
     if (q === "en" || q === "fr") setLang(q);
   }, []);
-  // maj URL sans rechargement
   const switchLang = (l: Lang) => {
     setLang(l);
     const sp = new URLSearchParams(window.location.search);
@@ -282,7 +271,6 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // Bloquer scroll en lightbox
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -299,7 +287,7 @@ export default function Page() {
     };
   }, [lbIndex, images.length]);
 
-  // Contact form (mailto)
+  // Contact form
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const handleMailto = () => {
     const subject =
@@ -418,10 +406,8 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
-            <span className="inline-flex items-center gap-2 text-sm bg-white px-3 py-1 rounded-full border">
-              <Star className="h-4 w-4" /> {T.ratingHint}
-            </span>
-            <h1 className="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
+            {/* Badge "Note (si dispo)" retiré */}
+            <h1 className="mt-0 text-4xl md:text-5xl font-extrabold leading-tight">
               {T.baseline}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
@@ -605,12 +591,7 @@ export default function Page() {
                 <li className="flex items-center gap-2">
                   <MapPin className="h-5 w-5" /> {T.address}
                 </li>
-                <li className="flex items-center gap-2">
-                  <Waves className="h-5 w-5" /> {T.proximity}
-                </li>
-                <li className="flex items-center gap-2">
-                  <Car className="h-5 w-5" /> {T.access}
-                </li>
+                {/* “Plages …” et “Accès / parking …” supprimés */}
               </ul>
             </CardContent>
           </Card>
