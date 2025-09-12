@@ -239,7 +239,6 @@ export default function Page() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
-          {/* >>> Titre plus gros + belle police */}
           <a href="#accueil" className="select-none">
             <span className="block text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none">
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
@@ -247,27 +246,12 @@ export default function Page() {
           </a>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#visite-3d" className="hover:underline">
-              Visite 3D
-            </a>
-            <a href="#galerie" className="hover:underline">
-              Galerie
-            </a>
-            <a href="#atouts" className="hover:underline">
-              Atouts
-            </a>
-            <a href="#tarifs" className="hover:underline">
-              Tarifs
-            </a>
-            <a href="#disponibilites" className="hover:underline">
-              Disponibilités
-            </a>
-            <a href="#localisation" className="hover:underline">
-              Localisation
-            </a>
-            <a href="#contact" className="hover:underline">
-              Contact
-            </a>
+            <a href="#visite-3d" className="hover:underline">Visite 3D</a>
+            <a href="#galerie" className="hover:underline">Galerie</a>
+            <a href="#atouts" className="hover:underline">Atouts</a>
+            {/* Onglets Tarifs & Disponibilités supprimés */}
+            <a href="#localisation" className="hover:underline">Localisation</a>
+            <a href="#contact" className="hover:underline">Contact</a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -481,31 +465,8 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* Tarifs */}
-      <Section id="tarifs" title="Tarifs" subtitle="Indiquez vos grilles selon la saison">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {DATA.tarifs.map((t, i) => (
-            <Card key={i} className="rounded-2xl">
-              <CardHeader>
-                <CardTitle className="text-xl">{t.label}</CardTitle>
-              </CardHeader>
-              <CardContent className="py-4">
-                <p className="text-2xl font-semibold">{t.prix}</p>
-                <p className="text-neutral-500 mt-1">{t.details}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      {/* Disponibilités */}
-      <Section id="disponibilites" title="Disponibilités">
-        <Card className="rounded-2xl">
-          <CardContent className="py-6 text-neutral-600">
-            Intégrez ici votre calendrier (Google Calendar, Calendly, ou widget Bestay/Airbnb si disponible).
-          </CardContent>
-        </Card>
-      </Section>
+      {/* Tarifs — SUPPRIMÉ */}
+      {/* Disponibilités — SUPPRIMÉ */}
 
       {/* Localisation */}
       <Section id="localisation" title="Localisation" subtitle={DATA.localisation}>
