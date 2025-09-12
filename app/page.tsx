@@ -34,7 +34,6 @@ const useLang = (): [Lang, (l: Lang) => void] => {
     }
   };
 
-  // on mount
   useEffect(() => {
     if (typeof window === "undefined") return;
     const fromParam = readParam();
@@ -47,7 +46,6 @@ const useLang = (): [Lang, (l: Lang) => void] => {
     if (isValid(saved)) setLang(saved);
   }, []);
 
-  // setter — sync URL
   const update = (l: Lang) => {
     setLang(l);
     if (typeof window !== "undefined") {
@@ -58,7 +56,6 @@ const useLang = (): [Lang, (l: Lang) => void] => {
     }
   };
 
-  // back/forward
   useEffect(() => {
     const onPop = () => {
       const p = readParam();
@@ -113,7 +110,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 /* -------------------------------------------------------
    2) COPIES FR/EN
 ------------------------------------------------------- */
-const PHONE_WA = "33688647659"; // format international sans +
+const PHONE_WA = "33688647659";
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 const MATTERPORT_URL = "https://discover.matterport.com/space/xrHbRBnPwdy";
 
@@ -312,7 +309,6 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // ESC / ← →
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -346,13 +342,11 @@ export default function Page() {
 
   const coverSrc = "/photos/virtual-tour-cover.jpg";
 
-  // Description folding
   const paragraphs = L.desc.trim().split(/\n\s*\n/).map((p) => p.trim());
   const firstTwo = paragraphs.slice(0, 2);
   const rest = paragraphs.slice(2);
   const [showMore, setShowMore] = useState(false);
 
-  // URLs
   const waHrefTop = `https://wa.me/${PHONE_WA}?text=${encodeURIComponent(
     "Bonjour, je souhaite des informations sur la Villa Myassa."
   )}`;
@@ -388,7 +382,7 @@ export default function Page() {
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* Switcher FR/EN */}
+            {/* Language switcher */}
             <div className="hidden sm:flex items-center gap-1 mr-1">
               <button
                 aria-label="Français"
@@ -417,17 +411,21 @@ export default function Page() {
               </a>
             </Button>
 
-            <Button variant="outline" asChild>
-              <a href={waHrefTop} target="_blank" rel="noreferrer" aria-label="WhatsApp">
-                <MessageCircle className="mr-2 h-4 w-4" />
-                {L.nav.whatsapp}
-              </a>
-            </Button>
+            {/* WhatsApp bubble (top-right) */}
+            <a
+              href={waHrefTop}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="WhatsApp"
+              className="ml-1 inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-500 text-white hover:scale-105 transition"
+            >
+              <MessageCircle className="h-5 w-5" />
+            </a>
           </div>
         </div>
       </header>
 
-      {/* Hero (no overlay) */}
+      {/* Hero */}
       <section id="accueil">
         <div className="w-full">
           <img src={hero.src} alt={hero.alt} className="w-full h-[60vh] md:h-[70vh] object-cover" />
@@ -689,7 +687,7 @@ export default function Page() {
         </Card>
       </Section>
 
-      {/* WhatsApp Floating Button */}
+      {/* WhatsApp Floating Button (bottom-right, green bubble) */}
       <a
         href={waHrefFab}
         target="_blank"
