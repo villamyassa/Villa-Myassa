@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        {/* Bloc infos sans téléphone */}
+        {/* Bloc infos – sans téléphone */}
         <div className="text-sm text-neutral-600">
           <p>
             Email :{" "}
