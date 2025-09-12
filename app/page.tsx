@@ -59,7 +59,7 @@ type GalleryItem = { src: string; alt: string; featured?: boolean };
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
   src: `${PUBLIC_PREFIX}/${f}`,
   alt: toAlt(f),
-  featured: i === 0, // la 1re = image "héro"
+  featured: i === 0,
 }));
 
 /* -------------------------------------------------------
@@ -109,7 +109,6 @@ Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et décou
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 
-  // >>> VIRTUAL TOUR
   virtualTour: {
     url: "https://discover.matterport.com/space/xrHbRBnPwdy",
     fallbackUrl: "https://bestay.co/villa/villa-myassa",
@@ -194,16 +193,13 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // ESC / ← →  + bloquer le scroll en mode lightbox
   useEffect(() => {
     if (lbIndex === null) return;
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") prevLb();
       if (e.key === "ArrowRight") nextLb();
     };
-
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -221,7 +217,6 @@ export default function Page() {
     window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
   };
 
-  // Ouvre Matterport + Bestay dans deux onglets
   const openVirtualTour = () => {
     window.open(DATA.virtualTour.url, "_blank", "noopener,noreferrer");
     setTimeout(() => {
@@ -229,13 +224,11 @@ export default function Page() {
     }, 50);
   };
 
-  // Source vignette 3D
   const coverSrc =
     (DATA.virtualTour.cover?.startsWith("/")
       ? DATA.virtualTour.cover
       : `${PUBLIC_PREFIX}/${DATA.virtualTour.cover}`) || hero.src;
 
-  // ---- Description "Lire plus" ----
   const paragraphs = DATA.description.trim().split(/\n\s*\n/).map((p) => p.trim());
   const firstTwo = paragraphs.slice(0, 2);
   const rest = paragraphs.slice(2);
@@ -246,9 +239,13 @@ export default function Page() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
-          <a href="#accueil" className="font-semibold text-lg">
-            Villa Myassa
+          {/* >>> Titre plus gros + belle police */}
+          <a href="#accueil" className="select-none">
+            <span className="block text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none">
+              Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
+            </span>
           </a>
+
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#visite-3d" className="hover:underline">
               Visite 3D
@@ -272,8 +269,8 @@ export default function Page() {
               Contact
             </a>
           </nav>
+
           <div className="flex items-center gap-2">
-            {/* >>> MODIF ICI : bouton Réserver ouvre Bestay */}
             <Button asChild>
               <a
                 href="https://bestay.co/villa/villa-myassa"
@@ -333,7 +330,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 📌 Description (LIRE PLUS) — AVANT la Visite 3D */}
+      {/* Description (LIRE PLUS) — AVANT la Visite 3D */}
       <Section id="description" title="Description">
         <Card className="rounded-2xl">
           <CardContent className="py-6">
@@ -343,7 +340,6 @@ export default function Page() {
                   {p}
                 </p>
               ))}
-
               {rest.length > 0 && (
                 <>
                   <div
@@ -358,7 +354,6 @@ export default function Page() {
                       </p>
                     ))}
                   </div>
-
                   <div className="mt-2">
                     <Button
                       variant="outline"
@@ -588,4 +583,3 @@ export default function Page() {
     </div>
   );
 }
-
