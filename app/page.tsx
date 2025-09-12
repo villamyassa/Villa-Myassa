@@ -273,8 +273,14 @@ export default function Page() {
             </a>
           </nav>
           <div className="flex items-center gap-2">
+            {/* >>> MODIF ICI : bouton Réserver ouvre Bestay */}
             <Button asChild>
-              <a href="#contact">
+              <a
+                href="https://bestay.co/villa/villa-myassa"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Réserver sur Bestay"
+              >
                 <CalendarDays className="mr-2 h-4 w-4" />
                 Réserver
               </a>
@@ -327,7 +333,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 📌 Description (avec LIRE PLUS) — AVANT la Visite 3D */}
+      {/* 📌 Description (LIRE PLUS) — AVANT la Visite 3D */}
       <Section id="description" title="Description">
         <Card className="rounded-2xl">
           <CardContent className="py-6">
@@ -338,7 +344,6 @@ export default function Page() {
                 </p>
               ))}
 
-              {/* Zone extensible */}
               {rest.length > 0 && (
                 <>
                   <div
