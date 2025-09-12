@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
-  Waves,
-  Car,
   CalendarDays,
   X,
   ChevronLeft,
@@ -18,6 +15,22 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
+/* -------------------------------------------------------
+   0) Icône WhatsApp (SVG inline, aucune dépendance)
+------------------------------------------------------- */
+const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 32 32" aria-hidden="true" {...props}>
+    <path
+      fill="currentColor"
+      d="M19.1 17.6c-.3-.2-1.8-.9-2.1-1s-.5-.2-.8.2-.9 1-1.1 1.2-.4.2-.7.1a8.8 8.8 0 0 1-2.6-1.6 9.8 9.8 0 0 1-1.8-2.2c-.2-.4 0-.6.2-.8l.5-.6c.2-.2.2-.4.3-.6s0-.4 0-.6 0-.5-.2-.8-.7-1-1-1.3-.5-.3-.8-.3h-.6c-.2 0-.6.1-.9.4s-1.1 1-1.1 2.6 1.1 3 1.3 3.2a13.4 13.4 0 0 0 5 4 16 16 0 0 0 1.6.6 3.9 3.9 0 0 0 1.8.1 3 3 0 0 0 2-1.4c.2-.4.2-1 .2-1.1s0-.2-.3-.4Z"
+    />
+    <path
+      fill="currentColor"
+      d="M27.6 4.3a13.3 13.3 0 0 0-21 15L5 28.2l9-1.7a13.3 13.3 0 0 0 6.2 1.6H20a13.3 13.3 0 0 0 7.6-23.8ZM20 25.2a10.7 10.7 0 0 1-5.3-1.4l-.4-.2-5.4 1 1-5.2-.2-.4a10.6 10.6 0 1 1 10.3 6.2Z"
+    />
+  </svg>
+);
 
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
@@ -63,35 +76,33 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 }));
 
 /* -------------------------------------------------------
-   2) DONNÉES + i18n
+   2) DONNÉES AFFICHÉES
 ------------------------------------------------------- */
 
 const DATA = {
   nom: "Villa Myassa",
-  baseline: {
-    fr: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
-    en: "Contemporary villa with private pool in the heart of Ubud – BALI",
-  },
-  localisation: "Singakerta, Ubud — Gianyar, Bali (Indonesia)",
-  capacite: { fr: "3 chambres (lits queen)", en: "3 bedrooms (queen beds)" },
-  chambres: { fr: "3.5 salles de bain", en: "3.5 bathrooms" },
-  distance: { fr: "Jungle d’Ubud (Singakerta)", en: "Ubud Jungle (Singakerta)" },
+  baseline: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
+  localisation: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
+  capacite: "3 chambres (lits queen)",
+  chambres: "3.5 salles de bain",
+  sallesDeBain: "3.5 sdb",
+  distance: "Jungle d’Ubud (Singakerta)",
+  telephone: "(à compléter)", // non affiché dans l'UI
   email: "contact@villamyassa.com",
   pointsForts: [
-    { fr: "Piscine privée", en: "Private pool" },
-    { fr: "Climatisation", en: "Air conditioning" },
-    { fr: "Wifi haut débit", en: "High-speed Wi-Fi" },
-    { fr: "Parking gratuit sur place", en: "Free on-site parking" },
-    { fr: "Cuisine toute équipée", en: "Fully equipped kitchen" },
-    { fr: "TV / Smart TV dans les chambres", en: "Smart TV in bedrooms" },
-    { fr: "Salles de bain attenantes", en: "En-suite bathrooms" },
-    { fr: "Coffre-fort", en: "Safe box" },
-    { fr: "Moustiquaires", en: "Mosquito nets" },
+    "Piscine privée",
+    "Climatisation",
+    "Wifi haut débit",
+    "Parking gratuit sur place",
+    "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
+    "TV / Smart TV dans les chambres",
+    "Salles de bain attenantes",
+    "Coffre-fort",
+    "Moustiquaires",
   ],
   images: IMAGES,
 
-  description: {
-    fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
+  description: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
 
 Les trois chambres raffinées de la Villa Myassa disposent chacune d'un lit queen-size, d'une Smart TV, de la climatisation et d'une salle de bain attenante. La chambre principale vous enchantera avec sa moustiquaire à baldaquin et sa baignoire extérieure, la deuxième chambre vous rafraîchira avec sa douche extérieure, tandis que la troisième chambre offre une expérience de bain semi-extérieure.
 
@@ -102,22 +113,9 @@ Sortez de la Villa Myassa et pénétrez dans votre oasis privée, où une piscin
 L'emplacement privilégié de la Villa Myassa à Singakerta vous place aux portes de la scène culturelle dynamique d'Ubud. Explorez la célèbre Forêt des Singes, visitez le palais historique d'Ubud, plongez dans la scène artistique locale et découvrez d'innombrables restaurants et boutiques, le tout à proximité de votre sanctuaire privé.
 
 Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et découvrez l'alliance de l'élégance moderne et de la magie mystique de la jungle balinaise.`,
-    en: `Welcome to Villa Myassa in Singakerta, where contemporary design meets the enchanting landscape of Ubud's jungle. At the entrance, an elegant fountain flows into a peaceful pond with stepping stones, setting the tone for an extraordinary stay.
-
-The three refined bedrooms each feature a queen-size bed, Smart TV, air-conditioning, and an en-suite bathroom. The master delights with a canopy mosquito net and outdoor bathtub; the second bedroom offers an outdoor shower; the third provides a semi-outdoor bathing experience.
-
-Villa Myassa blends indoor and outdoor living with open, airy spaces naturally cooled by cross-ventilation and ceiling fans. A beautiful wooden map of Bali adorns the cozy lounge, perfect for gathering or relaxing. The dining area seats six, while the modern kitchen with an island invites memorable meals.
-
-Step outside into your private oasis: a sparkling pool crowned by a Buddha statue. The sunken lounge overlooks the water; two floating loungers invite relaxation. Settle into the Balinese gazebo “bale bengong”, draped in white curtains, ideal for excellent massages. Two additional loungers face the lush garden, and the poolside outdoor shower completes this tropical haven.
-
-Villa Myassa’s prime location in Singakerta places you at Ubud’s cultural doorstep — Monkey Forest, the Royal Palace, art scene, dining, and shopping are all close by.
-
-Book your tropical escape today and experience the blend of modern elegance and Balinese jungle magic.`,
-  },
 
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
-  mapsEmbedSrc:
-    "https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed",
+  mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
 
   virtualTour: {
     url: "https://discover.matterport.com/space/xrHbRBnPwdy",
@@ -126,66 +124,21 @@ Book your tropical escape today and experience the blend of modern elegance and 
   },
 };
 
-const TEXTS = {
-  fr: {
-    nav: {
-      tour: "Visite 3D",
-      gallery: "Galerie",
-      features: "Atouts",
-      location: "Localisation",
-      contact: "Contact",
-      reserve: "Réserver",
-    },
-    seeGallery: "Voir la galerie",
-    reserveOnBestay: "Réserver sur Bestay",
-    desc: "Description",
-    openTourHint:
-      "Cliquez sur l’image – la visite s’ouvre dans un onglet, et Bestay dans un second.",
-    openTour: "Cliquer pour ouvrir la visite",
-    mapTitle: "Carte de la villa",
-    contactTitle: "Contact",
-    form: {
-      name: "Votre nom",
-      email: "Votre email",
-      message: "Votre message",
-      send: "Envoyer",
-      openMail: "Ouvrir votre messagerie",
-    },
-    readMore: "LIRE PLUS",
-    readLess: "LIRE MOINS",
-  },
-  en: {
-    nav: {
-      tour: "3D Tour",
-      gallery: "Gallery",
-      features: "Highlights",
-      location: "Location",
-      contact: "Contact",
-      reserve: "Book",
-    },
-    seeGallery: "See gallery",
-    reserveOnBestay: "Book on Bestay",
-    desc: "Description",
-    openTourHint:
-      "Click the image — the tour opens in one tab, Bestay in another.",
-    openTour: "Click to open the tour",
-    mapTitle: "Villa map",
-    contactTitle: "Contact",
-    form: {
-      name: "Your name",
-      email: "Your email",
-      message: "Your message",
-      send: "Send",
-      openMail: "Open your email app",
-    },
-    readMore: "READ MORE",
-    readLess: "READ LESS",
-  },
-};
+/* -------------------------------------------------------
+   2bis) WhatsApp (numéro & lien prérempli)
+------------------------------------------------------- */
+const WHATSAPP_NUMBER = "33688647659"; // format international sans +
+const WHATSAPP_DISPLAY = "+33 6 88 64 76 59";
+const WHATSAPP_LINK =
+  "https://wa.me/" +
+  WHATSAPP_NUMBER +
+  "?text=" +
+  encodeURIComponent("Bonjour, j’aimerais plus d’infos sur la Villa Myassa 🙂");
 
 /* -------------------------------------------------------
    3) COMPOSANTS UI
 ------------------------------------------------------- */
+
 const Section = ({
   id,
   title,
@@ -227,14 +180,12 @@ const GalleryCard = ({
       className="relative block w-full h-64 sm:h-60 lg:h-64 focus:outline-none focus:ring-2 focus:ring-white/60"
       aria-label={`Voir ${item.alt} en plein écran`}
     >
-      <div className="relative w-full h-full">
-        <Image
-          src={item.src}
-          alt={item.alt}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
+      <img
+        src={item.src}
+        alt={item.alt}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
     </button>
   </div>
 );
@@ -244,14 +195,6 @@ const GalleryCard = ({
 ------------------------------------------------------- */
 
 export default function Page() {
-  // 4.1 Lang from ?lang
-  const lang = useMemo(() => {
-    if (typeof window === "undefined") return "fr";
-    const qp = new URLSearchParams(window.location.search).get("lang");
-    return qp === "en" ? "en" : "fr";
-  }, []);
-
-  // Contact form local state (for mailto fallback only)
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const hero = (DATA.images.find((i) => i.featured) ?? DATA.images[0]) as {
@@ -269,6 +212,7 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
+  // ESC / ← → + bloque scroll en lightbox
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -285,7 +229,15 @@ export default function Page() {
     };
   }, [lbIndex, images.length]);
 
-  // Open two tabs (tour + bestay)
+  const handleMailto = () => {
+    const subject = encodeURIComponent(`Demande d’informations – ${DATA.nom}`);
+    const body = encodeURIComponent(
+      `Bonjour,\n\nJe souhaite me renseigner au sujet de ${DATA.nom}.\n\nNom: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`
+    );
+    window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
+  };
+
+  // Ouvre Matterport + Bestay dans deux onglets
   const openVirtualTour = () => {
     window.open(DATA.virtualTour.url, "_blank", "noopener,noreferrer");
     setTimeout(() => {
@@ -293,32 +245,21 @@ export default function Page() {
     }, 50);
   };
 
-  // Cover src (graceful fallback)
+  // Source vignette 3D
   const coverSrc =
     (DATA.virtualTour.cover?.startsWith("/")
       ? DATA.virtualTour.cover
       : `${PUBLIC_PREFIX}/${DATA.virtualTour.cover}`) || hero.src;
 
-  // Description split + Read more
-  const paragraphs = DATA.description[lang].trim().split(/\n\s*\n/).map((p) => p.trim());
+  // Description "Lire plus"
+  const paragraphs = DATA.description.trim().split(/\n\s*\n/).map((p) => p.trim());
   const firstTwo = paragraphs.slice(0, 2);
   const rest = paragraphs.slice(2);
   const [showMore, setShowMore] = useState(false);
 
-  const t = TEXTS[lang];
-
-  // mailto fallback (kept alongside Formspree)
-  const handleMailto = () => {
-    const subject = encodeURIComponent(`Information request – ${DATA.nom}`);
-    const body = encodeURIComponent(
-      `Hello,\n\nI would like information about ${DATA.nom}.\n\nName: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`
-    );
-    window.location.href = `mailto:${DATA.email}?subject=${subject}&body=${body}`;
-  };
-
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* Nav / header */}
+      {/* Nav */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
           <a href="#accueil" className="select-none">
@@ -328,54 +269,52 @@ export default function Page() {
           </a>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#visite-3d" className="hover:underline">{t.nav.tour}</a>
-            <a href="#galerie" className="hover:underline">{t.nav.gallery}</a>
-            <a href="#atouts" className="hover:underline">{t.nav.features}</a>
-            <a href="#localisation" className="hover:underline">{t.nav.location}</a>
-            <a href="#contact" className="hover:underline">{t.nav.contact}</a>
+            <a href="#visite-3d" className="hover:underline">Visite 3D</a>
+            <a href="#galerie" className="hover:underline">Galerie</a>
+            <a href="#atouts" className="hover:underline">Atouts</a>
+            {/* Tarifs & Disponibilités supprimés */}
+            <a href="#localisation" className="hover:underline">Localisation</a>
+            <a href="#contact" className="hover:underline">Contact</a>
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* Language toggle */}
-            <div className="hidden md:flex items-center gap-1 mr-2" aria-label="Language">
-              <a
-                href="/?lang=fr"
-                className={`px-2 py-1 rounded-md border ${lang === "fr" ? "bg-black text-white" : "bg-white"}`}
-                aria-label="Français"
-                title="Français"
-              >
-                🇫🇷
-              </a>
-              <a
-                href="/?lang=en"
-                className={`px-2 py-1 rounded-md border ${lang === "en" ? "bg-black text-white" : "bg-white"}`}
-                aria-label="English"
-                title="English"
-              >
-                🇬🇧
-              </a>
-            </div>
-
-            {/* Book */}
             <Button asChild>
               <a
                 href="https://bestay.co/villa/villa-myassa"
                 target="_blank"
                 rel="noreferrer"
-                aria-label={t.nav.reserve}
+                aria-label="Réserver sur Bestay"
               >
                 <CalendarDays className="mr-2 h-4 w-4" />
-                {t.nav.reserve}
+                Réserver
+              </a>
+            </Button>
+
+            {/* WhatsApp dans le header */}
+            <Button variant="outline" asChild>
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Écrire sur WhatsApp ${WHATSAPP_DISPLAY}`}
+                className="inline-flex items-center"
+              >
+                <WhatsAppIcon className="mr-2 h-4 w-4" />
+                WhatsApp
               </a>
             </Button>
           </div>
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero (sans overlay), texte en dessous */}
       <section id="accueil">
-        <div className="w-full relative h-[60vh] md:h-[70vh]">
-          <Image src={hero.src} alt={hero.alt} fill priority className="object-cover" />
+        <div className="w-full">
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            className="w-full h-[60vh] md:h-[70vh] object-cover"
+          />
         </div>
 
         <div className="container mx-auto px-4 max-w-6xl py-10">
@@ -386,19 +325,23 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="max-w-3xl"
           >
-            <h1 className="mt-1 text-4xl md:text-5xl font-extrabold leading-tight">
-              {DATA.baseline[lang as "fr" | "en"]}
+            {/* Note supprimée */}
+            <h1 className="mt-2 text-4xl md:text-5xl font-extrabold leading-tight">
+              {DATA.baseline}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
-              {DATA.capacite[lang as "fr" | "en"]} • {DATA.chambres[lang as "fr" | "en"]} • {DATA.distance[lang as "fr" | "en"]}
+              {DATA.capacite} • {DATA.chambres} • {DATA.distance}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
+              <Button size="lg" onClick={handleMailto}>
+                Demander les dates
+              </Button>
               <Button variant="outline" size="lg" asChild>
-                <a href="#galerie">{t.seeGallery}</a>
+                <a href="#galerie">Voir la galerie</a>
               </Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
-                  {t.reserveOnBestay}
+                  Réserver sur Bestay
                 </a>
               </Button>
             </div>
@@ -406,13 +349,15 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Description */}
-      <Section id="description" title={t.desc}>
+      {/* Description (LIRE PLUS) — AVANT la Visite 3D */}
+      <Section id="description" title="Description">
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
               {firstTwo.map((p, i) => (
-                <p key={i} className="mb-4">{p}</p>
+                <p key={i} className="mb-4">
+                  {p}
+                </p>
               ))}
               {rest.length > 0 && (
                 <>
@@ -429,8 +374,12 @@ export default function Page() {
                     ))}
                   </div>
                   <div className="mt-2">
-                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
-                      {showMore ? t.readLess : t.readMore}
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowMore((v) => !v)}
+                      aria-expanded={showMore}
+                    >
+                      {showMore ? "LIRE MOINS" : "LIRE PLUS"}
                     </Button>
                   </div>
                 </>
@@ -443,8 +392,8 @@ export default function Page() {
       {/* Visite 3D */}
       <Section
         id="visite-3d"
-        title={t.nav.tour}
-        subtitle={t.openTourHint}
+        title="Visite 3D (360°)"
+        subtitle="Cliquez sur l’image – la visite s’ouvre dans un onglet, et Bestay dans un second."
       >
         <div
           role="button"
@@ -452,57 +401,41 @@ export default function Page() {
           onClick={openVirtualTour}
           onKeyDown={(e) => ((e as any).key === "Enter" || (e as any).key === " ") && openVirtualTour()}
           className="group relative w-full cursor-pointer overflow-hidden rounded-2xl outline-none focus:ring-2 focus:ring-black/20"
-          aria-label={t.openTour}
+          aria-label="Ouvrir la visite 3D"
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
-            <Image
+            <img
               src={coverSrc || hero.src}
-              alt="3D tour cover"
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              onError={(e) => { e.currentTarget.src = hero.src; }}
+              alt="Visite 3D de la villa"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
             <div className="absolute inset-0 flex items-center justify-center text-white">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
                 <Rotate3D className="h-4 w-4" />
                 <PlayCircle className="h-4 w-4" />
-                {t.openTour}
+                Cliquer pour ouvrir la visite
               </span>
             </div>
           </div>
         </div>
 
         <p className="mt-3 text-xs text-neutral-600">
-          {lang === "fr" ? (
-            <>
-              Si un onglet est bloqué, ouvrez{" "}
-              <a className="underline" href={DATA.virtualTour.url} target="_blank" rel="noopener noreferrer">
-                la visite Matterport
-              </a>{" "}
-              ou{" "}
-              <a className="underline" href={DATA.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
-                la page Bestay
-              </a>
-              .
-            </>
-          ) : (
-            <>
-              If a tab is blocked, open{" "}
-              <a className="underline" href={DATA.virtualTour.url} target="_blank" rel="noopener noreferrer">
-                the Matterport tour
-              </a>{" "}
-              or{" "}
-              <a className="underline" href={DATA.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
-                the Bestay page
-              </a>
-              .
-            </>
-          )}
+          Si votre navigateur bloque l’ouverture d’un des onglets, ouvrez manuellement{" "}
+          <a className="underline" href={DATA.virtualTour.url} target="_blank" rel="noopener noreferrer">
+            la visite Matterport
+          </a>{" "}
+          ou{" "}
+          <a className="underline" href={DATA.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
+            la page Bestay
+          </a>
+          .
         </p>
       </Section>
 
       {/* Galerie */}
-      <Section id="galerie" title={t.nav.gallery}>
+      <Section id="galerie" title="Galerie">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((img, i) => (
             <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
@@ -532,16 +465,12 @@ export default function Page() {
           </button>
 
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            <div className="relative max-h-[92vh] max-w-[92vw] w-auto h-auto">
-              <Image
-                src={images[lbIndex].src}
-                alt={images[lbIndex].alt}
-                width={1400}
-                height={900}
-                className="rounded-2xl shadow-2xl object-contain"
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
+            <img
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+            />
           </div>
 
           <button
@@ -556,13 +485,14 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-      <Section id="atouts" title={t.nav.features}>
+      <Section id="atouts" title="Atouts & Équipements" subtitle="Tout ce dont vous avez besoin pour un séjour réussi">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {DATA.pointsForts.map((p, i) => (
             <Card key={i} className="rounded-2xl">
               <CardHeader>
-                <CardTitle className="text-lg">
-                  {lang === "fr" ? p.fr : p.en}
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5" />
+                  {p}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -571,97 +501,89 @@ export default function Page() {
       </Section>
 
       {/* Localisation */}
-      <Section id="localisation" title={t.nav.location} subtitle={DATA.localisation}>
+      <Section id="localisation" title="Localisation" subtitle={DATA.localisation}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-6">
               <ul className="grid gap-2 py-4">
                 <li className="flex items-center gap-2">
-                  <MapPin aria-hidden="true" className="h-5 w-5" /> {DATA.adresse}
+                  <MapPin className="h-5 w-5" /> {DATA.adresse}
                 </li>
+                {/* Lignes plages/parking supprimées */}
               </ul>
             </CardContent>
           </Card>
           <Card className="rounded-2xl order-1 lg:order-2">
             <CardContent className="p-0">
-              <iframe
-                src={DATA.mapsEmbedSrc}
-                width="100%"
-                height="450"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title={t.mapTitle}
-              />
+              <div dangerouslySetInnerHTML={{ __html: DATA.mapsEmbed }} />
             </CardContent>
           </Card>
         </div>
       </Section>
 
       {/* Contact */}
-      <Section id="contact" title={t.nav.contact}>
+      <Section id="contact" title="Contact">
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Formspree form (replace the ID) */}
-              <form
-                action="https://formspree.io/f/your_form_id"
-                method="POST"
-                className="grid gap-3"
-              >
+              <div className="grid gap-3">
                 <Input
-                  name="name"
-                  placeholder={t.form.name}
-                  required
+                  placeholder="Votre nom"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
                 <Input
-                  name="email"
+                  placeholder="Votre email"
                   type="email"
-                  placeholder={t.form.email}
-                  required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                 />
                 <Textarea
-                  name="message"
-                  placeholder={t.form.message}
+                  placeholder="Votre message"
                   rows={5}
-                  required
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                 />
                 <div className="flex gap-3">
-                  <Button type="submit">{t.form.send}</Button>
-                  <Button variant="outline" type="button" onClick={handleMailto}>
-                    {t.form.openMail}
+                  <Button onClick={handleMailto}>Envoyer par email</Button>
+                  <Button variant="outline" asChild>
+                    <a href={`mailto:${DATA.email}`}>Ouvrir votre messagerie</a>
+                  </Button>
+                  {/* Bouton WhatsApp dans le formulaire */}
+                  <Button variant="outline" asChild>
+                    <a
+                      href={WHATSAPP_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center"
+                    >
+                      <WhatsAppIcon className="mr-2 h-4 w-4" />
+                      WhatsApp
+                    </a>
                   </Button>
                 </div>
-              </form>
-
+              </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  Email :{" "}
-                  <a className="underline" href={`mailto:${DATA.email}`}>
-                    {DATA.email}
-                  </a>
+                  Email : <a className="underline" href={`mailto:${DATA.email}`}>{DATA.email}</a>
                 </p>
+                {/* Ligne téléphone supprimée de l'affichage */}
               </div>
             </div>
           </CardContent>
         </Card>
       </Section>
 
-      {/* Sticky mobile Book button */}
-      <div className="fixed bottom-4 inset-x-4 md:hidden z-50">
-        <Button asChild className="w-full shadow-xl">
-          <a href="https://bestay.co/villa/villa-myassa" target="_blank" rel="noreferrer">
-            {t.nav.reserve}
-          </a>
-        </Button>
-      </div>
+      {/* Bouton WhatsApp flottant */}
+      <a
+        href={WHATSAPP_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 z-50 rounded-full bg-green-500 text-white shadow-lg p-3 hover:scale-105 active:scale-95 transition"
+        aria-label={`Écrire sur WhatsApp ${WHATSAPP_DISPLAY}`}
+      >
+        <WhatsAppIcon className="h-6 w-6" />
+      </a>
 
       {/* Footer */}
       <footer className="py-10 border-t">
@@ -669,34 +591,6 @@ export default function Page() {
           © {new Date().getFullYear()} {DATA.nom} — www.villamyassa.com — Tous droits réservés.
         </div>
       </footer>
-
-      {/* JSON-LD structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LodgingBusiness",
-            name: "Villa Myassa",
-            url: "https://www.villamyassa.com",
-            address: {
-              "@type": "PostalAddress",
-              addressLocality: "Ubud",
-              addressRegion: "Bali",
-              addressCountry: "ID",
-            },
-            image: ["https://www.villamyassa.com/photos/001-hero-piscine.jpg"],
-            amenities: DATA.pointsForts.map((f) => (lang === "fr" ? f.fr : f.en)),
-            makesOffer: [
-              {
-                "@type": "Offer",
-                url: "https://bestay.co/villa/villa-myassa",
-                availability: "https://schema.org/InStock",
-              },
-            ],
-          }),
-        }}
-      />
     </div>
   );
 }
