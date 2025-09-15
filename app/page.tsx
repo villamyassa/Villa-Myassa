@@ -18,12 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
@@ -75,7 +69,7 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 type Lang = "fr" | "en" | "id";
 
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
-const WA_NUMBER_INTL = "33688647659"; // 0033 6 88 64 76 59 -> sans espaces ni +
+const WA_NUMBER_INTL = "33688647659"; // format wa.me (sans +)
 
 const WA_TEXT_DEFAULT: Record<Lang, string> = {
   fr: "Bonjour, je souhaite des informations sur la Villa Myassa (dates, tarifs, etc.).",
@@ -406,8 +400,7 @@ export default function Page() {
       : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) || hero.src;
 
   // Description "Lire plus"
-  const description =
-    (DATA_BASE.description as any)[lang] as string;
+  const description = (DATA_BASE.description as any)[lang] as string;
   const paragraphs = description.trim().split(/\n\s*\n/).map((p) => p.trim());
   const firstTwo = paragraphs.slice(0, 2);
   const rest = paragraphs.slice(2);
@@ -438,31 +431,21 @@ export default function Page() {
 
           {/* Right tools */}
           <div className="flex items-center gap-2">
-            {/* Language switcher — dropdown with flags */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  aria-label="Choisir la langue / Choose language / Pilih bahasa"
-                  className="h-8 px-3 rounded-md border text-sm inline-flex items-center gap-2"
-                >
-                  <span className="text-base">
-                    {lang === "fr" ? "🇫🇷" : lang === "en" ? "🇬🇧" : "🇮🇩"}
-                  </span>
-                  <span className="uppercase text-xs">{lang}</span>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[160px]">
-                <DropdownMenuItem onClick={() => setLang("fr")} aria-label="Français">
-                  <span className="mr-2">🇫🇷</span> Français
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLang("en")} aria-label="English">
-                  <span className="mr-2">🇬🇧</span> English
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLang("id")} aria-label="Bahasa Indonesia">
-                  <span className="mr-2">🇮🇩</span> Bahasa Indonesia
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Language switcher — native select with flags */}
+            <label className="sr-only" htmlFor="lang-select">
+              Choisir la langue / Choose language / Pilih bahasa
+            </label>
+            <select
+              id="lang-select"
+              aria-label="Choisir la langue / Choose language / Pilih bahasa"
+              className="h-9 rounded-md border px-2 text-sm bg-white"
+              value={lang}
+              onChange={(e) => setLang(e.target.value as Lang)}
+            >
+              <option value="fr">🇫🇷 Français</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="id">🇮🇩 Bahasa Indonesia</option>
+            </select>
 
             <Button asChild>
               <a
