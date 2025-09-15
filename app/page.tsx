@@ -414,19 +414,18 @@ export default function Page() {
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
-          {/* Le conteneur du titre a min-w-0 pour autoriser la troncature */}
-          <a href="#accueil" className="select-none min-w-0">
+        {/* hauteur auto en mobile (+ espace vertical) ; hauteur fixe en ≥ md */}
+        <div className="container mx-auto px-4 max-w-6xl md:h-16 py-2 md:py-0 flex flex-wrap items-center justify-between gap-2">
+          {/* Titre : 2 lignes en mobile, 1 ligne en ≥ sm */}
+          <a href="#accueil" className="select-none flex-1 min-w-[180px]">
             <span
               className="
                 block
-                text-xl md:text-3xl font-extrabold tracking-tight font-serif leading-none
-                whitespace-nowrap truncate
-                max-w-[58vw] sm:max-w-[320px] md:max-w-none
+                text-[20px] sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-tight
               "
-              title="Villa Myassa, Ubud, BALI"
             >
-              Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
+              Villa Myassa,<br className="sm:hidden" />
+              <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
             </span>
           </a>
 
@@ -439,7 +438,7 @@ export default function Page() {
           </nav>
 
           {/* Right tools */}
-          <div className="flex items-center gap-2">
+          <div className="shrink-0 flex items-center gap-2">
             {/* Language switcher — native select with flags */}
             <label className="sr-only" htmlFor="lang-select">
               Choisir la langue / Choose language / Pilih bahasa
@@ -619,7 +618,7 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={onBackdropClick(closeLb)}>
           <button
             type="button"
             onClick={onClickClose(setLbIndex)}
@@ -779,10 +778,16 @@ export default function Page() {
   );
 }
 
-/* util pour éviter une fonction inline anonyme dans le button Fermer */
+/* petites utilités */
 function onClickClose(set: (v: number | null) => void) {
   return (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     set(null);
+  };
+}
+function onBackdropClick(close: () => void) {
+  return (e: React.MouseEvent<HTMLDivElement>) => {
+    // évite de fermer si l'utilisateur clique sur l'image
+    close();
   };
 }
