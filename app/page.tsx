@@ -258,7 +258,7 @@ const LTEXT = (lang: Lang) => ({
     yourEmail: lang === "fr" ? "Votre email" : lang === "id" ? "Email Anda" : "Your email",
     yourMessage: lang === "fr" ? "Votre message" : lang === "id" ? "Pesan Anda" : "Your message",
     sendEmail: lang === "fr" ? "Envoyer par email" : lang === "id" ? "Kirim via email" : "Send by email",
-    openMailer: lang === "fr" ? "Ouvrir votre messagerie" : lang === "id" ? "Buka aplikasi email" : "Open your mail app",
+    openMailer: "Open your mail app",
     emailLabel: "Email",
   },
 });
@@ -278,7 +278,7 @@ const Section = ({
   subtitle?: string;
   children: React.ReactNode;
 }) => (
-  <section id={id} className="py-20 scroll-mt-24">
+  <section id={id} className="py-12 md:py-16 scroll-mt-24">
     <div className="container mx-auto px-4 max-w-6xl">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -289,7 +289,7 @@ const Section = ({
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{title}</h2>
         {subtitle && <p className="text-neutral-500 mt-2 max-w-2xl">{subtitle}</p>}
       </motion.div>
-      <div className="mt-10">{children}</div>
+      <div className="mt-6 md:mt-8">{children}</div>
     </div>
   </section>
 );
@@ -414,10 +414,8 @@ export default function Page() {
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        {/* Mobile: titre sur 1ère ligne, centré, pleine largeur.
-            2e ligne: langues / réserver / WhatsApp (≥ md). */}
         <div className="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-0 py-3 md:h-16">
-          {/* Ligne 1 : Titre pleine largeur, centré en mobile */}
+          {/* Titre pleine largeur, centré en mobile */}
           <div className="w-full md:w-auto overflow-hidden">
             <a href="#accueil" className="select-none block w-full">
               <span
@@ -434,9 +432,8 @@ export default function Page() {
             </a>
           </div>
 
-          {/* Ligne 2 en mobile : outils. En ≥ md: à droite */}
+          {/* Outils */}
           <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-2">
-            {/* Nav (cachée en mobile) */}
             <nav className="hidden md:flex items-center gap-6 text-sm mr-2">
               <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
               <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
@@ -445,7 +442,6 @@ export default function Page() {
               <a href="#contact" className="hover:underline">{L.nav.contact}</a>
             </nav>
 
-            {/* Sélecteur de langue */}
             <label className="sr-only" htmlFor="lang-select">
               Choisir la langue / Choose language / Pilih bahasa
             </label>
@@ -473,7 +469,6 @@ export default function Page() {
               </a>
             </Button>
 
-            {/* WhatsApp bubble (visible ≥ md) */}
             <a
               href={waHrefTop}
               target="_blank"
@@ -488,7 +483,7 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero SANS overlay, texte en dessous */}
+      {/* Hero */}
       <section id="accueil">
         <div className="w-full">
           <img
@@ -529,7 +524,7 @@ export default function Page() {
       {/* Description */}
       <Section id="description" title={L.description.title}>
         <Card className="rounded-2xl">
-          <CardContent className="py-6">
+          <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
               {firstTwo.map((p, i) => (
                 <p key={i} className="mb-4">
@@ -567,11 +562,7 @@ export default function Page() {
       </Section>
 
       {/* Visite 3D */}
-      <Section
-        id="visite-3d"
-        title={L.tour.title}
-        subtitle={L.tour.subtitle}
-      >
+      <Section id="visite-3d" title={L.tour.title} subtitle={L.tour.subtitle}>
         <div
           role="button"
           tabIndex={0}
@@ -686,8 +677,8 @@ export default function Page() {
       <Section id="localisation" title={L.location.title} subtitle={(DATA_BASE.localisation as any)[lang]}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
-            <CardContent className="py-6">
-              <ul className="grid gap-2 py-4">
+            <CardContent className="py-5">
+              <ul className="grid gap-2 py-2">
                 <li className="flex items-center gap-2">
                   <MapPin className="h-5 w-5" /> {DATA_BASE.adresse}
                 </li>
@@ -721,7 +712,7 @@ export default function Page() {
       {/* Contact */}
       <Section id="contact" title={L.contact.title}>
         <Card className="rounded-2xl">
-          <CardContent className="py-6">
+          <CardContent className="py-5">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
                 <Input
@@ -762,7 +753,7 @@ export default function Page() {
         </Card>
       </Section>
 
-      {/* WhatsApp floating bubble (always visible) */}
+      {/* WhatsApp floating bubble */}
       <a
         href={waHrefFloating}
         target="_blank"
