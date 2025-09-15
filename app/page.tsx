@@ -414,32 +414,37 @@ export default function Page() {
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        {/* hauteur auto en mobile (+ espace vertical) ; hauteur fixe en ≥ md */}
-        <div className="container mx-auto px-4 max-w-6xl md:h-16 py-2 md:py-0 flex flex-wrap items-center justify-between gap-2">
-          {/* Titre : 2 lignes en mobile, 1 ligne en ≥ sm */}
-          <a href="#accueil" className="select-none flex-1 min-w-[180px]">
-            <span
-              className="
-                block
-                text-[20px] sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-tight
-              "
-            >
-              Villa Myassa,<br className="sm:hidden" />
-              <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
-            </span>
-          </a>
+        {/* En mobile: le header devient une colonne avec titre pleine largeur (ligne 1),
+            puis outils (ligne 2). En ≥ md: ligne unique classique. */}
+        <div className="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-0 py-3 md:h-16">
+          {/* Ligne 1 : Titre pleine largeur, 1 seule ligne */}
+          <div className="w-full md:w-auto overflow-hidden">
+            <a href="#accueil" className="select-none block w-full">
+              <span
+                className="
+                  block
+                  text-2xl sm:text-3xl md:text-3xl font-extrabold tracking-tight font-serif leading-none
+                  whitespace-nowrap
+                "
+                title="Villa Myassa, Ubud, BALI"
+              >
+                Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
+              </span>
+            </a>
+          </div>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
-            <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
-            <a href="#atouts" className="hover:underline">{L.nav.features}</a>
-            <a href="#localisation" className="hover:underline">{L.nav.location}</a>
-            <a href="#contact" className="hover:underline">{L.nav.contact}</a>
-          </nav>
+          {/* Ligne 2 en mobile : outils (lang, réserver, WhatsApp). En ≥ md: à droite */}
+          <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-2">
+            {/* Nav (cachée en mobile comme avant) */}
+            <nav className="hidden md:flex items-center gap-6 text-sm mr-2">
+              <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
+              <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
+              <a href="#atouts" className="hover:underline">{L.nav.features}</a>
+              <a href="#localisation" className="hover:underline">{L.nav.location}</a>
+              <a href="#contact" className="hover:underline">{L.nav.contact}</a>
+            </nav>
 
-          {/* Right tools */}
-          <div className="shrink-0 flex items-center gap-2">
-            {/* Language switcher — native select with flags */}
+            {/* Sélecteur de langue */}
             <label className="sr-only" htmlFor="lang-select">
               Choisir la langue / Choose language / Pilih bahasa
             </label>
@@ -467,7 +472,7 @@ export default function Page() {
               </a>
             </Button>
 
-            {/* WhatsApp bubble (top-right) — hidden on mobile, visible ≥ md */}
+            {/* WhatsApp bubble (affichée ≥ md comme avant) */}
             <a
               href={waHrefTop}
               target="_blank"
@@ -778,7 +783,7 @@ export default function Page() {
   );
 }
 
-/* petites utilités */
+/* utilitaires */
 function onClickClose(set: (v: number | null) => void) {
   return (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -786,8 +791,7 @@ function onClickClose(set: (v: number | null) => void) {
   };
 }
 function onBackdropClick(close: () => void) {
-  return (e: React.MouseEvent<HTMLDivElement>) => {
-    // évite de fermer si l'utilisateur clique sur l'image
+  return () => {
     close();
   };
 }
