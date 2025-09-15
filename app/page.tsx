@@ -414,10 +414,10 @@ export default function Page() {
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        {/* En mobile: le header devient une colonne avec titre pleine largeur (ligne 1),
-            puis outils (ligne 2). En ≥ md: ligne unique classique. */}
+        {/* Mobile: titre sur 1ère ligne, centré, pleine largeur.
+            2e ligne: langues / réserver / WhatsApp (≥ md). */}
         <div className="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-0 py-3 md:h-16">
-          {/* Ligne 1 : Titre pleine largeur, 1 seule ligne */}
+          {/* Ligne 1 : Titre pleine largeur, centré en mobile */}
           <div className="w-full md:w-auto overflow-hidden">
             <a href="#accueil" className="select-none block w-full">
               <span
@@ -425,6 +425,7 @@ export default function Page() {
                   block
                   text-2xl sm:text-3xl md:text-3xl font-extrabold tracking-tight font-serif leading-none
                   whitespace-nowrap
+                  text-center md:text-left
                 "
                 title="Villa Myassa, Ubud, BALI"
               >
@@ -433,9 +434,9 @@ export default function Page() {
             </a>
           </div>
 
-          {/* Ligne 2 en mobile : outils (lang, réserver, WhatsApp). En ≥ md: à droite */}
+          {/* Ligne 2 en mobile : outils. En ≥ md: à droite */}
           <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-2">
-            {/* Nav (cachée en mobile comme avant) */}
+            {/* Nav (cachée en mobile) */}
             <nav className="hidden md:flex items-center gap-6 text-sm mr-2">
               <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
               <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
@@ -472,7 +473,7 @@ export default function Page() {
               </a>
             </Button>
 
-            {/* WhatsApp bubble (affichée ≥ md comme avant) */}
+            {/* WhatsApp bubble (visible ≥ md) */}
             <a
               href={waHrefTop}
               target="_blank"
