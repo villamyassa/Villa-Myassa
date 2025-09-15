@@ -415,8 +415,17 @@ export default function Page() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between">
-          <a href="#accueil" className="select-none">
-            <span className="block text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none">
+          {/* Le conteneur du titre a min-w-0 pour autoriser la troncature */}
+          <a href="#accueil" className="select-none min-w-0">
+            <span
+              className="
+                block
+                text-xl md:text-3xl font-extrabold tracking-tight font-serif leading-none
+                whitespace-nowrap truncate
+                max-w-[58vw] sm:max-w-[320px] md:max-w-none
+              "
+              title="Villa Myassa, Ubud, BALI"
+            >
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
             </span>
           </a>
@@ -613,7 +622,7 @@ export default function Page() {
         <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
           <button
             type="button"
-            onClick={closeLb}
+            onClick={onClickClose(setLbIndex)}
             aria-label="Fermer"
             className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
           >
@@ -768,4 +777,12 @@ export default function Page() {
       </footer>
     </div>
   );
+}
+
+/* util pour éviter une fonction inline anonyme dans le button Fermer */
+function onClickClose(set: (v: number | null) => void) {
+  return (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    set(null);
+  };
 }
