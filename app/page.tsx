@@ -18,6 +18,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 /* -------------------------------------------------------
    1) PHOTOS (dans /public/photos)
@@ -66,26 +72,44 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
    2) DONNÉES / I18N
 ------------------------------------------------------- */
 
-type Lang = "fr" | "en";
+type Lang = "fr" | "en" | "id";
 
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 const WA_NUMBER_INTL = "33688647659"; // 0033 6 88 64 76 59 -> sans espaces ni +
-const WA_TEXT_DEFAULT =
-  "Bonjour, je souhaite des informations sur la Villa Myassa (dates, tarifs, etc.).";
+
+const WA_TEXT_DEFAULT: Record<Lang, string> = {
+  fr: "Bonjour, je souhaite des informations sur la Villa Myassa (dates, tarifs, etc.).",
+  en: "Hello, I’d like information about Villa Myassa (dates, rates, etc.).",
+  id: "Halo, saya ingin informasi tentang Villa Myassa (tanggal, tarif, dll.).",
+};
 
 const DATA_BASE = {
   nom: "Villa Myassa",
   baseline: {
     fr: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
     en: "Contemporary villa with private pool in the heart of Ubud – BALI",
+    id: "Villa kontemporer dengan kolam renang pribadi di pusat Ubud – BALI",
   },
   localisation: {
     fr: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
     en: "Singakerta, Ubud — Gianyar, Bali (Indonesia)",
+    id: "Singakerta, Ubud — Gianyar, Bali (Indonesia)",
   },
-  capacite: { fr: "3 chambres (lits queen)", en: "3 bedrooms (queen beds)" },
-  chambres: { fr: "3.5 salles de bain", en: "3.5 bathrooms" },
-  distance: { fr: "Jungle d’Ubud (Singakerta)", en: "Ubud jungle (Singakerta)" },
+  capacite: {
+    fr: "3 chambres (lits queen)",
+    en: "3 bedrooms (queen beds)",
+    id: "3 kamar tidur (kasur queen)",
+  },
+  chambres: {
+    fr: "3.5 salles de bain",
+    en: "3.5 bathrooms",
+    id: "3,5 kamar mandi",
+  },
+  distance: {
+    fr: "Jungle d’Ubud (Singakerta)",
+    en: "Ubud jungle (Singakerta)",
+    id: "Hutan Ubud (Singakerta)",
+  },
   email: "contact@villamyassa.com",
   images: IMAGES,
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
@@ -118,6 +142,17 @@ const DATA_BASE = {
       "Safe",
       "Mosquito nets",
     ],
+    id: [
+      "Kolam renang pribadi",
+      "AC (penyejuk udara)",
+      "Wi-Fi berkecepatan tinggi",
+      "Parkir gratis di lokasi",
+      "Dapur lengkap (oven, kompor, kulkas, pemanggang roti, ketel)",
+      "TV / Smart TV di kamar tidur",
+      "Kamar mandi dalam",
+      "Brankas",
+      "Kelambu nyamuk",
+    ],
   },
   description: {
     fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
@@ -142,61 +177,95 @@ Step into your private oasis: a sparkling pool crowned by a Buddha statue, a sun
 Our privileged location places you at the gateway to Ubud’s cultural scene—Monkey Forest, Ubud Palace, art galleries, and countless cafés and boutiques—just minutes from your private sanctuary.
 
 Book your tropical escape at Villa Myassa today and experience the harmony of modern elegance and the mystical magic of Bali’s jungle.`,
+    id: `Selamat datang di Villa Myassa di Singakerta, tempat desain kontemporer berpadu dengan lanskap menawan hutan Ubud. Dari pintu masuk, air mancur elegan mengalir ke kolam tenang dengan pijakan batu, menetapkan suasana untuk masa inap yang istimewa.
+
+Tiga kamar tidur yang dirancang apik masing-masing memiliki tempat tidur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama dilengkapi kelambu kanopi dan bak mandi luar ruang; kamar kedua menawarkan shower luar ruang yang menyegarkan; sedangkan kamar ketiga menghadirkan pengalaman mandi semi-terbuka.
+
+Ruang dalam dan luar berpadu melalui area terbuka yang lapang, secara alami sejuk berkat ventilasi silang dan kipas plafon. Peta Bali ukir kayu mempermanis ruang keluarga yang nyaman, ideal untuk berkumpul atau bersantai. Area makan nyaman untuk enam orang, sementara dapur modern dengan island mengundang momen memasak yang berkesan.
+
+Di luar, oasis pribadi menanti: kolam berkilau berhias patung Buddha, sunken lounge yang menghadap air, dan dua kursi apung untuk relaksasi total. Nikmati balé bengong dengan tirai putih — sempurna untuk pijat. Dua kursi berjemur tambahan menghadap taman rimbun, serta shower luar ruang di area kolam melengkapi surga tropis ini.
+
+Lokasi istimewa kami menempatkan Anda di gerbang dunia budaya Ubud — Monkey Forest, Ubud Palace, galeri seni, serta kafe dan butik tak terhitung jumlahnya — hanya beberapa menit dari tempat peristirahatan pribadi Anda.
+
+Pesan liburan tropis Anda di Villa Myassa hari ini dan rasakan keharmonisan elegansi modern dengan pesona mistis hutan Bali.`,
   },
 };
 
 const LTEXT = (lang: Lang) => ({
   nav: {
-    gallery: lang === "fr" ? "Galerie" : "Gallery",
-    features: lang === "fr" ? "Atouts" : "Highlights",
-    location: lang === "fr" ? "Localisation" : "Location",
-    contact: lang === "fr" ? "Contact" : "Contact",
-    tour: lang === "fr" ? "Visite 3D" : "3D Tour",
-    book: lang === "fr" ? "Réserver" : "Book",
+    gallery: lang === "fr" ? "Galerie" : lang === "id" ? "Galeri" : "Gallery",
+    features: lang === "fr" ? "Atouts" : lang === "id" ? "Keunggulan" : "Highlights",
+    location: lang === "fr" ? "Localisation" : lang === "id" ? "Lokasi" : "Location",
+    contact: lang === "fr" ? "Contact" : lang === "id" ? "Kontak" : "Contact",
+    tour: lang === "fr" ? "Visite 3D" : lang === "id" ? "Tur 3D" : "3D Tour",
+    book: lang === "fr" ? "Réserver" : lang === "id" ? "Pesan" : "Book",
   },
   hero: {
-    capacity: DATA_BASE.capacite[lang],
-    baths: DATA_BASE.chambres[lang],
-    area: DATA_BASE.distance[lang],
+    capacity: DATA_BASE.capacite[lang as keyof typeof DATA_BASE.capacite] as string,
+    baths: DATA_BASE.chambres[lang as keyof typeof DATA_BASE.chambres] as string,
+    area: DATA_BASE.distance[lang as keyof typeof DATA_BASE.distance] as string,
   },
   description: {
-    title: lang === "fr" ? "Description" : "Description",
-    more: lang === "fr" ? "LIRE PLUS" : "READ MORE",
-    less: lang === "fr" ? "LIRE MOINS" : "READ LESS",
+    title: lang === "fr" ? "Description" : lang === "id" ? "Deskripsi" : "Description",
+    more: lang === "fr" ? "LIRE PLUS" : lang === "id" ? "BACA LEBIH LANJUT" : "READ MORE",
+    less: lang === "fr" ? "LIRE MOINS" : lang === "id" ? "SEMBUNYIKAN" : "READ LESS",
   },
   tour: {
-    title: lang === "fr" ? "Visite 3D (360°)" : "3D Virtual Tour (360°)",
+    title:
+      lang === "fr"
+        ? "Visite 3D (360°)"
+        : lang === "id"
+        ? "Tur Virtual 3D (360°)"
+        : "3D Virtual Tour (360°)",
     subtitle:
       lang === "fr"
         ? "Cliquez sur l’image — la visite s’ouvre dans un onglet, et Bestay dans un second."
+        : lang === "id"
+        ? "Klik gambar — tur akan terbuka di tab baru, dan Bestay di tab lainnya."
         : "Click the image — the tour opens in a new tab, and Bestay in another.",
-    button: lang === "fr" ? "Cliquer pour ouvrir la visite" : "Click to open the tour",
-    fallback1: lang === "fr" ? "la visite Matterport" : "the Matterport tour",
-    fallback2: lang === "fr" ? "la page Bestay" : "the Bestay page",
+    button:
+      lang === "fr"
+        ? "Cliquer pour ouvrir la visite"
+        : lang === "id"
+        ? "Klik untuk membuka tur"
+        : "Click to open the tour",
+    fallback1:
+      lang === "fr" ? "la visite Matterport" : lang === "id" ? "tur Matterport" : "the Matterport tour",
+    fallback2:
+      lang === "fr" ? "la page Bestay" : lang === "id" ? "halaman Bestay" : "the Bestay page",
     fallbackText:
       lang === "fr"
         ? "Si votre navigateur bloque l’ouverture d’un des onglets, ouvrez manuellement "
+        : lang === "id"
+        ? "Jika peramban memblokir salah satu tab, buka secara manual "
         : "If your browser blocks one of the tabs, open ",
-    fallbackText2: lang === "fr" ? " ou " : " or ",
+    fallbackText2: lang === "fr" ? " ou " : lang === "id" ? " atau " : " or ",
   },
   features: {
-    title: lang === "fr" ? "Atouts & Équipements" : "Highlights & Amenities",
+    title:
+      lang === "fr"
+        ? "Atouts & Équipements"
+        : lang === "id"
+        ? "Keunggulan & Fasilitas"
+        : "Highlights & Amenities",
     subtitle:
       lang === "fr"
         ? "Tout ce dont vous avez besoin pour un séjour réussi"
+        : lang === "id"
+        ? "Semua yang Anda butuhkan untuk masa inap yang menyenangkan"
         : "Everything you need for a great stay",
   },
   location: {
-    title: lang === "fr" ? "Localisation" : "Location",
+    title: lang === "fr" ? "Localisation" : lang === "id" ? "Lokasi" : "Location",
   },
   contact: {
-    title: lang === "fr" ? "Contact" : "Contact",
-    yourName: lang === "fr" ? "Votre nom" : "Your name",
-    yourEmail: lang === "fr" ? "Votre email" : "Your email",
-    yourMessage: lang === "fr" ? "Votre message" : "Your message",
-    sendEmail: lang === "fr" ? "Envoyer par email" : "Send by email",
-    openMailer: lang === "fr" ? "Ouvrir votre messagerie" : "Open your mail app",
-    emailLabel: lang === "fr" ? "Email" : "Email",
+    title: lang === "fr" ? "Contact" : lang === "id" ? "Kontak" : "Contact",
+    yourName: lang === "fr" ? "Votre nom" : lang === "id" ? "Nama Anda" : "Your name",
+    yourEmail: lang === "fr" ? "Votre email" : lang === "id" ? "Email Anda" : "Your email",
+    yourMessage: lang === "fr" ? "Votre message" : lang === "id" ? "Pesan Anda" : "Your message",
+    sendEmail: lang === "fr" ? "Envoyer par email" : lang === "id" ? "Kirim via email" : "Send by email",
+    openMailer: lang === "fr" ? "Ouvrir votre messagerie" : lang === "id" ? "Buka aplikasi email" : "Open your mail app",
+    emailLabel: "Email",
   },
 });
 
@@ -264,7 +333,7 @@ export default function Page() {
   const [lang, setLang] = useState<Lang>("fr");
   useEffect(() => {
     const saved = typeof window !== "undefined" ? window.localStorage.getItem("lang") : null;
-    if (saved === "fr" || saved === "en") setLang(saved);
+    if (saved === "fr" || saved === "en" || saved === "id") setLang(saved);
   }, []);
   useEffect(() => {
     if (typeof window !== "undefined") window.localStorage.setItem("lang", lang);
@@ -310,10 +379,14 @@ export default function Page() {
     const subject =
       lang === "fr"
         ? `Demande d’informations – ${DATA_BASE.nom}`
+        : lang === "id"
+        ? `Permintaan informasi – ${DATA_BASE.nom}`
         : `Information request – ${DATA_BASE.nom}`;
     const body =
       lang === "fr"
         ? `Bonjour,\n\nJe souhaite me renseigner au sujet de ${DATA_BASE.nom}.\n\nNom: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`
+        : lang === "id"
+        ? `Halo,\n\nSaya ingin menanyakan tentang ${DATA_BASE.nom}.\n\nNama: ${form.name}\nEmail: ${form.email}\nPesan: ${form.message}`
         : `Hello,\n\nI'd like information about ${DATA_BASE.nom}.\n\nName: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`;
     window.location.href = `mailto:${DATA_BASE.email}?subject=${encodeURIComponent(
       subject
@@ -333,14 +406,15 @@ export default function Page() {
       : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) || hero.src;
 
   // Description "Lire plus"
-  const description = DATA_BASE.description[lang];
+  const description =
+    (DATA_BASE.description as any)[lang] as string;
   const paragraphs = description.trim().split(/\n\s*\n/).map((p) => p.trim());
   const firstTwo = paragraphs.slice(0, 2);
   const rest = paragraphs.slice(2);
   const [showMore, setShowMore] = useState(false);
 
   // WhatsApp links
-  const waHrefTop = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT)}`;
+  const waHrefTop = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`;
   const waHrefFloating = waHrefTop;
 
   return (
@@ -364,27 +438,31 @@ export default function Page() {
 
           {/* Right tools */}
           <div className="flex items-center gap-2">
-            {/* Language switcher — visible on mobile too */}
-            <div className="flex items-center gap-1 mr-1">
-              <button
-                aria-label="Français"
-                className={`h-8 px-2 rounded-md border text-xs ${
-                  lang === "fr" ? "bg-black text-white" : "bg-white"
-                }`}
-                onClick={() => setLang("fr")}
-              >
-                🇫🇷 FR
-              </button>
-              <button
-                aria-label="English"
-                className={`h-8 px-2 rounded-md border text-xs ${
-                  lang === "en" ? "bg-black text-white" : "bg-white"
-                }`}
-                onClick={() => setLang("en")}
-              >
-                🇬🇧 EN
-              </button>
-            </div>
+            {/* Language switcher — dropdown with flags */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  aria-label="Choisir la langue / Choose language / Pilih bahasa"
+                  className="h-8 px-3 rounded-md border text-sm inline-flex items-center gap-2"
+                >
+                  <span className="text-base">
+                    {lang === "fr" ? "🇫🇷" : lang === "en" ? "🇬🇧" : "🇮🇩"}
+                  </span>
+                  <span className="uppercase text-xs">{lang}</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-[160px]">
+                <DropdownMenuItem onClick={() => setLang("fr")} aria-label="Français">
+                  <span className="mr-2">🇫🇷</span> Français
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLang("en")} aria-label="English">
+                  <span className="mr-2">🇬🇧</span> English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLang("id")} aria-label="Bahasa Indonesia">
+                  <span className="mr-2">🇮🇩</span> Bahasa Indonesia
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <Button asChild>
               <a
@@ -432,7 +510,7 @@ export default function Page() {
             className="max-w-3xl"
           >
             <h1 className="mt-1 text-4xl md:text-5xl font-extrabold leading-tight">
-              {DATA_BASE.baseline[lang]}
+              {(DATA_BASE.baseline as any)[lang]}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
               {L.hero.capacity} • {L.hero.baths} • {L.hero.area}
@@ -597,7 +675,7 @@ export default function Page() {
       {/* Atouts */}
       <Section id="atouts" title={L.features.title} subtitle={L.features.subtitle}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {DATA_BASE.pointsForts[lang].map((p, i) => (
+          {(DATA_BASE.pointsForts as any)[lang].map((p: string, i: number) => (
             <Card key={i} className="rounded-2xl">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">{p}</CardTitle>
@@ -608,7 +686,7 @@ export default function Page() {
       </Section>
 
       {/* Localisation */}
-      <Section id="localisation" title={L.location.title} subtitle={DATA_BASE.localisation[lang]}>
+      <Section id="localisation" title={L.location.title} subtitle={(DATA_BASE.localisation as any)[lang]}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-6">
@@ -620,11 +698,17 @@ export default function Page() {
                   <Waves className="h-5 w-5" />{" "}
                   {lang === "fr"
                     ? "Plages / points d’intérêt à proximité (à compléter)"
+                    : lang === "id"
+                    ? "Pantai / tempat menarik terdekat (akan dilengkapi)"
                     : "Beaches / points of interest nearby (to be completed)"}
                 </li>
                 <li className="flex items-center gap-2">
                   <Car className="h-5 w-5" />{" "}
-                  {lang === "fr" ? "Accès / parking (à compléter)" : "Access / parking (to be completed)"}
+                  {lang === "fr"
+                    ? "Accès / parking (à compléter)"
+                    : lang === "id"
+                    ? "Akses / parkir (akan dilengkapi)"
+                    : "Access / parking (to be completed)"}
                 </li>
               </ul>
             </CardContent>
