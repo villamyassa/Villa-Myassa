@@ -375,57 +375,46 @@ export default function Page() {
     WA_TEXT_DEFAULT[lang]
   )}`;
 
-  /* --------- JSON-LD (VacationRental) avec URLs absolues + AggregateOffer --------- */
-  const absoluteImages = [
-    `${SITE_ORIGIN}/photos/001-hero-piscine.jpg`,
-    `${SITE_ORIGIN}/photos/003-suite1.jpg`,
-    `${SITE_ORIGIN}/photos/005-cuisine.jpg`,
-  ];
-
+  /* ------------------- JSON-LD LodgingBusiness (sans alerte) ------------------- */
   const jsonLdLodging = {
-  "@context": "https://schema.org",
-  "@type": "LodgingBusiness", // ← au lieu de "VacationRental"
-  name: "Villa Myassa",
-  url: SITE_ORIGIN,
-  image: [
-    `${SITE_ORIGIN}/photos/001-hero-piscine.jpg`,
-    `${SITE_ORIGIN}/photos/003-suite1.jpg`,
-    `${SITE_ORIGIN}/photos/005-cuisine.jpg`,
-  ],
-  description: DATA_BASE.baseline[lang],
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "F66R+H95 Singakerta",
-    addressLocality: "Ubud",
-    addressRegion: "Bali",
-    postalCode: "80571",
-    addressCountry: "ID",
-  },
-  hasMap:
-    "https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia",
-  geo: { "@type": "GeoCoordinates", latitude: -8.534, longitude: 115.255 },
-  email: "contact@villamyassa.com",
-  numberOfRooms: 3,
-  // Google ne demande pas "checkinTime/checkoutTime" pour ce type, tu peux les garder si tu veux :
-  checkinTime: "15:00",
-  checkoutTime: "11:00",
-
-  // Pour donner une idée de tarifs sans viser le rich result "vacation rental"
-  priceRange: "$150 - $250",
-  makesOffer: {
-    "@type": "Offer",
-    url: BESTAY_URL,
-    priceCurrency: "USD",
-  },
-
-  amenityFeature: ((DATA_BASE.pointsForts as any)[lang] || []).map((f: string) => ({
-    "@type": "LocationFeatureSpecification",
-    name: f,
-    value: true,
-  })),
-  sameAs: [BESTAY_URL],
-};
-
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    name: "Villa Myassa",
+    url: SITE_ORIGIN,
+    image: [
+      `${SITE_ORIGIN}/photos/001-hero-piscine.jpg`,
+      `${SITE_ORIGIN}/photos/003-suite1.jpg`,
+      `${SITE_ORIGIN}/photos/005-cuisine.jpg`,
+    ],
+    description: DATA_BASE.baseline[lang],
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "F66R+H95 Singakerta",
+      addressLocality: "Ubud",
+      addressRegion: "Bali",
+      postalCode: "80571",
+      addressCountry: "ID",
+    },
+    hasMap:
+      "https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia",
+    geo: { "@type": "GeoCoordinates", latitude: -8.534, longitude: 115.255 },
+    email: "contact@villamyassa.com",
+    numberOfRooms: 3,
+    checkinTime: "15:00",
+    checkoutTime: "11:00",
+    priceRange: "$150 - $250",
+    makesOffer: {
+      "@type": "Offer",
+      url: BESTAY_URL,
+      priceCurrency: "USD",
+    },
+    amenityFeature: ((DATA_BASE.pointsForts as any)[lang] || []).map((f: string) => ({
+      "@type": "LocationFeatureSpecification",
+      name: f,
+      value: true,
+    })),
+    sameAs: [BESTAY_URL],
+  };
 
   const jsonLdFAQ = {
     "@context": "https://schema.org",
@@ -490,17 +479,9 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* JSON-LD schema.org */}
-      <Script
-        id="jsonld-lodging"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }}
-      />
-      <Script
-        id="jsonld-faq"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }}
-      />
+      {/* JSON-LD */}
+      <Script id="jsonld-lodging" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }} />
+      <Script id="jsonld-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
@@ -522,9 +503,7 @@ export default function Page() {
                 title="Villa Myassa, Ubud, BALI"
               >
                 Villa Myassa, <span className="italic">Ubud</span>,
-                <span className="hidden landscape:inline">
-                  <br />
-                </span>{" "}
+                <span className="hidden landscape:inline"><br /></span>{" "}
                 <span className="uppercase">BALI</span>
               </span>
             </a>
@@ -533,27 +512,15 @@ export default function Page() {
           {/* Nav + actions */}
           <div className="w-full md:w-auto flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end gap-2 landscape:gap-3">
             <nav className="hidden md:flex landscape:flex w-full md:w-auto items-center justify-center md:justify-end gap-4 text-sm">
-              <a href="#visite-3d" className="hover:underline">
-                {L.nav.tour}
-              </a>
-              <a href="#galerie" className="hover:underline">
-                {L.nav.gallery}
-              </a>
-              <a href="#atouts" className="hover:underline">
-                {L.nav.features}
-              </a>
-              <a href="#localisation" className="hover:underline">
-                {L.nav.location}
-              </a>
-              <a href="#contact" className="hover:underline">
-                {L.nav.contact}
-              </a>
+              <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
+              <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
+              <a href="#atouts" className="hover:underline">{L.nav.features}</a>
+              <a href="#localisation" className="hover:underline">{L.nav.location}</a>
+              <a href="#contact" className="hover:underline">{L.nav.contact}</a>
             </nav>
 
             <div className="w-full md:w-auto flex items-center justify-center md:justify-end gap-2 flex-wrap">
-              <label className="sr-only" htmlFor="lang-select">
-                Langue
-              </label>
+              <label className="sr-only" htmlFor="lang-select">Langue</label>
               <select
                 id="lang-select"
                 className="h-9 rounded-md border px-2 text-sm bg-white"
@@ -609,14 +576,8 @@ export default function Page() {
               {L.hero.capacity} • {L.hero.baths} • {L.hero.area}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button variant="outline" size="lg" asChild>
-                <a href="#galerie">{L.nav.gallery}</a>
-              </Button>
-              <Button size="lg" asChild>
-                <a href={BESTAY_URL} target="_blank" rel="noreferrer">
-                  {L.nav.book}
-                </a>
-              </Button>
+              <Button variant="outline" size="lg" asChild><a href="#galerie">{L.nav.gallery}</a></Button>
+              <Button size="lg" asChild><a href={BESTAY_URL} target="_blank" rel="noreferrer">{L.nav.book}</a></Button>
             </div>
           </motion.div>
         </div>
@@ -627,31 +588,17 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (
-                <p key={i} className="mb-4">
-                  {p}
-                </p>
-              ))}
+              {firstTwo.map((p, i) => (<p key={i} className="mb-4">{p}</p>))}
               {rest.length > 0 && (
                 <>
                   <div
-                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
-                      showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                    }`}
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
                     aria-hidden={!showMore}
                   >
-                    {rest.map((p, i) => (
-                      <p key={`rest-${i}`} className="mb-4">
-                        {p}
-                      </p>
-                    ))}
+                    {rest.map((p, i) => (<p key={`rest-${i}`} className="mb-4">{p}</p>))}
                   </div>
                   <div className="mt-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setShowMore((v) => !v)}
-                      aria-expanded={showMore}
-                    >
+                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
                       {showMore ? L.description.less : L.description.more}
                     </Button>
                   </div>
@@ -675,9 +622,7 @@ export default function Page() {
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
               src={coverSrc || hero.src}
-              onError={(e) => {
-                e.currentTarget.src = hero.src;
-              }}
+              onError={(e) => { e.currentTarget.src = hero.src; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -694,76 +639,35 @@ export default function Page() {
 
         <p className="mt-3 text-xs text-neutral-600">
           {L.tour.fallbackText}
-          <a className="underline" href={DATA_BASE.virtualTour.url} target="_blank" rel="noopener noreferrer">
-            {L.tour.fallback1}
-          </a>
+          <a className="underline" href={DATA_BASE.virtualTour.url} target="_blank" rel="noopener noreferrer">{L.tour.fallback1}</a>
           {L.tour.fallbackText2}
-          <a
-            className="underline"
-            href={DATA_BASE.virtualTour.fallbackUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {L.tour.fallback2}
-          </a>
-          .
+          <a className="underline" href={DATA_BASE.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">{L.tour.fallback2}</a>.
         </p>
       </Section>
 
       {/* Galerie */}
       <Section id="galerie" title={L.nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((img, i) => (
-            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
-          ))}
+          {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => openLb(i)} />))}
         </div>
       </Section>
 
       {/* Lightbox */}
       {lbIndex !== null && (
         <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              closeLb();
-            }}
-            aria-label="Fermer"
-            className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
-          >
+          <button type="button" onClick={(e) => { e.stopPropagation(); closeLb(); }} aria-label="Fermer" className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white">
             <X className="h-6 w-6" />
           </button>
 
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              prevLb();
-            }}
-            aria-label="Image précédente"
-            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
-          >
+          <button type="button" onClick={(e) => { e.stopPropagation(); prevLb(); }} aria-label="Image précédente" className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white">
             <ChevronLeft className="h-7 w-7" />
           </button>
 
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            <img
-              src={images[lbIndex].src}
-              alt={images[lbIndex].alt}
-              onClick={(e) => e.stopPropagation()}
-              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
-            />
+            <img src={images[lbIndex].src} alt={images[lbIndex].alt} onClick={(e) => e.stopPropagation()} className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl" />
           </div>
 
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              nextLb();
-            }}
-            aria-label="Image suivante"
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
-          >
+          <button type="button" onClick={(e) => { e.stopPropagation(); nextLb(); }} aria-label="Image suivante" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white">
             <ChevronRight className="h-7 w-7" />
           </button>
         </div>
@@ -774,9 +678,7 @@ export default function Page() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {(DATA_BASE.pointsForts as any)[lang].map((p: string, i: number) => (
             <Card key={i} className="rounded-2xl">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">{p}</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle className="text-lg flex items-center gap-2">{p}</CardTitle></CardHeader>
             </Card>
           ))}
         </div>
@@ -788,17 +690,12 @@ export default function Page() {
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-5">
               <ul className="grid gap-2 py-2">
-                <li className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5" /> {DATA_BASE.adresse}
-                </li>
-                {/* lignes supprimées */}
+                <li className="flex items-center gap-2"><MapPin className="h-5 w-5" /> {DATA_BASE.adresse}</li>
               </ul>
             </CardContent>
           </Card>
           <Card className="rounded-2xl order-1 lg:order-2">
-            <CardContent className="p-0">
-              <div dangerouslySetInnerHTML={{ __html: DATA_BASE.mapsEmbed }} />
-            </CardContent>
+            <CardContent className="p-0"><div dangerouslySetInnerHTML={{ __html: DATA_BASE.mapsEmbed }} /></CardContent>
           </Card>
         </div>
       </Section>
@@ -809,37 +706,16 @@ export default function Page() {
           <CardContent className="py-5">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input
-                  placeholder={L.contact.yourName}
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                <Input
-                  placeholder={L.contact.yourEmail}
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-                <Textarea
-                  placeholder={L.contact.yourMessage}
-                  rows={5}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                />
+                <Input placeholder={L.contact.yourName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <Input placeholder={L.contact.yourEmail} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <Textarea placeholder={L.contact.yourMessage} rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                 <div className="flex flex-wrap gap-3">
                   <Button onClick={handleMailto}>{L.contact.sendEmail}</Button>
-                  <Button variant="outline" asChild>
-                    <a href={`mailto:${DATA_BASE.email}`}>{L.contact.openMailer}</a>
-                  </Button>
+                  <Button variant="outline" asChild><a href={`mailto:${DATA_BASE.email}`}>{L.contact.openMailer}</a></Button>
                 </div>
               </div>
               <div className="text-sm text-neutral-600">
-                <p>
-                  {L.contact.emailLabel} :{" "}
-                  <a className="underline" href={`mailto:${DATA_BASE.email}`}>
-                    {DATA_BASE.email}
-                  </a>
-                </p>
+                <p>{L.contact.emailLabel} : <a className="underline" href={`mailto:${DATA_BASE.email}`}>{DATA_BASE.email}</a></p>
               </div>
             </div>
           </CardContent>
