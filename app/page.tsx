@@ -92,7 +92,17 @@ Step into your private oasis: a sparkling pool crowned by a Buddha statue, a sun
 Our privileged location places you at the gateway to Ubud’s cultural scene—Monkey Forest, Ubud Palace, art galleries, and countless cafés and boutiques—just minutes from your private sanctuary.
 
 Book your tropical escape at Villa Myassa today and experience the harmony of modern elegance and the mystical magic of Bali’s jungle.`,
-    id: `Selamat datang di Villa Myassa di Singakerta, tempat desain kontemporer berpadu dengan lanskap menawan hutan Ubud...`,
+    id: `Selamat datang di Villa Myassa di Singakerta, tempat desain kontemporer berpadu dengan lanskap menawan hutan Ubud. Dari pintu masuk, air mancur elegan mengalir ke kolam tenang dengan pijakan batu, menetapkan suasana untuk masa inap yang istimewa.
+
+Tiga kamar tidur yang dirancang apik masing-masing memiliki tempat tidur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama dilengkapi kelambu kanopi dan bak mandi luar ruang; kamar kedua menawarkan shower luar ruang yang menyegarkan; sedangkan kamar ketiga menghadirkan pengalaman mandi semi-terbuka.
+
+Ruang dalam dan luar berpadu melalui area terbuka yang lapang, secara alami sejuk berkat ventilasi silang dan kipas plafon. Peta Bali ukir kayu mempermanis ruang keluarga yang nyaman, ideal untuk berkumpul atau bersantai. Area makan nyaman untuk enam orang, sementara dapur modern dengan island mengundang momen memasak yang berkesan.
+
+Di luar, oasis pribadi menanti: kolam berkilau berhias patung Buddha, sunken lounge yang menghadap air, dan dua kursi apung untuk relaksasi total. Nikmati balé bengong dengan tirai putih — sempurna untuk pijat. Dua kursi berjemur tambahan menghadap taman rimbun, serta shower luar ruang di area kolam melengkapi surga tropis ini.
+
+Lokasi istimewa kami menempatkan Anda di gerbang dunia budaya Ubud — Monkey Forest, Ubud Palace, galeri seni, serta kafe dan butik tak terhitung jumlahnya — hanya beberapa menit dari tempat peristirahatan pribadi Anda.
+
+Pesan liburan tropis Anda di Villa Myassa hari ini dan rasakan keharmonisan elegansi modern dengan pesona mistis hutan Bali.`,
   },
 };
 
@@ -253,7 +263,7 @@ export default function Page() {
                         flex flex-col md:flex-row landscape:flex-col
                         md:items-center md:justify-between gap-2 md:gap-0
                         py-3 md:h-16 landscape:h-auto">
-          {/* Ligne 1 : Titre (pas d'overflow, wrap autorisé en paysage) */}
+          {/* Titre */}
           <div className="w-full md:w-auto">
             <a href="#accueil" className="select-none block w-full">
               <span
@@ -271,7 +281,7 @@ export default function Page() {
             </a>
           </div>
 
-          {/* Ligne 2 : Nav + actions (centrés en paysage) */}
+          {/* Nav + actions */}
           <div className="w-full md:w-auto flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end gap-2 landscape:gap-3">
             <nav className="hidden md:flex landscape:flex w-full md:w-auto items-center justify-center md:justify-end gap-4 text-sm">
               <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
@@ -429,8 +439,7 @@ export default function Page() {
             <CardContent className="py-5">
               <ul className="grid gap-2 py-2">
                 <li className="flex items-center gap-2"><MapPin className="h-5 w-5" /> {DATA_BASE.adresse}</li>
-                <li className="flex items-center gap-2"><Waves className="h-5 w-5" /> {lang === "fr" ? "Plages / points d’intérêt à proximité (à compléter)" : lang === "id" ? "Pantai / tempat menarik terdekat (akan dilengkapi)" : "Beaches / points of interest nearby (to be completed)"}</li>
-                <li className="flex items-center gap-2"><Car className="h-5 w-5" /> {lang === "fr" ? "Accès / parking (à compléter)" : lang === "id" ? "Akses / parkir (akan dilengkapi)" : "Access / parking (to be completed)"}</li>
+                {/* Lignes “Plages …” et “Accès …” supprimées à ta demande */}
               </ul>
             </CardContent>
           </Card>
