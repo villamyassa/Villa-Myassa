@@ -163,7 +163,7 @@ With its privileged location, **Villa Myassa Ubud** places you close to restaura
 
 Tiga kamar tidur elegan masing-masing memiliki kasur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama dilengkapi kelambu kanopi serta bak mandi luar ruang; kamar kedua dengan shower luar ruang; dan kamar ketiga menghadirkan pengalaman semi-terbuka — pas untuk tamu yang mencari **vila sewa di Ubud** yang nyaman dan privat.
 
-Ruang dalam dan luar menyatu melalui area terbuka yang lapang, ventilasi silang alami, serta kipas plafon. Peta Bali ukiran kayu mempercantik ruang keluarga; area makan untuk enam orang; dapur modern dengan island memudahkan memasak setelah menjelajah kafe, studio yoga, dan pura di Ubud.
+Ruang dalam dan luar menyatu melalui area terbuka yang lapang, ventilasi silang alami, serta kipas plafon. Peta Bali ukiran kayu mempercantik ruang keluarga; area makan untuk enam orang; dapur moden dengan island memudahkan memasak setelah menjelajah kafe, studio yoga, dan pura di Ubud.
 
 Di luar, nikmati oasis pribadi: **kolam renang berkilau** berhias patung Buddha, **sunken lounge** menghadap air, serta dua matras apung untuk bersantai. Rebahkan diri di **balé bengong** dengan tirai putih — ideal untuk pijat. Dua kursi berjemur menghadap taman rimbun, sementara shower luar ruang melengkapi **surga tropis** ini.
 
@@ -375,10 +375,10 @@ export default function Page() {
     WA_TEXT_DEFAULT[lang]
   )}`;
 
-  // --------- Structured Data (schema.org) ----------
+  // --------- Structured Data (schema.org) : VacationRental corrigé ----------
   const jsonLdLodging = {
     "@context": "https://schema.org",
-    "@type": ["LodgingBusiness", "VacationRental"],
+    "@type": "VacationRental",
     name: "Villa Myassa",
     url: "https://www.villamyassa.com",
     image: ["/photos/001-hero-piscine.jpg", "/photos/003-suite1.jpg", "/photos/005-cuisine.jpg"],
@@ -391,16 +391,26 @@ export default function Page() {
       postalCode: "80571",
       addressCountry: "ID",
     },
-    hasMap:
-      "https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia",
     geo: { "@type": "GeoCoordinates", latitude: -8.534, longitude: 115.255 },
     email: "contact@villamyassa.com",
-    amenities: (DATA_BASE.pointsForts as any)[lang],
+    numberOfRooms: 3,
+    numberOfBedrooms: 3,
     checkinTime: "15:00",
     checkoutTime: "11:00",
-    numberOfRooms: 3,
-    starRating: { "@type": "Rating", ratingValue: "5" },
-    acceptsReservations: "https://bestay.co/villa/villa-myassa",
+    priceRange: "$150 - $250", // à ajuster selon ta fourchette réelle
+    amenityFeature: ((DATA_BASE.pointsForts as any)[lang] || []).map((f: string) => ({
+      "@type": "LocationFeatureSpecification",
+      name: f,
+      value: true,
+    })),
+    offers: {
+      "@type": "Offer",
+      url: "https://bestay.co/villa/villa-myassa",
+      availability: "https://schema.org/InStock",
+      priceCurrency: "USD",
+      price: "200", // prix moyen/nuit (à ajuster)
+      eligibleRegion: { "@type": "Country", name: "ID" },
+    },
     sameAs: ["https://bestay.co/villa/villa-myassa"],
   };
 
