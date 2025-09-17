@@ -19,7 +19,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { trackViewContent, trackLead, trackContact, trackSubmitForm } from "@/lib/analytics";
+import {
+  trackViewContent,
+  trackLead,
+  trackContact,
+  trackSubmitForm,
+} from "../lib/analytics";
 
 /* ----------------------------- 1) PHOTOS ----------------------------- */
 
@@ -71,7 +76,8 @@ type Lang = "fr" | "en" | "id";
 
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 const AIRBNB_URL = "https://www.airbnb.com/rooms/1505417552730386824";
-const BOOKING_URL = "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
+const BOOKING_URL =
+  "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
 const DIRECT_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
 
@@ -101,7 +107,11 @@ const DATA_BASE = {
     id: "3 kamar tidur (kasur queen)",
   },
   chambres: { fr: "3.5 salles de bain", en: "3.5 bathrooms", id: "3,5 kamar mandi" },
-  distance: { fr: "Jungle d’Ubud (Singakerta)", en: "Ubud jungle (Singakerta)", id: "Hutan Ubud (Singakerta)" },
+  distance: {
+    fr: "Jungle d’Ubud (Singakerta)",
+    en: "Ubud jungle (Singakerta)",
+    id: "Hutan Ubud (Singakerta)",
+  },
   email: "contact@villamyassa.com",
   images: IMAGES,
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
@@ -188,13 +198,22 @@ const LTEXT = (lang: Lang) => ({
     tour: lang === "fr" ? "Visite 3D" : lang === "id" ? "Tur 3D" : "3D Tour",
     book: lang === "fr" ? "Réserver" : lang === "id" ? "Pesan" : "Book",
     choosePlatform:
-      lang === "fr" ? "Choisir une plateforme" : lang === "id" ? "Pilih platform" : "Choose a platform",
+      lang === "fr"
+        ? "Choisir une plateforme"
+        : lang === "id"
+        ? "Pilih platform"
+        : "Choose a platform",
   },
   platforms: {
     bestay: "Bestay (site partenaire)",
     airbnb: "Airbnb",
     booking: "Booking.com",
-    direct: lang === "fr" ? "Réservation directe" : lang === "id" ? "Reservasi langsung" : "Direct booking",
+    direct:
+      lang === "fr"
+        ? "Réservation directe"
+        : lang === "id"
+        ? "Reservasi langsung"
+        : "Direct booking",
   },
   hero: {
     capacity: DATA_BASE.capacite[lang],
@@ -207,7 +226,8 @@ const LTEXT = (lang: Lang) => ({
     less: lang === "fr" ? "LIRE MOINS" : lang === "id" ? "SEMBUNYIKAN" : "READ LESS",
   },
   tour: {
-    title: lang === "fr" ? "Visite 3D (360°)" : lang === "id" ? "Tur Virtual 3D (360°)" : "3D Virtual Tour (360°)",
+    title:
+      lang === "fr" ? "Visite 3D (360°)" : lang === "id" ? "Tur Virtual 3D (360°)" : "3D Virtual Tour (360°)",
     subtitle:
       lang === "fr"
         ? "Cliquez sur l’image — la visite s’ouvre dans un onglet, et Bestay dans un second."
@@ -215,8 +235,13 @@ const LTEXT = (lang: Lang) => ({
         ? "Klik gambar — tur akan terbuka di tab baru, dan Bestay di tab lainnya."
         : "Click the image — the tour opens in a new tab, and Bestay in another.",
     button:
-      lang === "fr" ? "Cliquer pour ouvrir la visite" : lang === "id" ? "Klik untuk membuka tur" : "Click to open the tour",
-    fallback1: lang === "fr" ? "la visite Matterport" : lang === "id" ? "tur Matterport" : "the Matterport tour",
+      lang === "fr"
+        ? "Cliquer pour ouvrir la visite"
+        : lang === "id"
+        ? "Klik untuk membuka tur"
+        : "Click to open the tour",
+    fallback1:
+      lang === "fr" ? "la visite Matterport" : lang === "id" ? "tur Matterport" : "the Matterport tour",
     fallback2: lang === "fr" ? "la page Bestay" : lang === "id" ? "halaman Bestay" : "the Bestay page",
     fallbackText:
       lang === "fr"
@@ -227,7 +252,12 @@ const LTEXT = (lang: Lang) => ({
     fallbackText2: lang === "fr" ? " ou " : lang === "id" ? " atau " : " or ",
   },
   features: {
-    title: lang === "fr" ? "Atouts & Équipements" : lang === "id" ? "Keunggulan & Fasilitas" : "Highlights & Amenities",
+    title:
+      lang === "fr"
+        ? "Atouts & Équipements"
+        : lang === "id"
+        ? "Keunggulan & Fasilitas"
+        : "Highlights & Amenities",
     subtitle:
       lang === "fr"
         ? "Tout ce dont vous avez besoin pour un séjour réussi"
@@ -242,7 +272,8 @@ const LTEXT = (lang: Lang) => ({
     yourEmail: lang === "fr" ? "Votre email" : lang === "id" ? "Email Anda" : "Your email",
     yourMessage: lang === "fr" ? "Votre message" : lang === "id" ? "Pesan Anda" : "Your message",
     sendEmail: lang === "fr" ? "Envoyer par email" : lang === "id" ? "Kirim via email" : "Send by email",
-    openMailer: lang === "fr" ? "Ouvrir votre messagerie" : lang === "id" ? "Buka aplikasi email" : "Open your mail app",
+    openMailer:
+      lang === "fr" ? "Ouvrir votre messagerie" : lang === "id" ? "Buka aplikasi email" : "Open your mail app",
     emailLabel: "Email",
   },
 });
@@ -271,15 +302,16 @@ function useClickOutside<T extends HTMLElement>(onClose: () => void) {
   return ref;
 }
 
+/** NOTE: `size` correspond aux tailles autorisées dans ton Button : "lg" | "md". */
 function BookingMenu({
   lang,
   variant = "default",
-  size = "default",
+  size = "md",
   fullWidth = false,
 }: {
   lang: Lang;
   variant?: "default" | "outline";
-  size?: "default" | "lg";
+  size?: "lg" | "md";
   fullWidth?: boolean;
 }) {
   const L = LTEXT(lang);
@@ -306,12 +338,13 @@ function BookingMenu({
   };
 
   const btnClass = fullWidth ? "w-full" : "";
+  const buttonSize: "lg" | "md" = size === "lg" ? "lg" : "md";
 
   return (
     <div className={`relative ${fullWidth ? "w-full" : "w-auto"}`} ref={menuRef}>
       <Button
         variant={variant}
-        size={size === "lg" ? "lg" : "default"}
+        size={buttonSize}
         className={`${btnClass} inline-flex items-center gap-2`}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -576,7 +609,6 @@ export default function Page() {
   };
 
   useEffect(() => {
-    // Track view content à l’affichage
     try {
       trackViewContent({ page: "home" });
     } catch {}
@@ -585,8 +617,16 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* JSON-LD */}
-      <Script id="jsonld-lodging" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }} />
-      <Script id="jsonld-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
+      <Script
+        id="jsonld-lodging"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }}
+      />
+      <Script
+        id="jsonld-faq"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }}
+      />
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
@@ -652,8 +692,9 @@ export default function Page() {
                 <option value="id">🇮🇩 Bahasa Indonesia</option>
               </select>
 
-              {/* REMPLACE l'ancien bouton simple par le menu */}
+              {/* Bouton menu Réserver */}
               <BookingMenu lang={lang} />
+
               {/* WhatsApp */}
               <a
                 href={waHref}
@@ -678,7 +719,11 @@ export default function Page() {
       {/* Hero */}
       <section id="accueil">
         <div className="w-full">
-          <img src={hero.src} alt={hero.alt} className="w-full h-[60vh] md:h-[70vh] object-cover" />
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            className="w-full h-[60vh] md:h-[70vh] object-cover"
+          />
         </div>
 
         <div className="container mx-auto px-4 max-w-6xl py-10">
@@ -700,7 +745,7 @@ export default function Page() {
                 <a href="#galerie">{L.nav.gallery}</a>
               </Button>
 
-              {/* Bouton "Réserver" avec menu aussi dans le Hero */}
+              {/* Bouton "Réserver" menu aussi dans le Hero */}
               <BookingMenu lang={lang} size="lg" />
             </div>
           </motion.div>
@@ -753,7 +798,9 @@ export default function Page() {
           role="button"
           tabIndex={0}
           onClick={openVirtualTour}
-          onKeyDown={(e) => ((e as any).key === "Enter" || (e as any).key === " ") && openVirtualTour()}
+          onKeyDown={(e) =>
+            ((e as any).key === "Enter" || (e as any).key === " ") && openVirtualTour()
+          }
           className="group relative w-full cursor-pointer overflow-hidden rounded-2xl outline-none focus:ring-2 focus:ring-black/20"
           aria-label="Ouvrir la visite 3D"
         >
@@ -779,11 +826,21 @@ export default function Page() {
 
         <p className="mt-3 text-xs text-neutral-600">
           {L.tour.fallbackText}
-          <a className="underline" href={DATA_BASE.virtualTour.url} target="_blank" rel="noopener noreferrer">
+          <a
+            className="underline"
+            href={DATA_BASE.virtualTour.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {L.tour.fallback1}
           </a>
           {L.tour.fallbackText2}
-          <a className="underline" href={DATA_BASE.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
+          <a
+            className="underline"
+            href={DATA_BASE.virtualTour.fallbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {L.tour.fallback2}
           </a>
           .
@@ -801,7 +858,12 @@ export default function Page() {
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[999] bg-black/90"
+          onClick={closeLb}
+        >
           <button
             type="button"
             onClick={(e) => {
@@ -863,7 +925,11 @@ export default function Page() {
       </Section>
 
       {/* Localisation */}
-      <Section id="localisation" title={L.location.title} subtitle={DATA_BASE.localisation[lang]}>
+      <Section
+        id="localisation"
+        title={L.location.title}
+        subtitle={DATA_BASE.localisation[lang]}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-5">
