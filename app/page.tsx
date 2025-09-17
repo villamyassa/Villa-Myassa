@@ -52,6 +52,7 @@ const toAlt = (name: string) =>
     .replace(/[-_]/g, " ")
     .replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
+const SITE_ORIGIN = "https://www.villamyassa.com";
 const PUBLIC_PREFIX = "/photos";
 type GalleryItem = { src: string; alt: string; featured?: boolean };
 
@@ -97,7 +98,11 @@ const DATA_BASE = {
   images: IMAGES,
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
-  virtualTour: { url: "https://discover.matterport.com/space/xrHbRBnPwdy", fallbackUrl: BESTAY_URL, cover: "/photos/virtual-tour-cover.jpg" },
+  virtualTour: {
+    url: "https://discover.matterport.com/space/xrHbRBnPwdy",
+    fallbackUrl: BESTAY_URL,
+    cover: "/photos/virtual-tour-cover.jpg",
+  },
   pointsForts: {
     fr: [
       "Piscine privée",
@@ -134,7 +139,6 @@ const DATA_BASE = {
     ],
   },
   description: {
-    /* -------------------- FR enrichi -------------------- */
     fr: `Bienvenue à la Villa Myassa, **villa à Ubud** idéale pour des **vacances à Bali**. Située à Singakerta, dans un quartier paisible entouré de rizières et de jungle, notre **villa de Bali avec piscine privée** combine architecture contemporaine et chaleur balinaise — à quelques minutes du **centre d’Ubud** et de la célèbre **Monkey Forest**. Dès l’entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, donnant le ton d’un séjour raffiné.
 
 Les trois chambres raffinées de la Villa Myassa disposent chacune d’un lit queen-size, d’une Smart TV, de la climatisation et d’une salle de bain attenante. La chambre principale séduit avec sa moustiquaire à baldaquin et sa baignoire extérieure ; la deuxième chambre offre une douche extérieure ; la troisième propose une expérience semi-ouverte. Idéale pour des familles ou amis cherchant une **location de villa à Ubud** confortable et intime.
@@ -146,8 +150,6 @@ La Villa Myassa relie naturellement intérieur et extérieur : grands espaces ou
 Grâce à son emplacement privilégié, la **Villa Myassa Ubud** vous place près des meilleurs restaurants, studios de yoga, marchés artisanaux et rizières en terrasse de Tegallalang. Que vous souhaitiez une retraite zen, un voyage en couple ou des **vacances en famille à Bali**, notre villa est un point de départ parfait.
 
 **Réservez** dès aujourd’hui votre escapade tropicale à la Villa Myassa et profitez d’une **villa à Ubud avec piscine privée**, élégante et sereine — le mélange idéal entre confort moderne et magie balinaise.`,
-
-    /* -------------------- EN enriched -------------------- */
     en: `Welcome to Villa Myassa — a **villa in Ubud, Bali** designed for effortless tropical living. Tucked away in Singakerta among rice fields and jungle, this **Bali private pool villa** blends contemporary lines with Balinese warmth. You’re minutes from **central Ubud** and the famous **Monkey Forest**, making it a perfect base for a relaxing **Ubud villa rental**.
 
 Each of the three refined bedrooms features a queen-size bed, Smart TV, air-conditioning and an en-suite bathroom. The master comes with a canopy mosquito net and an outdoor bathtub; the second bedroom has an outdoor shower; the third offers a semi-open bathing experience — ideal for friends or families seeking a comfortable **villa rental in Ubud**.
@@ -157,8 +159,6 @@ Indoors meet outdoors through breezy open spaces, natural cross-ventilation and 
 Step into your private oasis: a **sparkling pool** crowned by a Buddha statue, a **sunken lounge** overlooking the water, and two floating loungers for pure relaxation. Unwind in the **balé bengong gazebo** draped with white curtains — perfect for massages. Two additional sun loungers face the lush garden and an outdoor shower completes this **tropical haven**.
 
 With its privileged location, **Villa Myassa Ubud** places you close to restaurants, markets and the Tegallalang rice terraces. Whether you’re planning a couple’s getaway or a **family holiday in Bali**, this **Ubud private-pool villa** is an elegant, serene choice. **Book** your tropical escape today.`,
-
-    /* -------------------- ID diperkaya -------------------- */
     id: `Selamat datang di Villa Myassa — **vila di Ubud, Bali** yang nyaman untuk liburan tropis. Berada di Singakerta yang tenang, dikelilingi sawah dan hutan, **vila Ubud dengan kolam renang pribadi** ini memadukan desain kontemporer dan kehangatan Bali. Lokasi hanya beberapa menit dari **pusat Ubud** dan **Monkey Forest**, cocok sebagai **sewa vila Ubud** untuk keluarga maupun teman.
 
 Tiga kamar tidur elegan masing-masing memiliki kasur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama dilengkapi kelambu kanopi serta bak mandi luar ruang; kamar kedua dengan shower luar ruang; dan kamar ketiga menghadirkan pengalaman semi-terbuka — pas untuk tamu yang mencari **vila sewa di Ubud** yang nyaman dan privat.
@@ -375,13 +375,19 @@ export default function Page() {
     WA_TEXT_DEFAULT[lang]
   )}`;
 
-  // --------- Structured Data (schema.org) : VacationRental corrigé ----------
+  /* --------- JSON-LD (VacationRental) avec URLs absolues + AggregateOffer --------- */
+  const absoluteImages = [
+    `${SITE_ORIGIN}/photos/001-hero-piscine.jpg`,
+    `${SITE_ORIGIN}/photos/003-suite1.jpg`,
+    `${SITE_ORIGIN}/photos/005-cuisine.jpg`,
+  ];
+
   const jsonLdLodging = {
     "@context": "https://schema.org",
     "@type": "VacationRental",
     name: "Villa Myassa",
-    url: "https://www.villamyassa.com",
-    image: ["/photos/001-hero-piscine.jpg", "/photos/003-suite1.jpg", "/photos/005-cuisine.jpg"],
+    url: SITE_ORIGIN,
+    image: absoluteImages,
     description: DATA_BASE.baseline[lang],
     address: {
       "@type": "PostalAddress",
@@ -391,27 +397,32 @@ export default function Page() {
       postalCode: "80571",
       addressCountry: "ID",
     },
+    hasMap:
+      "https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia",
     geo: { "@type": "GeoCoordinates", latitude: -8.534, longitude: 115.255 },
     email: "contact@villamyassa.com",
     numberOfRooms: 3,
     numberOfBedrooms: 3,
     checkinTime: "15:00",
     checkoutTime: "11:00",
-    priceRange: "$150 - $250", // à ajuster selon ta fourchette réelle
     amenityFeature: ((DATA_BASE.pointsForts as any)[lang] || []).map((f: string) => ({
       "@type": "LocationFeatureSpecification",
       name: f,
       value: true,
     })),
     offers: {
-      "@type": "Offer",
-      url: "https://bestay.co/villa/villa-myassa",
-      availability: "https://schema.org/InStock",
+      "@type": "AggregateOffer",
+      url: BESTAY_URL,
       priceCurrency: "USD",
-      price: "200", // prix moyen/nuit (à ajuster)
-      eligibleRegion: { "@type": "Country", name: "ID" },
+      lowPrice: "150",
+      highPrice: "250",
+      availability: "https://schema.org/InStock",
+      itemOffered: {
+        "@type": "Accommodation",
+        name: "Villa Myassa",
+      },
     },
-    sameAs: ["https://bestay.co/villa/villa-myassa"],
+    sameAs: [BESTAY_URL],
   };
 
   const jsonLdFAQ = {
@@ -778,7 +789,7 @@ export default function Page() {
                 <li className="flex items-center gap-2">
                   <MapPin className="h-5 w-5" /> {DATA_BASE.adresse}
                 </li>
-                {/* lignes “Plages …” et “Accès …” supprimées */}
+                {/* lignes supprimées */}
               </ul>
             </CardContent>
           </Card>
