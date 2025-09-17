@@ -26,7 +26,9 @@ import {
   trackSubmitForm,
 } from "../lib/analytics";
 
-/* ----------------------------- 1) PHOTOS ----------------------------- */
+/* -------------------------------------------------------
+   1) PHOTOS
+------------------------------------------------------- */
 
 const GALLERY_FILES = [
   "001-hero-piscine.jpg",
@@ -55,13 +57,11 @@ const GALLERY_FILES = [
 ] as const;
 
 const toAlt = (name: string) =>
-  name
-    .replace(/^[0-9]+-/, "")
-    .replace(/[-_]/g, " ")
-    .replace(/\.(jpg|jpeg|png|webp)$/i, "");
+  name.replace(/^[0-9]+-/, "").replace(/[-_]/g, " ").replace(/\.(jpg|jpeg|png|webp)$/i, "");
 
 const SITE_ORIGIN = "https://www.villamyassa.com";
 const PUBLIC_PREFIX = "/photos";
+
 type GalleryItem = { src: string; alt: string; featured?: boolean };
 
 const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
@@ -70,19 +70,19 @@ const IMAGES: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
   featured: i === 0,
 }));
 
-/* ----------------------------- 2) DATA / I18N ----------------------------- */
+/* -------------------------------------------------------
+   2) DONNÉES / I18N
+------------------------------------------------------- */
 
 type Lang = "fr" | "en" | "id";
 
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 const AIRBNB_URL = "https://www.airbnb.com/rooms/1505417552730386824";
-const BOOKING_URL =
-  "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
+const BOOKING_URL = "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
 const DIRECT_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
 
 const WA_NUMBER_INTL = "33688647659";
-
 const WA_TEXT_DEFAULT: Record<Lang, string> = {
   fr: "Bonjour, je souhaite des informations sur la Villa Myassa (dates, tarifs, etc.).",
   en: "Hello, I’d like information about Villa Myassa (dates, rates, etc.).",
@@ -101,17 +101,9 @@ const DATA_BASE = {
     en: "Singakerta, Ubud — Gianyar, Bali (Indonesia)",
     id: "Singakerta, Ubud — Gianyar, Bali (Indonesia)",
   },
-  capacite: {
-    fr: "3 chambres (lits queen)",
-    en: "3 bedrooms (queen beds)",
-    id: "3 kamar tidur (kasur queen)",
-  },
+  capacite: { fr: "3 chambres (lits queen)", en: "3 bedrooms (queen beds)", id: "3 kamar tidur (kasur queen)" },
   chambres: { fr: "3.5 salles de bain", en: "3.5 bathrooms", id: "3,5 kamar mandi" },
-  distance: {
-    fr: "Jungle d’Ubud (Singakerta)",
-    en: "Ubud jungle (Singakerta)",
-    id: "Hutan Ubud (Singakerta)",
-  },
+  distance: { fr: "Jungle d’Ubud (Singakerta)", en: "Ubud jungle (Singakerta)", id: "Hutan Ubud (Singakerta)" },
   email: "contact@villamyassa.com",
   images: IMAGES,
   mapsEmbed: `<iframe src="https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia&output=embed" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
@@ -198,22 +190,13 @@ const LTEXT = (lang: Lang) => ({
     tour: lang === "fr" ? "Visite 3D" : lang === "id" ? "Tur 3D" : "3D Tour",
     book: lang === "fr" ? "Réserver" : lang === "id" ? "Pesan" : "Book",
     choosePlatform:
-      lang === "fr"
-        ? "Choisir une plateforme"
-        : lang === "id"
-        ? "Pilih platform"
-        : "Choose a platform",
+      lang === "fr" ? "Choisir une plateforme" : lang === "id" ? "Pilih platform" : "Choose a platform",
   },
   platforms: {
     bestay: "Bestay (site partenaire)",
     airbnb: "Airbnb",
     booking: "Booking.com",
-    direct:
-      lang === "fr"
-        ? "Réservation directe"
-        : lang === "id"
-        ? "Reservasi langsung"
-        : "Direct booking",
+    direct: lang === "fr" ? "Réservation directe" : lang === "id" ? "Reservasi langsung" : "Direct booking",
   },
   hero: {
     capacity: DATA_BASE.capacite[lang],
@@ -234,14 +217,8 @@ const LTEXT = (lang: Lang) => ({
         : lang === "id"
         ? "Klik gambar — tur akan terbuka di tab baru, dan Bestay di tab lainnya."
         : "Click the image — the tour opens in a new tab, and Bestay in another.",
-    button:
-      lang === "fr"
-        ? "Cliquer pour ouvrir la visite"
-        : lang === "id"
-        ? "Klik untuk membuka tur"
-        : "Click to open the tour",
-    fallback1:
-      lang === "fr" ? "la visite Matterport" : lang === "id" ? "tur Matterport" : "the Matterport tour",
+    button: lang === "fr" ? "Cliquer pour ouvrir la visite" : lang === "id" ? "Klik untuk membuka tur" : "Click to open the tour",
+    fallback1: lang === "fr" ? "la visite Matterport" : lang === "id" ? "tur Matterport" : "the Matterport tour",
     fallback2: lang === "fr" ? "la page Bestay" : lang === "id" ? "halaman Bestay" : "the Bestay page",
     fallbackText:
       lang === "fr"
@@ -253,11 +230,7 @@ const LTEXT = (lang: Lang) => ({
   },
   features: {
     title:
-      lang === "fr"
-        ? "Atouts & Équipements"
-        : lang === "id"
-        ? "Keunggulan & Fasilitas"
-        : "Highlights & Amenities",
+      lang === "fr" ? "Atouts & Équipements" : lang === "id" ? "Keunggulan & Fasilitas" : "Highlights & Amenities",
     subtitle:
       lang === "fr"
         ? "Tout ce dont vous avez besoin pour un séjour réussi"
@@ -272,13 +245,14 @@ const LTEXT = (lang: Lang) => ({
     yourEmail: lang === "fr" ? "Votre email" : lang === "id" ? "Email Anda" : "Your email",
     yourMessage: lang === "fr" ? "Votre message" : lang === "id" ? "Pesan Anda" : "Your message",
     sendEmail: lang === "fr" ? "Envoyer par email" : lang === "id" ? "Kirim via email" : "Send by email",
-    openMailer:
-      lang === "fr" ? "Ouvrir votre messagerie" : lang === "id" ? "Buka aplikasi email" : "Open your mail app",
+    openMailer: lang === "fr" ? "Ouvrir votre messagerie" : lang === "id" ? "Buka aplikasi email" : "Open your mail app",
     emailLabel: "Email",
   },
 });
 
-/* ----------------------------- 3) UI HELPERS ----------------------------- */
+/* -------------------------------------------------------
+   3) HELPERS & MENU RÉSERVER (icônes inline)
+------------------------------------------------------- */
 
 type BookingPlatformKey = "bestay" | "airbnb" | "booking" | "direct";
 
@@ -302,7 +276,32 @@ function useClickOutside<T extends HTMLElement>(onClose: () => void) {
   return ref;
 }
 
-/** NOTE: `size` correspond aux tailles autorisées dans ton Button : "lg" | "md". */
+/* Icônes SVG inline (pas de requête réseau) */
+const SvgAirbnb = () => (
+  <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
+    <path fill="#FF5A5F" d="M127.9 24c-13.1 0-24.5 8.1-35.6 27.1C77 80.5 54 126.7 54 153.2c0 28.5 23.3 51.8 51.8 51.8 10.7 0 20.7-3.2 29.1-9.1 8.3 5.9 18.3 9.1 29.1 9.1 28.5 0 51.8-23.3 51.8-51.8 0-26.5-23.1-72.7-38.3-102.1C152.5 32.1 141 24 127.9 24zm0 30.8c4.8 0 10.6 3.8 17.1 15.1 14.1 24.6 34.4 63.2 34.4 83.3 0 11.6-9.4 21-21 21-7.6 0-14.2-4-17.8-10.6l-12.7-23.5-12.7 23.5c-3.6 6.7-10.2 10.6-17.8 10.6-11.6 0-21-9.4-21-21 0-20.1 20.3-58.7 34.4-83.3 6.5-11.3 12.2-15.1 17.1-15.1z"/>
+  </svg>
+);
+const SvgBooking = () => (
+  <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
+    <rect width="256" height="256" rx="44" fill="#003580"/>
+    <circle cx="182" cy="176" r="24" fill="#00A1DF"/>
+    <path fill="#FFFFFF" d="M68 86h64c18 0 32 14 32 32s-14 32-32 32H68V86zm24 24v16h40a8 8 0 0 0 0-16H92z"/>
+  </svg>
+);
+const SvgBestay = () => (
+  <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
+    <rect width="256" height="256" rx="44" fill="#2D6AE3"/>
+    <path fill="#fff" d="M86 64h56c26 0 42 14 42 34 0 13-7 23-19 28 12 4 21 14 21 28 0 22-17 38-48 38H86V64zm24 24v28h29c10 0 17-6 17-14s-7-14-17-14H110zm0 52v32h33c12 0 20-7 20-16s-8-16-20-16h-33z"/>
+  </svg>
+);
+const SvgDirect = () => (
+  <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
+    <rect width="256" height="256" rx="44" fill="#111827"/>
+    <path fill="#fff" d="M144 28L60 148h48l-16 80 104-140h-56l4-60z"/>
+  </svg>
+);
+
 function BookingMenu({
   lang,
   variant = "default",
@@ -318,27 +317,43 @@ function BookingMenu({
   const [open, setOpen] = useState(false);
   const menuRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
-  // accessibilité clavier
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
   const handleClick = (key: BookingPlatformKey) => {
-    const url = BOOKING_LINKS[key];
-    try {
-      trackLead({ cta: "booking", platform: key });
-    } catch {}
-    window.open(url, "_blank", "noopener,noreferrer");
+    try { trackLead({ cta: "booking", platform: key }); } catch {}
+    window.open(BOOKING_LINKS[key], "_blank", "noopener,noreferrer");
     setOpen(false);
   };
 
   const btnClass = fullWidth ? "w-full" : "";
   const buttonSize: "lg" | "md" = size === "lg" ? "lg" : "md";
+
+  const Item = ({
+    k,
+    label,
+    Icon,
+  }: {
+    k: BookingPlatformKey;
+    label: string;
+    Icon: React.FC;
+  }) => (
+    <button
+      role="menuitem"
+      onClick={() => handleClick(k)}
+      className="w-full text-left px-4 py-3 hover:bg-neutral-50 flex items-center justify-between"
+    >
+      <span className="flex items-center gap-3">
+        <Icon />
+        <span>{label}</span>
+      </span>
+      <ExternalLink className="h-4 w-4 opacity-60" />
+    </button>
+  );
 
   return (
     <div className={`relative ${fullWidth ? "w-full" : "w-auto"}`} ref={menuRef}>
@@ -361,50 +376,14 @@ function BookingMenu({
           id="booking-menu"
           role="menu"
           aria-label={L.nav.choosePlatform}
-          className="absolute right-0 mt-2 w-64 rounded-xl border bg-white shadow-lg overflow-hidden z-50"
+          className="absolute right-0 mt-2 w-72 rounded-xl border bg-white shadow-lg overflow-hidden z-50"
         >
           <div className="px-3 py-2 text-xs text-neutral-500">{L.nav.choosePlatform}</div>
           <ul className="max-h-[70vh] overflow-auto">
-            <li>
-              <button
-                role="menuitem"
-                onClick={() => handleClick("bestay")}
-                className="w-full text-left px-4 py-3 hover:bg-neutral-50 flex items-center justify-between"
-              >
-                <span>{L.platforms.bestay}</span>
-                <ExternalLink className="h-4 w-4 opacity-60" />
-              </button>
-            </li>
-            <li>
-              <button
-                role="menuitem"
-                onClick={() => handleClick("airbnb")}
-                className="w-full text-left px-4 py-3 hover:bg-neutral-50 flex items-center justify-between"
-              >
-                <span>{L.platforms.airbnb}</span>
-                <ExternalLink className="h-4 w-4 opacity-60" />
-              </button>
-            </li>
-            <li>
-              <button
-                role="menuitem"
-                onClick={() => handleClick("booking")}
-                className="w-full text-left px-4 py-3 hover:bg-neutral-50 flex items-center justify-between"
-              >
-                <span>{L.platforms.booking}</span>
-                <ExternalLink className="h-4 w-4 opacity-60" />
-              </button>
-            </li>
-            <li>
-              <button
-                role="menuitem"
-                onClick={() => handleClick("direct")}
-                className="w-full text-left px-4 py-3 hover:bg-neutral-50 flex items-center justify-between"
-              >
-                <span>{L.platforms.direct}</span>
-                <ExternalLink className="h-4 w-4 opacity-60" />
-              </button>
-            </li>
+            <li><Item k="bestay"  label={L.platforms.bestay}  Icon={SvgBestay}  /></li>
+            <li><Item k="airbnb"  label={L.platforms.airbnb}  Icon={SvgAirbnb}  /></li>
+            <li><Item k="booking" label={L.platforms.booking} Icon={SvgBooking} /></li>
+            <li><Item k="direct"  label={L.platforms.direct}  Icon={SvgDirect}  /></li>
           </ul>
         </div>
       )}
@@ -412,14 +391,15 @@ function BookingMenu({
   );
 }
 
-/* ----------------------------- 4) PAGE ----------------------------- */
+/* -------------------------------------------------------
+   4) PAGE
+------------------------------------------------------- */
 
 export default function Page() {
   // Lang
   const [lang, setLang] = useState<Lang>("fr");
   useEffect(() => {
-    const saved =
-      typeof window !== "undefined" ? window.localStorage.getItem("lang") : null;
+    const saved = typeof window !== "undefined" ? window.localStorage.getItem("lang") : null;
     if (saved === "fr" || saved === "en" || saved === "id") setLang(saved);
   }, []);
   useEffect(() => {
@@ -440,11 +420,10 @@ export default function Page() {
 
   const closeLb = () => setLbIndex(null);
   const openLb = (i: number) => setLbIndex(i);
-  const prevLb = () =>
-    setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
-  const nextLb = () =>
-    setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
+  const prevLb = () => setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
+  const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
+  // ESC / ← →
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -474,9 +453,9 @@ export default function Page() {
         : lang === "id"
         ? `Halo,\n\nSaya ingin menanyakan tentang ${DATA_BASE.nom}.\n\nNama: ${form.name}\nEmail: ${form.email}\nPesan: ${form.message}`
         : `Hello,\n\nI'd like information about ${DATA_BASE.nom}.\n\nName: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`;
-    window.location.href = `mailto:${DATA_BASE.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${DATA_BASE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      body
+    )}`;
     try {
       trackSubmitForm({ method: "mailto", page: "home" });
     } catch {}
@@ -490,9 +469,8 @@ export default function Page() {
     }, 50);
   };
   const coverSrc =
-    (DATA_BASE.virtualTour.cover?.startsWith("/")
-      ? DATA_BASE.virtualTour.cover
-      : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) || hero.src;
+    (DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) ||
+    hero.src;
 
   // Description
   const description = (DATA_BASE.description as any)[lang] as string;
@@ -502,11 +480,9 @@ export default function Page() {
   const [showMore, setShowMore] = useState(false);
 
   // WhatsApp
-  const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(
-    WA_TEXT_DEFAULT[lang]
-  )}`;
+  const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`;
 
-  /* ------------------- JSON-LD LodgingBusiness + FAQ ------------------- */
+  // JSON-LD
   const jsonLdLodging = {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
@@ -534,11 +510,7 @@ export default function Page() {
     checkinTime: "15:00",
     checkoutTime: "11:00",
     priceRange: "$150 - $250",
-    makesOffer: {
-      "@type": "Offer",
-      url: BESTAY_URL,
-      priceCurrency: "USD",
-    },
+    makesOffer: { "@type": "Offer", url: BESTAY_URL, priceCurrency: "USD" },
     amenityFeature: ((DATA_BASE.pointsForts as any)[lang] || []).map((f: string) => ({
       "@type": "LocationFeatureSpecification",
       name: f,
@@ -590,11 +562,7 @@ export default function Page() {
       {
         "@type": "Question",
         name:
-          lang === "fr"
-            ? "Comment réserver la villa ?"
-            : lang === "id"
-            ? "Bagaimana cara memesan vila?"
-            : "How do I book?",
+          lang === "fr" ? "Comment réserver la villa ?" : lang === "id" ? "Bagaimana cara memesan vila?" : "How do I book?",
         acceptedAnswer: {
           "@type": "Answer",
           text:
@@ -616,41 +584,21 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* JSON-LD */}
-      <Script
-        id="jsonld-lodging"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }}
-      />
-      <Script
-        id="jsonld-faq"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }}
-      />
+      <Script id="jsonld-lodging" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }} />
+      <Script id="jsonld-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div
-          className="container mx-auto px-4 max-w-6xl
-                        flex flex-col md:flex-row landscape:flex-col
-                        md:items-center md:justify-between gap-2 md:gap-0
-                        py-3 md:h-16 landscape:h-auto"
-        >
+        <div className="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row landscape:flex-col md:items-center md:justify-between gap-2 md:gap-0 py-3 md:h-16 landscape:h-auto">
           {/* Titre */}
           <div className="w-full md:w-auto">
             <a href="#accueil" className="select-none block w-full">
               <span
-                className="
-                  block text-2xl sm:text-3xl md:text-3xl font-extrabold tracking-tight font-serif
-                  leading-snug text-center md:text-left landscape:text-center
-                  md:whitespace-nowrap landscape:whitespace-normal
-                "
+                className="block text-2xl sm:text-3xl md:text-3xl font-extrabold tracking-tight font-serif leading-snug text-center md:text-left landscape:text-center md:whitespace-nowrap landscape:whitespace-normal"
                 title="Villa Myassa, Ubud, BALI"
               >
                 Villa Myassa, <span className="italic">Ubud</span>,
-                <span className="hidden landscape:inline">
-                  <br />
-                </span>{" "}
+                <span className="hidden landscape:inline"><br /></span>{" "}
                 <span className="uppercase">BALI</span>
               </span>
             </a>
@@ -659,27 +607,15 @@ export default function Page() {
           {/* Nav + actions */}
           <div className="w-full md:w-auto flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end gap-2 landscape:gap-3">
             <nav className="hidden md:flex landscape:flex w-full md:w-auto items-center justify-center md:justify-end gap-4 text-sm">
-              <a href="#visite-3d" className="hover:underline">
-                {L.nav.tour}
-              </a>
-              <a href="#galerie" className="hover:underline">
-                {L.nav.gallery}
-              </a>
-              <a href="#atouts" className="hover:underline">
-                {L.nav.features}
-              </a>
-              <a href="#localisation" className="hover:underline">
-                {L.nav.location}
-              </a>
-              <a href="#contact" className="hover:underline">
-                {L.nav.contact}
-              </a>
+              <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
+              <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
+              <a href="#atouts" className="hover:underline">{L.nav.features}</a>
+              <a href="#localisation" className="hover:underline">{L.nav.location}</a>
+              <a href="#contact" className="hover:underline">{L.nav.contact}</a>
             </nav>
 
             <div className="w-full md:w-auto flex items-center justify-center md:justify-end gap-2 flex-wrap">
-              <label className="sr-only" htmlFor="lang-select">
-                Langue
-              </label>
+              <label className="sr-only" htmlFor="lang-select">Langue</label>
               <select
                 id="lang-select"
                 className="h-9 rounded-md border px-2 text-sm bg-white"
@@ -692,7 +628,7 @@ export default function Page() {
                 <option value="id">🇮🇩 Bahasa Indonesia</option>
               </select>
 
-              {/* Bouton menu Réserver */}
+              {/* Menu Réserver avec icônes inline */}
               <BookingMenu lang={lang} />
 
               {/* WhatsApp */}
@@ -704,9 +640,7 @@ export default function Page() {
                 className="hidden md:inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-500 text-white hover:scale-105 transition"
                 title="WhatsApp"
                 onClick={() => {
-                  try {
-                    trackContact({ cta: "whatsapp", page: "home" });
-                  } catch {}
+                  try { trackContact({ cta: "whatsapp", page: "home" }); } catch {}
                 }}
               >
                 <MessageCircle className="h-5 w-5" />
@@ -719,11 +653,7 @@ export default function Page() {
       {/* Hero */}
       <section id="accueil">
         <div className="w-full">
-          <img
-            src={hero.src}
-            alt={hero.alt}
-            className="w-full h-[60vh] md:h-[70vh] object-cover"
-          />
+          <img src={hero.src} alt={hero.alt} className="w-full h-[60vh] md:h-[70vh] object-cover" />
         </div>
 
         <div className="container mx-auto px-4 max-w-6xl py-10">
@@ -744,8 +674,6 @@ export default function Page() {
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">{L.nav.gallery}</a>
               </Button>
-
-              {/* Bouton "Réserver" menu aussi dans le Hero */}
               <BookingMenu lang={lang} size="lg" />
             </div>
           </motion.div>
@@ -757,31 +685,17 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (
-                <p key={i} className="mb-4">
-                  {p}
-                </p>
-              ))}
+              {firstTwo.map((p, i) => (<p key={i} className="mb-4">{p}</p>))}
               {rest.length > 0 && (
                 <>
                   <div
-                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
-                      showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                    }`}
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
                     aria-hidden={!showMore}
                   >
-                    {rest.map((p, i) => (
-                      <p key={`rest-${i}`} className="mb-4">
-                        {p}
-                      </p>
-                    ))}
+                    {rest.map((p, i) => (<p key={`rest-${i}`} className="mb-4">{p}</p>))}
                   </div>
                   <div className="mt-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setShowMore((v) => !v)}
-                      aria-expanded={showMore}
-                    >
+                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
                       {showMore ? L.description.less : L.description.more}
                     </Button>
                   </div>
@@ -798,18 +712,14 @@ export default function Page() {
           role="button"
           tabIndex={0}
           onClick={openVirtualTour}
-          onKeyDown={(e) =>
-            ((e as any).key === "Enter" || (e as any).key === " ") && openVirtualTour()
-          }
+          onKeyDown={(e) => ((e as any).key === "Enter" || (e as any).key === " ") && openVirtualTour()}
           className="group relative w-full cursor-pointer overflow-hidden rounded-2xl outline-none focus:ring-2 focus:ring-black/20"
           aria-label="Ouvrir la visite 3D"
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
               src={coverSrc || hero.src}
-              onError={(e) => {
-                e.currentTarget.src = hero.src;
-              }}
+              onError={(e) => { e.currentTarget.src = hero.src; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -826,21 +736,11 @@ export default function Page() {
 
         <p className="mt-3 text-xs text-neutral-600">
           {L.tour.fallbackText}
-          <a
-            className="underline"
-            href={DATA_BASE.virtualTour.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a className="underline" href={DATA_BASE.virtualTour.url} target="_blank" rel="noopener noreferrer">
             {L.tour.fallback1}
           </a>
           {L.tour.fallbackText2}
-          <a
-            className="underline"
-            href={DATA_BASE.virtualTour.fallbackUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a className="underline" href={DATA_BASE.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
             {L.tour.fallback2}
           </a>
           .
@@ -850,26 +750,16 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title={L.nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((img, i) => (
-            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
-          ))}
+          {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => openLb(i)} />))}
         </div>
       </Section>
 
       {/* Lightbox */}
       {lbIndex !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[999] bg-black/90"
-          onClick={closeLb}
-        >
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              closeLb();
-            }}
+            onClick={(e) => { e.stopPropagation(); closeLb(); }}
             aria-label="Fermer"
             className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
           >
@@ -878,10 +768,7 @@ export default function Page() {
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              prevLb();
-            }}
+            onClick={(e) => { e.stopPropagation(); prevLb(); }}
             aria-label="Image précédente"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -899,10 +786,7 @@ export default function Page() {
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              nextLb();
-            }}
+            onClick={(e) => { e.stopPropagation(); nextLb(); }}
             aria-label="Image suivante"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -925,11 +809,7 @@ export default function Page() {
       </Section>
 
       {/* Localisation */}
-      <Section
-        id="localisation"
-        title={L.location.title}
-        subtitle={DATA_BASE.localisation[lang]}
-      >
+      <Section id="localisation" title={L.location.title} subtitle={DATA_BASE.localisation[lang]}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-5">
@@ -954,23 +834,9 @@ export default function Page() {
           <CardContent className="py-5">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input
-                  placeholder={L.contact.yourName}
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                <Input
-                  placeholder={L.contact.yourEmail}
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-                <Textarea
-                  placeholder={L.contact.yourMessage}
-                  rows={5}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                />
+                <Input placeholder={L.contact.yourName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <Input placeholder={L.contact.yourEmail} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <Textarea placeholder={L.contact.yourMessage} rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                 <div className="flex flex-wrap gap-3">
                   <Button onClick={handleMailto}>{L.contact.sendEmail}</Button>
                   <Button variant="outline" asChild>
@@ -991,7 +857,7 @@ export default function Page() {
         </Card>
       </Section>
 
-      {/* WhatsApp floating bubble */}
+      {/* WhatsApp floating */}
       <a
         href={waHref}
         target="_blank"
@@ -1000,9 +866,7 @@ export default function Page() {
         className="fixed bottom-4 right-4 z-[1000] inline-flex items-center justify-center h-12 w-12 rounded-full bg-green-500 text-white shadow-lg hover:scale-105 transition"
         title="WhatsApp"
         onClick={() => {
-          try {
-            trackContact({ cta: "whatsapp", page: "home" });
-          } catch {}
+          try { trackContact({ cta: "whatsapp", page: "home" }); } catch {}
         }}
       >
         <MessageCircle className="h-6 w-6" />
@@ -1018,7 +882,9 @@ export default function Page() {
   );
 }
 
-/* ----------------------------- 5) SECTIONS & GALLERY ----------------------------- */
+/* -------------------------------------------------------
+   5) SECTION & GALLERY
+------------------------------------------------------- */
 
 function Section({
   id,
@@ -1034,12 +900,7 @@ function Section({
   return (
     <section id={id} className="py-12 md:py-16 scroll-mt-24">
       <div className="container mx-auto px-4 max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{title}</h2>
           {subtitle && <p className="text-neutral-500 mt-2 max-w-2xl">{subtitle}</p>}
         </motion.div>
