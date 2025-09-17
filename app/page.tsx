@@ -383,47 +383,49 @@ export default function Page() {
   ];
 
   const jsonLdLodging = {
-    "@context": "https://schema.org",
-    "@type": "VacationRental",
-    name: "Villa Myassa",
-    url: SITE_ORIGIN,
-    image: absoluteImages,
-    description: DATA_BASE.baseline[lang],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "F66R+H95 Singakerta",
-      addressLocality: "Ubud",
-      addressRegion: "Bali",
-      postalCode: "80571",
-      addressCountry: "ID",
-    },
-    hasMap:
-      "https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia",
-    geo: { "@type": "GeoCoordinates", latitude: -8.534, longitude: 115.255 },
-    email: "contact@villamyassa.com",
-    numberOfRooms: 3,
-    numberOfBedrooms: 3,
-    checkinTime: "15:00",
-    checkoutTime: "11:00",
-    amenityFeature: ((DATA_BASE.pointsForts as any)[lang] || []).map((f: string) => ({
-      "@type": "LocationFeatureSpecification",
-      name: f,
-      value: true,
-    })),
-    offers: {
-      "@type": "AggregateOffer",
-      url: BESTAY_URL,
-      priceCurrency: "USD",
-      lowPrice: "150",
-      highPrice: "250",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Accommodation",
-        name: "Villa Myassa",
-      },
-    },
-    sameAs: [BESTAY_URL],
-  };
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness", // ← au lieu de "VacationRental"
+  name: "Villa Myassa",
+  url: SITE_ORIGIN,
+  image: [
+    `${SITE_ORIGIN}/photos/001-hero-piscine.jpg`,
+    `${SITE_ORIGIN}/photos/003-suite1.jpg`,
+    `${SITE_ORIGIN}/photos/005-cuisine.jpg`,
+  ],
+  description: DATA_BASE.baseline[lang],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "F66R+H95 Singakerta",
+    addressLocality: "Ubud",
+    addressRegion: "Bali",
+    postalCode: "80571",
+    addressCountry: "ID",
+  },
+  hasMap:
+    "https://www.google.com/maps?q=F66R%2BH95%20Singakerta%2C%20Gianyar%20Regency%2C%20Bali%2080571%2C%20Ubud%2C%20Indonesia",
+  geo: { "@type": "GeoCoordinates", latitude: -8.534, longitude: 115.255 },
+  email: "contact@villamyassa.com",
+  numberOfRooms: 3,
+  // Google ne demande pas "checkinTime/checkoutTime" pour ce type, tu peux les garder si tu veux :
+  checkinTime: "15:00",
+  checkoutTime: "11:00",
+
+  // Pour donner une idée de tarifs sans viser le rich result "vacation rental"
+  priceRange: "$150 - $250",
+  makesOffer: {
+    "@type": "Offer",
+    url: BESTAY_URL,
+    priceCurrency: "USD",
+  },
+
+  amenityFeature: ((DATA_BASE.pointsForts as any)[lang] || []).map((f: string) => ({
+    "@type": "LocationFeatureSpecification",
+    name: f,
+    value: true,
+  })),
+  sameAs: [BESTAY_URL],
+};
+
 
   const jsonLdFAQ = {
     "@context": "https://schema.org",
