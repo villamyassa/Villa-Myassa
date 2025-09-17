@@ -1,77 +1,82 @@
 // app/layout.tsx
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 
-const siteUrl = "https://www.villamyassa.com";
-const siteName = "Villa Myassa – Ubud, Bali";
-const siteDesc =
-  "Villa Myassa à Ubud (Bali) : 3 chambres, piscine privée, design contemporain, proche Monkey Forest et centre d’Ubud. Réservez votre séjour tropical.";
+const SITE_URL = "https://www.villamyassa.com";
+const OG_IMAGE = `${SITE_URL}/photos/001-hero-piscine.jpg`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: siteName,
-    template: "%s • Villa Myassa – Ubud, Bali",
-  },
-  description: siteDesc,
+  metadataBase: new URL(SITE_URL),
+  title: "Villa Myassa | Ubud, Bali — Private Pool Villa (3BR)",
+  description:
+    "Villa contemporaine à Ubud, Bali : 3 chambres, 3,5 salles de bain, piscine privée, balé bengong. Visite 3D et réservation Bestay.",
   alternates: {
-    canonical: siteUrl,
-    // Si plus tard tu crées de vraies pages par langue (/fr, /en, /id), mets-les ici :
-    // languages: { "fr": `${siteUrl}/fr`, "en": `${siteUrl}/en`, "id": `${siteUrl}/id` },
+    canonical: "/",
+    languages: {
+      "fr-FR": "/",
+      "en-US": "/",
+      "id-ID": "/",
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   openGraph: {
     type: "website",
-    url: siteUrl,
-    title: siteName,
+    url: SITE_URL,
     siteName: "Villa Myassa",
-    description: siteDesc,
+    title: "Villa Myassa | Ubud, Bali — Private Pool Villa (3BR)",
+    description:
+      "3BR villa with private pool in Ubud, Bali. Sunken lounge, outdoor bath, near Monkey Forest. 3D tour + booking.",
+    locale: "fr_FR",
     images: [
       {
-        url: "/photos/001-hero-piscine.jpg",
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Villa Myassa – Piscine privée à Ubud, Bali",
+        alt: "Villa Myassa — private pool in Ubud, Bali",
       },
     ],
-    locale: "fr_FR",
   },
   twitter: {
     card: "summary_large_image",
-    title: siteName,
-    description: siteDesc,
-    images: ["/photos/001-hero-piscine.jpg"],
+    title: "Villa Myassa | Ubud, Bali — Private Pool Villa",
+    description:
+      "Villa à Ubud avec piscine privée. 3 chambres, 3,5 SDB. Visite 3D + réservation Bestay.",
+    images: [OG_IMAGE],
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
-  // peu utile aujourd’hui mais demandé : mots-clés
-  keywords: [
-    "villa Ubud",
-    "villa Bali",
-    "villa avec piscine Ubud",
-    "location villa Ubud",
-    "vacances Bali",
-    "Villa Myassa",
-    "private pool villa Ubud",
-    "sewa vila Ubud",
-  ],
-  // pour les assistants IA (hints)
-  other: {
-    "x-robots-tag": "all",
-  },
+  // Si tu veux vérifier Search Console via meta :
+  // verification: { google: "TON_TOKEN_GOOGLE_SEARCH_CONSOLE" },
 };
 
-export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  width: "device-width",
-  initialScale: 1,
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="fr">
-      <body>{children}</body>
+    <html lang="fr" className="scroll-smooth">
+      <body className="antialiased bg-white text-neutral-900">
+        {children}
+      </body>
     </html>
   );
 }
