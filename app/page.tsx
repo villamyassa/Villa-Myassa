@@ -134,39 +134,40 @@ const DATA_BASE = {
     ],
   },
   description: {
-    fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
+    /* -------------------- FR enrichi -------------------- */
+    fr: `Bienvenue à la Villa Myassa, **villa à Ubud** idéale pour des **vacances à Bali**. Située à Singakerta, dans un quartier paisible entouré de rizières et de jungle, notre **villa de Bali avec piscine privée** combine architecture contemporaine et chaleur balinaise — à quelques minutes du **centre d’Ubud** et de la célèbre **Monkey Forest**. Dès l’entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, donnant le ton d’un séjour raffiné.
 
-Les trois chambres raffinées de la Villa Myassa disposent chacune d'un lit queen-size, d'une Smart TV, de la climatisation et d'une salle de bain attenante. La chambre principale vous enchantera avec sa moustiquaire à baldaquin et sa baignoire extérieure, la deuxième chambre vous rafraîchira avec sa douche extérieure, tandis que la troisième chambre offre une expérience de bain semi-extérieure.
+Les trois chambres raffinées de la Villa Myassa disposent chacune d’un lit queen-size, d’une Smart TV, de la climatisation et d’une salle de bain attenante. La chambre principale séduit avec sa moustiquaire à baldaquin et sa baignoire extérieure ; la deuxième chambre offre une douche extérieure ; la troisième propose une expérience semi-ouverte. Idéale pour des familles ou amis cherchant une **location de villa à Ubud** confortable et intime.
 
-La Villa Myassa allie harmonieusement intérieur et extérieur avec ses espaces ouverts et aérés, naturellement rafraîchis par une ventilation transversale et des ventilateurs de plafond. Une magnifique carte balinaise en bois agrémente le confortable salon, idéal pour se réunir ou se détendre. La salle à manger peut accueillir confortablement six personnes, tandis que la cuisine moderne avec îlot central invite les convives à concocter des repas mémorables.
+La Villa Myassa relie naturellement intérieur et extérieur : grands espaces ouverts, ventilation croisée et ventilateurs de plafond. Une carte de Bali finement sculptée orne le salon, parfait pour se réunir ou se détendre. La salle à manger accueille six convives, et la cuisine moderne avec îlot central facilite la préparation de repas après une journée à explorer Ubud, ses temples et ses cafés.
 
-Sortez de la Villa Myassa et pénétrez dans votre oasis privée, où une piscine étincelante, couronnée d'une statue de Bouddha, vous attend. Le coin salon en contrebas (Sunken) offre une vue imprenable sur l'eau, tandis que deux chaises longues flottantes invitent à la détente. Installez-vous dans le gazebo balinais « bale bengong », drapé de rideaux blancs pour d'excellents massages. Deux chaises longues supplémentaires donnent sur le jardin luxuriant, tandis que la douche extérieure de la piscine complète ce paradis tropical.
+À l’extérieur, découvrez votre oasis privée : **piscine étincelante** surmontée d’une statue de Bouddha, **sunken lounge** face à l’eau et deux matelas flottants pour lézarder au soleil. Le **gazebo balinais (balé bengong)**, drapé de rideaux blancs, est idéal pour un massage. Deux bains de soleil supplémentaires bordent le jardin luxuriant ; la douche extérieure complète ce **havre tropical**.
 
-L'emplacement privilégié de la Villa Myassa à Singakerta vous place aux portes de la scène culturelle dynamique d'Ubud. Explorez la célèbre Forêt des Singes, visitez le palais historique d'Ubud, plongez dans la scène artistique locale et découvrez d'innombrables restaurants et boutiques, le tout à proximité de votre sanctuaire privé.
+Grâce à son emplacement privilégié, la **Villa Myassa Ubud** vous place près des meilleurs restaurants, studios de yoga, marchés artisanaux et rizières en terrasse de Tegallalang. Que vous souhaitiez une retraite zen, un voyage en couple ou des **vacances en famille à Bali**, notre villa est un point de départ parfait.
 
-Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et découvrez l'alliance de l'élégance moderne et de la magie mystique de la jungle balinaise.`,
-    en: `Welcome to Villa Myassa in Singakerta, where contemporary design meets the enchanting landscape of Ubud’s jungle. From the entrance, an elegant fountain flows into a serene pond with stepping stones, setting the tone for an extraordinary stay.
+**Réservez** dès aujourd’hui votre escapade tropicale à la Villa Myassa et profitez d’une **villa à Ubud avec piscine privée**, élégante et sereine — le mélange idéal entre confort moderne et magie balinaise.`,
 
-Each of the three refined bedrooms features a queen-size bed, Smart TV, air conditioning, and an en-suite bathroom. The master delights with a canopy mosquito net and an outdoor bathtub; the second bedroom offers a refreshing outdoor shower, and the third features a semi-open bathing experience.
+    /* -------------------- EN enriched -------------------- */
+    en: `Welcome to Villa Myassa — a **villa in Ubud, Bali** designed for effortless tropical living. Tucked away in Singakerta among rice fields and jungle, this **Bali private pool villa** blends contemporary lines with Balinese warmth. You’re minutes from **central Ubud** and the famous **Monkey Forest**, making it a perfect base for a relaxing **Ubud villa rental**.
 
-Villa Myassa blends indoors and outdoors with open, airy spaces, naturally cooled by cross-ventilation and ceiling fans. A beautiful carved wooden map of Bali anchors the cozy lounge, perfect for gathering or relaxing. The dining area seats six comfortably, while the modern kitchen with island invites memorable meals.
+Each of the three refined bedrooms features a queen-size bed, Smart TV, air-conditioning and an en-suite bathroom. The master comes with a canopy mosquito net and an outdoor bathtub; the second bedroom has an outdoor shower; the third offers a semi-open bathing experience — ideal for friends or families seeking a comfortable **villa rental in Ubud**.
 
-Step into your private oasis: a sparkling pool crowned by a Buddha statue, a sunken lounge overlooking the water, and two floating loungers for pure relaxation. Unwind in the balé bengong gazebo draped with white curtains—perfect for massages. Two additional sun loungers face the lush garden, while the outdoor pool shower completes this tropical haven.
+Indoors meet outdoors through breezy open spaces, natural cross-ventilation and ceiling fans. A carved wooden map of Bali anchors the lounge, while the dining area seats six and the modern island kitchen invites easy meals after exploring Ubud’s temples, cafés and yoga studios.
 
-Our privileged location places you at the gateway to Ubud’s cultural scene—Monkey Forest, Ubud Palace, art galleries, and countless cafés and boutiques—just minutes from your private sanctuary.
+Step into your private oasis: a **sparkling pool** crowned by a Buddha statue, a **sunken lounge** overlooking the water, and two floating loungers for pure relaxation. Unwind in the **balé bengong gazebo** draped with white curtains — perfect for massages. Two additional sun loungers face the lush garden and an outdoor shower completes this **tropical haven**.
 
-Book your tropical escape at Villa Myassa today and experience the harmony of modern elegance and the mystical magic of Bali’s jungle.`,
-    id: `Selamat datang di Villa Myassa di Singakerta, tempat desain kontemporer berpadu dengan lanskap menawan hutan Ubud. Dari pintu masuk, air mancur elegan mengalir ke kolam tenang dengan pijakan batu, menetapkan suasana untuk masa inap yang istimewa.
+With its privileged location, **Villa Myassa Ubud** places you close to restaurants, markets and the Tegallalang rice terraces. Whether you’re planning a couple’s getaway or a **family holiday in Bali**, this **Ubud private-pool villa** is an elegant, serene choice. **Book** your tropical escape today.`,
 
-Tiga kamar tidur yang dirancang apik masing-masing memiliki tempat tidur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama dilengkapi kelambu kanopi dan bak mandi luar ruang; kamar kedua menawarkan shower luar ruang yang menyegarkan; sedangkan kamar ketiga menghadirkan pengalaman mandi semi-terbuka.
+    /* -------------------- ID diperkaya -------------------- */
+    id: `Selamat datang di Villa Myassa — **vila di Ubud, Bali** yang nyaman untuk liburan tropis. Berada di Singakerta yang tenang, dikelilingi sawah dan hutan, **vila Ubud dengan kolam renang pribadi** ini memadukan desain kontemporer dan kehangatan Bali. Lokasi hanya beberapa menit dari **pusat Ubud** dan **Monkey Forest**, cocok sebagai **sewa vila Ubud** untuk keluarga maupun teman.
 
-Ruang dalam dan luar berpadu melalui area terbuka yang lapang, secara alami sejuk berkat ventilasi silang dan kipas plafon. Peta Bali ukir kayu mempermanis ruang keluarga yang nyaman, ideal untuk berkumpul atau bersantai. Area makan nyaman untuk enam orang, sementara dapur modern dengan island mengundang momen memasak yang berkesan.
+Tiga kamar tidur elegan masing-masing memiliki kasur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama dilengkapi kelambu kanopi serta bak mandi luar ruang; kamar kedua dengan shower luar ruang; dan kamar ketiga menghadirkan pengalaman semi-terbuka — pas untuk tamu yang mencari **vila sewa di Ubud** yang nyaman dan privat.
 
-Di luar, oasis pribadi menanti: kolam berkilau berhias patung Buddha, sunken lounge yang menghadap air, dan dua kursi apung untuk relaksasi total. Nikmati balé bengong dengan tirai putih — sempurna untuk pijat. Dua kursi berjemur tambahan menghadap taman rimbun, serta shower luar ruang di area kolam melengkapi surga tropis ini.
+Ruang dalam dan luar menyatu melalui area terbuka yang lapang, ventilasi silang alami, serta kipas plafon. Peta Bali ukiran kayu mempercantik ruang keluarga; area makan untuk enam orang; dapur modern dengan island memudahkan memasak setelah menjelajah kafe, studio yoga, dan pura di Ubud.
 
-Lokasi istimewa kami menempatkan Anda di gerbang dunia budaya Ubud — Monkey Forest, Ubud Palace, galeri seni, serta kafe dan butik tak terhitung jumlahnya — hanya beberapa menit dari tempat peristirahatan pribadi Anda.
+Di luar, nikmati oasis pribadi: **kolam renang berkilau** berhias patung Buddha, **sunken lounge** menghadap air, serta dua matras apung untuk bersantai. Rebahkan diri di **balé bengong** dengan tirai putih — ideal untuk pijat. Dua kursi berjemur menghadap taman rimbun, sementara shower luar ruang melengkapi **surga tropis** ini.
 
-Pesan liburan tropis Anda di Villa Myassa hari ini dan rasakan keharmonisan elegansi modern dengan pesona mistis hutan Bali.`,
+Berkat lokasinya yang strategis, **Villa Myassa Ubud** dekat restoran, pasar, serta sawah terasering Tegallalang. Baik untuk pasangan maupun **liburan keluarga di Bali**, **vila dengan kolam renang pribadi** ini adalah pilihan tenang dan elegan. **Pesan** liburan tropis Anda hari ini.`,
   },
 };
 
