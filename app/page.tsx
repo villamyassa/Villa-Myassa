@@ -304,6 +304,11 @@ const SocialIconImg = ({
   </a>
 );
 
+/** Icône image générique pour items du menu Réserver (vrais logos) */
+const MenuLogo = ({ src, alt }: { src: string; alt: string }) => (
+  <img src={src} alt={alt} className="h-5 w-5 object-contain" />
+);
+
 function BookingMenu({
   lang,
   variant = "default",
@@ -340,11 +345,11 @@ function BookingMenu({
   const Item = ({
     k,
     label,
-    Icon,
+    logoSrc,
   }: {
     k: BookingPlatformKey;
     label: string;
-    Icon: React.FC;
+    logoSrc: string;
   }) => (
     <button
       role="menuitem"
@@ -352,17 +357,12 @@ function BookingMenu({
       className="w-full text-left px-4 py-3 hover:bg-neutral-50 flex items-center justify-between"
     >
       <span className="flex items-center gap-3">
-        <Icon />
+        <MenuLogo src={logoSrc} alt={label} />
         <span>{label}</span>
       </span>
       <ExternalLink className="h-4 w-4 opacity-60" />
     </button>
   );
-
-  const IconBestay = () => <div className="h-5 w-5 rounded-md bg-blue-600" />;
-  const IconAirbnb = () => <div className="h-5 w-5 rounded-md bg-rose-500" />;
-  const IconBooking = () => <div className="h-5 w-5 rounded-md bg-blue-900" />;
-  const IconDirect = () => <div className="h-5 w-5 rounded-md bg-neutral-800" />;
 
   return (
     <div className={`relative ${fullWidth ? "w-full" : "w-auto"}`} ref={menuRef}>
@@ -385,14 +385,38 @@ function BookingMenu({
           id="booking-menu"
           role="menu"
           aria-label="Choisir une plateforme"
-          className="absolute right-0 mt-2 w-72 rounded-xl border bg-white shadow-lg overflow-hidden z-50"
+          className="booking-menu absolute right-0 mt-2 w-72 rounded-xl border bg-white shadow-lg overflow-hidden z-50"
         >
           <div className="px-3 py-2 text-xs text-neutral-500">Choisir une plateforme</div>
           <ul className="max-h-[70vh] overflow-auto">
-            <li><Item k="bestay"  label={L.platforms.bestay}  Icon={IconBestay}  /></li>
-            <li><Item k="airbnb"  label={L.platforms.airbnb}  Icon={IconAirbnb}  /></li>
-            <li><Item k="booking" label={L.platforms.booking} Icon={IconBooking} /></li>
-            <li><Item k="direct"  label={L.platforms.direct}  Icon={IconDirect}  /></li>
+            <li>
+              <Item
+                k="bestay"
+                label={L.platforms.bestay}
+                logoSrc="/logos/bestay.png"
+              />
+            </li>
+            <li>
+              <Item
+                k="airbnb"
+                label={L.platforms.airbnb}
+                logoSrc="/logos/airbnb.png"
+              />
+            </li>
+            <li>
+              <Item
+                k="booking"
+                label={L.platforms.booking}
+                logoSrc="/logos/booking.png"
+              />
+            </li>
+            <li>
+              <Item
+                k="direct"
+                label={L.platforms.direct}
+                logoSrc="/logos/direct.png"
+              />
+            </li>
           </ul>
         </div>
       )}
@@ -408,7 +432,6 @@ function HeroSlider({ images }: { images: GalleryItem[] }) {
   const [index, setIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
 
-  // Avance toutes les 3s
   useEffect(() => {
     if (images.length <= 1) return;
     const tick = () => setIndex((i) => (i + 1) % images.length);
@@ -418,7 +441,6 @@ function HeroSlider({ images }: { images: GalleryItem[] }) {
     };
   }, [images.length]);
 
-  // Pause on hover (desktop)
   const onMouseEnter = () => {
     if (intervalRef.current) {
       window.clearInterval(intervalRef.current);
@@ -439,7 +461,6 @@ function HeroSlider({ images }: { images: GalleryItem[] }) {
       onMouseLeave={onMouseLeave}
       aria-label="Diaporama des photos de la villa"
     >
-      {/* Images superposées avec fondu */}
       {images.map((img, i) => (
         <img
           key={i}
@@ -449,18 +470,10 @@ function HeroSlider({ images }: { images: GalleryItem[] }) {
           loading={i === 0 ? "eager" : "lazy"}
         />
       ))}
-
-      {/* Légère ombre en bas pour lisibilité si on met du texte un jour */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
-
-      {/* Petits indicateurs (dots) */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
         {images.map((_, i) => (
-          <span
-            key={i}
-            className={`h-2 w-2 rounded-full ${i === index ? "bg-white" : "bg-white/50"}`}
-            aria-label={i === index ? "Slide actif" : `Aller au slide ${i + 1}`}
-          />
+          <span key={i} className={`h-2 w-2 rounded-full ${i === index ? "bg-white" : "bg-white/50"}`} />
         ))}
       </div>
     </div>
@@ -494,7 +507,6 @@ export default function Page() {
   const prevLb = () => setLbIndex((i) => (i === null ? i : (i + images.length - 1) % images.length));
   const nextLb = () => setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // ESC / ← →
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -655,7 +667,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* CSS header responsive */}
+      {/* Styles header + correctif menu mobile portrait */}
       <style jsx global>{`
         .header-grid { display: grid; grid-template-rows: auto auto; align-items: center; }
         .header-title { display: flex; justify-content: center; }
@@ -678,6 +690,8 @@ export default function Page() {
           .book-center-desktop { display: none; }
           .book-actions-mobile { display: inline-flex; }
           .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
+          /* Centre le menu déroulant sous le bouton sur mobile portrait pour éviter la coupure à gauche */
+          .booking-menu { right: auto !important; left: 50% !important; transform: translateX(-50%); }
         }
 
         @media (max-width: 640px) and (orientation: landscape) {
@@ -775,7 +789,7 @@ export default function Page() {
 
       {/* Hero -> Slideshow */}
       <section id="accueil">
-        <HeroSlider images={images} />
+        <HeroSlider images={DATA_BASE.images} />
 
         <div className="container mx-auto px-4 max-w-6xl py-10">
           <motion.div
@@ -805,26 +819,36 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (
-                <p key={i} className="mb-4">{p}</p>
-              ))}
-              {rest.length > 0 && (
-                <>
-                  <div
-                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
-                    aria-hidden={!showMore}
-                  >
-                    {rest.map((p, i) => (
-                      <p key={`rest-${i}`} className="mb-4">{p}</p>
+              {(() => {
+                const paragraphs = (DATA_BASE.description as any)[lang].trim().split(/\n\s*\n/).map((p: string) => p.trim());
+                const firstTwo = paragraphs.slice(0, 2);
+                const rest = paragraphs.slice(2);
+                const [showMore, setShowMore] = useState(false);
+                return (
+                  <>
+                    {firstTwo.map((p: string, i: number) => (
+                      <p key={i} className="mb-4">{p}</p>
                     ))}
-                  </div>
-                  <div className="mt-2">
-                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
-                      {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
-                    </Button>
-                  </div>
-                </>
-              )}
+                    {rest.length > 0 && (
+                      <>
+                        <div
+                          className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
+                          aria-hidden={!showMore}
+                        >
+                          {rest.map((p: string, i: number) => (
+                            <p key={`rest-${i}`} className="mb-4">{p}</p>
+                          ))}
+                        </div>
+                        <div className="mt-2">
+                          <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
+                            {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </CardContent>
         </Card>
@@ -843,7 +867,7 @@ export default function Page() {
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
               src={coverSrc}
-              onError={(e) => { e.currentTarget.src = images[0]?.src || ""; }}
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = DATA_BASE.images[0]?.src || ""; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -874,7 +898,9 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title={LTEXT(lang).nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />))}
+          {DATA_BASE.images.map((img, i) => (
+            <GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />
+          ))}
         </div>
       </Section>
 
@@ -901,8 +927,8 @@ export default function Page() {
 
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
-              src={images[lbIndex].src}
-              alt={images[lbIndex].alt}
+              src={DATA_BASE.images[lbIndex].src}
+              alt={DATA_BASE.images[lbIndex].alt}
               onClick={(e) => e.stopPropagation()}
               className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
             />
@@ -1007,7 +1033,7 @@ export default function Page() {
 }
 
 /* -------------------------------------------------------
-   6) COMPOSANTS (Section / GalleryCard)
+   6) COMPOSANTS
 ------------------------------------------------------- */
 
 function Section({
