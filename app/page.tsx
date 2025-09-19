@@ -113,7 +113,6 @@ const DATA_BASE = {
   adresse: "F66R+H95 Singakerta, Gianyar Regency, Bali 80571, Ubud, Indonesia",
   virtualTour: {
     url: "https://discover.matterport.com/space/xrHbRBnPwdy",
-    fallbackUrl: BESTAY_URL,
     cover: "/photos/virtual-tour-cover.jpg",
   },
   pointsForts: {
@@ -157,20 +156,11 @@ const LTEXT = (lang: Lang) => ({
     title: lang === "fr" ? "Visite 3D (360°)" : lang === "id" ? "Tur Virtual 3D (360°)" : "3D Virtual Tour (360°)",
     subtitle:
       lang === "fr"
-        ? "Cliquez sur l’image — la visite s’ouvre dans un onglet, et Bestay dans un second."
+        ? "Cliquez sur l’image — la visite Matterport s’ouvre dans un nouvel onglet."
         : lang === "id"
-        ? "Klik gambar — tur akan terbuka di tab baru, dan Bestay di tab lainnya."
-        : "Click the image — the tour opens in a new tab, and Bestay in another.",
-    button: lang === "fr" ? "Cliquer pour ouvrir la visite" : lang === "id" ? "Klik untuk membuka tur" : "Click to open the tour",
-    fallback1: lang === "fr" ? "la visite Matterport" : lang === "id" ? "tur Matterport" : "the Matterport tour",
-    fallback2: lang === "fr" ? "la page Bestay" : lang === "id" ? "halaman Bestay" : "the Bestay page",
-    fallbackText:
-      lang === "fr"
-        ? "Si votre navigateur bloque l’ouverture d’un des onglets, ouvrez manuellement "
-        : lang === "id"
-        ? "Jika peramban memblokir salah satu tab, buka secara manual "
-        : "If your browser blocks one of the tabs, open ",
-    fallbackText2: lang === "fr" ? " ou " : lang === "id" ? " atau " : " or ",
+        ? "Klik gambar — tur Matterport terbuka di tab baru."
+        : "Click the image — the Matterport tour opens in a new tab.",
+    button: lang === "fr" ? "Ouvrir la visite" : lang === "id" ? "Buka tur" : "Open the tour",
   },
   features: {
     title: lang === "fr" ? "Atouts & Équipements" : lang === "id" ? "Keunggulan & Fasilitas" : "Highlights & Amenities",
@@ -495,12 +485,11 @@ export default function Page() {
     try { trackSubmitForm({ method: "mailto", page: "home" }); } catch {}
   };
 
+  // ---- Ouvrir UNIQUEMENT Matterport
   const openVirtualTour = () => {
     window.open(DATA_BASE.virtualTour.url, "_blank", "noopener,noreferrer");
-    setTimeout(() => {
-      window.open(DATA_BASE.virtualTour.fallbackUrl, "_blank", "noopener,noreferrer");
-    }, 50);
   };
+
   const coverSrc =
     (DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) ||
     images[0]?.src;
@@ -610,7 +599,6 @@ export default function Page() {
     try { trackViewContent({ page: "home" }); } catch {}
   }, []);
 
-  /* ===== Styles header (mobile portrait : titre très grand sur 1 ligne) ===== */
   const headerStyles = (
     <style jsx global>{`
       .header-grid { display: grid; grid-template-rows: auto auto; align-items: center; }
@@ -786,7 +774,7 @@ export default function Page() {
         </Card>
       </Section>
 
-      {/* Visite 3D — (CONTENU AJOUTÉ pour éviter l'erreur children) */}
+      {/* Visite 3D */}
       <Section id="visite-3d" title={LTEXT(lang).tour.title} subtitle={LTEXT(lang).tour.subtitle}>
         <div
           role="button"
@@ -798,8 +786,8 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={coverSrc || images[0]?.src}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = images[0]?.src; }}
+              src={DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : coverSrc}
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = coverSrc; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -813,17 +801,6 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <p className="mt-3 text-xs text-neutral-600">
-          {LTEXT(lang).tour.fallbackText}
-          <a className="underline" href={DATA_BASE.virtualTour.url} target="_blank" rel="noopener noreferrer">
-            {LTEXT(lang).tour.fallback1}
-          </a>
-          {LTEXT(lang).tour.fallbackText2}
-          <a className="underline" href={DATA_BASE.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
-            {LTEXT(lang).tour.fallback2}
-          </a>
-          .
-        </p>
       </Section>
 
       {/* Galerie */}
