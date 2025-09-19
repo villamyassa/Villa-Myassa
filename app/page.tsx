@@ -192,8 +192,6 @@ const LTEXT = (lang: Lang) => ({
     contact: lang === "fr" ? "Contact" : lang === "id" ? "Kontak" : "Contact",
     tour: lang === "fr" ? "Visite 3D" : lang === "id" ? "Tur 3D" : "3D Tour",
     book: lang === "fr" ? "Réserver" : lang === "id" ? "Pesan" : "Book",
-    choosePlatform:
-      lang === "fr" ? "Choisir une plateforme" : lang === "id" ? "Pilih platform" : "Choose a platform",
   },
   platforms: {
     bestay: "Bestay (site partenaire)",
@@ -359,7 +357,7 @@ function BookingMenu({
     </button>
   );
 
-  // simples carrés brandés (pas d'actifs externes)
+  // mini “logos” colorés (placeholders)
   const IconBestay = () => <div className="h-5 w-5 rounded-md bg-blue-600" />;
   const IconAirbnb = () => <div className="h-5 w-5 rounded-md bg-rose-500" />;
   const IconBooking = () => <div className="h-5 w-5 rounded-md bg-blue-900" />;
@@ -385,10 +383,10 @@ function BookingMenu({
         <div
           id="booking-menu"
           role="menu"
-          aria-label={L.nav.choosePlatform}
+          aria-label="Choisir une plateforme"
           className="absolute right-0 mt-2 w-72 rounded-xl border bg-white shadow-lg overflow-hidden z-50"
         >
-          <div className="px-3 py-2 text-xs text-neutral-500">{L.nav.choosePlatform}</div>
+          <div className="px-3 py-2 text-xs text-neutral-500">Choisir une plateforme</div>
           <ul className="max-h-[70vh] overflow-auto">
             <li><Item k="bestay"  label={L.platforms.bestay}  Icon={IconBestay}  /></li>
             <li><Item k="airbnb"  label={L.platforms.airbnb}  Icon={IconAirbnb}  /></li>
@@ -594,16 +592,31 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
+      {/* CSS pour gérer le titre 2 lignes UNIQUEMENT en mobile portrait */}
+      <style jsx global>{`
+        .title-mobile-portrait { display: none; }
+        .title-default { display: block; }
+        @media (max-width: 640px) and (orientation: portrait) {
+          .title-mobile-portrait { display: block; }
+          .title-default { display: none; }
+        }
+        /* sur mobile paysage et tous écrans >= sm : version une ligne */
+        @media (max-width: 640px) and (orientation: landscape) {
+          .title-mobile-portrait { display: none; }
+          .title-default { display: block; }
+        }
+      `}</style>
+
       <Script id="jsonld-lodging" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }} />
       <Script id="jsonld-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-3 md:px-4 max-w-6xl h-16 md:h-16 flex items-center justify-between gap-2">
-          {/* Titre : 2 lignes en mobile, 1 ligne en ≥ sm */}
-          <a href="#accueil" className="min-w-0 select-none">
-            {/* MOBILE (sm:hidden) */}
-            <span className="block sm:hidden text-center leading-tight">
+          {/* Titre : 2 lignes uniquement en mobile portrait */}
+          <a href="#accueil" className="min-w-0 select-none text-center sm:text-left">
+            {/* Mobile PORTRAIT (2 lignes) */}
+            <span className="title-mobile-portrait leading-tight">
               <span className="block text-xl font-extrabold tracking-tight font-serif">
                 Villa Myassa
               </span>
@@ -611,18 +624,17 @@ export default function Page() {
                 <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
               </span>
             </span>
-            {/* TABLET/DESKTOP (hidden sm:block) */}
+            {/* Autres cas : une seule ligne */}
             <span
-              className="hidden sm:block text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none whitespace-nowrap"
+              className="title-default text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none whitespace-nowrap"
               title="Villa Myassa, Ubud, BALI"
             >
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
             </span>
           </a>
 
-          {/* Actions à droite : select langue + réserver + réseaux (icônes 40x40) */}
+          {/* Actions à droite : select langue + Réserver + réseaux (UN SEUL bouton Réserver) */}
           <div className="flex items-center gap-2 shrink-0">
-            {/* Select Langue */}
             <label className="sr-only" htmlFor="lang-select">Langue</label>
             <select
               id="lang-select"
@@ -636,7 +648,7 @@ export default function Page() {
               <option value="id">🇮🇩 ID</option>
             </select>
 
-            {/* Réserver (menu) */}
+            {/* Réserver — unique */}
             <BookingMenu lang={lang} size="md" />
 
             {/* TikTok & Instagram (40x40) */}
@@ -670,7 +682,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Nav liens (desktop) */}
+        {/* Nav liens (desktop uniquement, SANS bouton Réserver pour éviter le doublon) */}
         <div className="hidden md:block">
           <div className="container mx-auto px-4 max-w-6xl">
             <nav className="flex items-center gap-6 text-sm py-2">
@@ -679,9 +691,6 @@ export default function Page() {
               <a href="#atouts" className="hover:underline">{LTEXT(lang).nav.features}</a>
               <a href="#localisation" className="hover:underline">{LTEXT(lang).nav.location}</a>
               <a href="#contact" className="hover:underline">{LTEXT(lang).nav.contact}</a>
-              <div className="ml-auto">
-                <BookingMenu lang={lang} />
-              </div>
             </nav>
           </div>
         </div>
@@ -711,7 +720,8 @@ export default function Page() {
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">{L.nav.gallery}</a>
               </Button>
-              <BookingMenu lang={lang} size="lg" />
+              {/* un seul CTA Réserver : si tu veux aussi ici, commente la ligne suivante */}
+              {/* <BookingMenu lang={lang} size="lg" /> */}
             </div>
           </motion.div>
         </div>
@@ -722,26 +732,18 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (
-                <p key={i} className="mb-4">{p}</p>
-              ))}
-              {rest.length > 0 && (
-                <>
-                  <div
-                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
-                    aria-hidden={!showMore}
-                  >
-                    {rest.map((p, i) => (
-                      <p key={`rest-${i}`} className="mb-4">{p}</p>
-                    ))}
-                  </div>
-                  <div className="mt-2">
-                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
-                      {showMore ? L.description.less : L.description.more}
-                    </Button>
-                  </div>
-                </>
-              )}
+              {(() => {
+                const paragraphs = (DATA_BASE.description as any)[lang]
+                  .trim().split(/\n\s*\n/).map((p: string) => p.trim());
+                const firstTwo = paragraphs.slice(0, 2);
+                const rest = paragraphs.slice(2);
+                return (
+                  <>
+                    {firstTwo.map((p: string, i: number) => <p key={i} className="mb-4">{p}</p>)}
+                    <Expandable rest={rest} more={L.description.more} less={L.description.less} />
+                  </>
+                );
+              })()}
             </div>
           </CardContent>
         </Card>
@@ -759,7 +761,7 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={coverSrc || hero.src}
+              src={DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`}
               onError={(e) => { e.currentTarget.src = hero.src; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
@@ -791,7 +793,7 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title={L.nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => openLb(i)} />))}
+          {IMAGES.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />))}
         </div>
       </Section>
 
@@ -818,8 +820,8 @@ export default function Page() {
 
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
-              src={images[lbIndex].src}
-              alt={images[lbIndex].alt}
+              src={IMAGES[lbIndex].src}
+              alt={IMAGES[lbIndex].alt}
               onClick={(e) => e.stopPropagation()}
               className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
             />
@@ -924,7 +926,7 @@ export default function Page() {
 }
 
 /* -------------------------------------------------------
-   5) SECTION & GALLERY
+   5) COMPOSANTS
 ------------------------------------------------------- */
 
 function Section({
@@ -948,6 +950,23 @@ function Section({
         <div className="mt-6 md:mt-8">{children}</div>
       </div>
     </section>
+  );
+}
+
+function Expandable({ rest, more, less }: { rest: string[]; more: string; less: string }) {
+  const [open, setOpen] = useState(false);
+  if (!rest.length) return null;
+  return (
+    <>
+      <div className={`overflow-hidden transition-[max-height,opacity] duration-300 ${open ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`} aria-hidden={!open}>
+        {rest.map((p, i) => (<p key={i} className="mb-4">{p}</p>))}
+      </div>
+      <div className="mt-2">
+        <Button variant="outline" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
+          {open ? less : more}
+        </Button>
+      </div>
+    </>
   );
 }
 
