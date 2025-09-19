@@ -309,11 +309,13 @@ function BookingMenu({
   variant = "default",
   size = "md",
   fullWidth = false,
+  className = "",
 }: {
   lang: Lang;
   variant?: "default" | "outline";
   size?: "lg" | "md";
   fullWidth?: boolean;
+  className?: string;
 }) {
   const L = LTEXT(lang);
   const [open, setOpen] = useState(false);
@@ -332,7 +334,7 @@ function BookingMenu({
     setOpen(false);
   };
 
-  const btnClass = fullWidth ? "w-full" : "";
+  const btnClass = `${fullWidth ? "w-full" : ""} ${className}`;
   const buttonSize: "lg" | "md" = size === "lg" ? "lg" : "md";
 
   const Item = ({
@@ -542,7 +544,7 @@ export default function Page() {
           "@type": "Answer",
           text:
             lang === "fr"
-              ? "Oui, la Villa Myassa possède une piscine privée avec sunken lounge et gazebo."
+              ? "Oui, la Villa Myassa possède une piscine privée dengan sunken lounge et gazebo."
               : lang === "id"
               ? "Ya, Villa Myassa memiliki kolam renang pribadi dengan sunken lounge dan bale bengong."
               : "Yes, Villa Myassa features a private pool with a sunken lounge and a gazebo.",
@@ -591,28 +593,44 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* CSS : empiler header sur 2 lignes UNIQUEMENT en mobile portrait,
-         et garantir que le titre tienne sur sa ligne, centré */}
+      {/* CSS header responsive : 
+         - Mobile portrait : 2 lignes (titre puis actions)
+         - Landscape & Desktop : 2 lignes (titre très grand, puis "Réserver" centré + actions à droite) */}
       <style jsx global>{`
-        /* par défaut : header en une seule ligne */
-        .header-wrap { display: flex; align-items: center; justify-content: space-between; height: 4rem; gap: .5rem; }
-        .title-line { font-weight: 800; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; }
-        .title-single { white-space: nowrap; }
+        .header-grid { display: grid; grid-template-rows: auto auto; align-items: center; }
+        .header-title { display: flex; justify-content: center; }
+        .title-text { font-weight: 800; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; white-space: nowrap; text-align: center; }
 
-        /* Mobile portrait : 2 lignes -> titre centré sur la 1ère ligne, actions sur 2ème */
+        /* Ligne 2 conteneur relatif pour centrer "Réserver" absolument */
+        .header-row2 { position: relative; display: flex; align-items: center; }
+        .book-center-desktop { position: absolute; left: 50%; transform: translateX(-50%); }
+        .actions-right { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
+
+        /* Tailles de titre par défaut (mobile paysage & desktop) */
+        .title-text { font-size: 1.75rem; line-height: 1.15; }          /* ~text-2xl */
+        @media (min-width: 640px) { .title-text { font-size: 2.25rem; } } /* ~text-3xl */
+        @media (min-width: 768px) { .title-text { font-size: 2.75rem; } } /* ~text-4xl */
+        @media (min-width: 1024px) { .title-text { font-size: 3.25rem; } }/* ~text-5xl */
+
+        /* Mobile portrait : empilement, actions centrées et "Réserver" dans le groupe actions (pas au centre absolu) */
+        .book-actions-mobile { display: none; }
         @media (max-width: 640px) and (orientation: portrait) {
-          .header-wrap { flex-direction: column; height: auto; padding: .35rem 0 .5rem; }
-          .header-title { width: 100%; display: flex; align-items: center; justify-content: center; }
-          .title-single { font-size: 18px; line-height: 1.2; white-space: nowrap; text-align: center; }
-          .header-actions { width: 100%; display: flex; justify-content: center; gap: .5rem; margin-top: .25rem; flex-wrap: nowrap; }
+          .header-grid { grid-template-rows: auto auto; padding: .35rem 0 .5rem; }
+          .title-text { font-size: 18px; line-height: 1.2; }
+          .header-row2 { position: static; justify-content: center; }
+          .book-center-desktop { display: none; }
+          .book-actions-mobile { display: inline-flex; }
+          .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
         }
 
-        /* Mobile paysage + ≥ sm : une seule ligne */
+        /* Mobile paysage + ≥ sm : montrer le "Réserver" centré en absolu */
         @media (max-width: 640px) and (orientation: landscape) {
-          .header-wrap { flex-direction: row; height: 4rem; }
-          .header-title { justify-content: flex-start; }
-          .header-actions { justify-content: flex-end; margin-top: 0; }
-          .title-single { font-size: 1.25rem; }
+          .book-center-desktop { display: inline-flex; }
+          .book-actions-mobile { display: none; }
+        }
+        @media (min-width: 640px) {
+          .book-center-desktop { display: inline-flex; }
+          .book-actions-mobile { display: none; }
         }
       `}</style>
 
@@ -621,76 +639,85 @@ export default function Page() {
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div className="container mx-auto px-3 md:px-4 max-w-6xl header-wrap">
-          {/* Ligne 1 (mobile portrait) / Colonne gauche (autres) : TITRE CENTRÉ */}
-          <a href="#accueil" className="min-w-0 select-none header-title">
-            <span
-              className="block title-line title-single"
-              title="Villa Myassa, Ubud, BALI"
-            >
-              Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
-            </span>
-          </a>
-
-          {/* Ligne 2 (mobile portrait) / Colonne droite (autres) : ACTIONS */}
-          <div className="header-actions">
-            {/* Select Langue */}
-            <label className="sr-only" htmlFor="lang-select">Langue</label>
-            <select
-              id="lang-select"
-              className="h-10 rounded-md border px-2 text-sm bg-white"
-              value={lang}
-              onChange={(e) => setLang(e.target.value as Lang)}
-              aria-label="Choisir la langue"
-            >
-              <option value="fr">🇫🇷 FR</option>
-              <option value="en">🇬🇧 EN</option>
-              <option value="id">🇮🇩 ID</option>
-            </select>
-
-            {/* Réserver — unique */}
-            <BookingMenu lang={lang} size="md" />
-
-            {/* TikTok & Instagram (40x40) */}
-            <SocialIconImg
-              href={TIKTOK_URL}
-              src="/logos/tiktok.png"
-              alt="TikTok"
-              onClick={() => { try { trackContact({ cta: "tiktok", page: "home" }); } catch {} }}
-              title="TikTok"
-            />
-            <SocialIconImg
-              href={INSTAGRAM_URL}
-              src="/logos/instagram.png"
-              alt="Instagram"
-              onClick={() => { try { trackContact({ cta: "instagram", page: "home" }); } catch {} }}
-              title="Instagram"
-            />
-
-            {/* WhatsApp (40x40) */}
-            <a
-              href={`https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="WhatsApp"
-              className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-500 text-white hover:scale-105 transition shrink-0"
-              title="WhatsApp"
-              onClick={() => { try { trackContact({ cta: "whatsapp", page: "home" }); } catch {} }}
-            >
-              <MessageCircle className="h-5 w-5" />
+        <div className="container mx-auto px-3 md:px-4 max-w-6xl header-grid">
+          {/* LIGNE 1 : TITRE CENTRÉ (très grand en desktop/paysage) */}
+          <div className="header-title h-16 items-center">
+            <a href="#accueil" className="min-w-0 select-none block">
+              <span className="title-text" title="Villa Myassa, Ubud, BALI">
+                Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
+              </span>
             </a>
+          </div>
+
+          {/* LIGNE 2 : "Réserver" centré, actions à droite (langues, réseaux, WhatsApp) */}
+          <div className="header-row2 h-14">
+            {/* Réserver centré pour desktop & paysage */}
+            <div className="book-center-desktop">
+              <BookingMenu lang={lang} size="md" />
+            </div>
+
+            {/* Groupe actions (mobile portrait: centré; autres: à droite) */}
+            <div className="actions-right">
+              {/* Réserver dans le groupe actions UNIQUEMENT pour mobile portrait */}
+              <div className="book-actions-mobile">
+                <BookingMenu lang={lang} size="md" />
+              </div>
+
+              {/* Langue */}
+              <label className="sr-only" htmlFor="lang-select">Langue</label>
+              <select
+                id="lang-select"
+                className="h-10 rounded-md border px-2 text-sm bg-white"
+                value={lang}
+                onChange={(e) => setLang(e.target.value as Lang)}
+                aria-label="Choisir la langue"
+              >
+                <option value="fr">🇫🇷 FR</option>
+                <option value="en">🇬🇧 EN</option>
+                <option value="id">🇮🇩 ID</option>
+              </select>
+
+              {/* TikTok & Instagram (40x40) */}
+              <SocialIconImg
+                href={TIKTOK_URL}
+                src="/logos/tiktok.png"
+                alt="TikTok"
+                onClick={() => { try { trackContact({ cta: "tiktok", page: "home" }); } catch {} }}
+                title="TikTok"
+              />
+              <SocialIconImg
+                href={INSTAGRAM_URL}
+                src="/logos/instagram.png"
+                alt="Instagram"
+                onClick={() => { try { trackContact({ cta: "instagram", page: "home" }); } catch {} }}
+                title="Instagram"
+              />
+
+              {/* WhatsApp (40x40) */}
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="WhatsApp"
+                className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-500 text-white hover:scale-105 transition shrink-0"
+                title="WhatsApp"
+                onClick={() => { try { trackContact({ cta: "whatsapp", page: "home" }); } catch {} }}
+              >
+                <MessageCircle className="h-5 w-5" />
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* Nav liens (desktop uniquement, SANS bouton Réserver pour éviter le doublon) */}
+        {/* Nav liens (desktop) */}
         <div className="hidden md:block">
           <div className="container mx-auto px-4 max-w-6xl">
             <nav className="flex items-center gap-6 text-sm py-2">
-              <a href="#visite-3d" className="hover:underline">{LTEXT(lang).nav.tour}</a>
+              <a href="#visite-3d" className="hover:underline">{LTEXT(lang).tour.title}</a>
               <a href="#galerie" className="hover:underline">{LTEXT(lang).nav.gallery}</a>
-              <a href="#atouts" className="hover:underline">{LTEXT(lang).nav.features}</a>
-              <a href="#localisation" className="hover:underline">{LTEXT(lang).nav.location}</a>
-              <a href="#contact" className="hover:underline">{LTEXT(lang).nav.contact}</a>
+              <a href="#atouts" className="hover:underline">{LTEXT(lang).features.title}</a>
+              <a href="#localisation" className="hover:underline">{LTEXT(lang).location.title}</a>
+              <a href="#contact" className="hover:underline">{LTEXT(lang).contact.title}</a>
             </nav>
           </div>
         </div>
@@ -714,22 +741,19 @@ export default function Page() {
               {DATA_BASE.baseline[lang]}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
-              {L.hero.capacity} • {L.hero.baths} • {L.hero.area}
+              {LTEXT(lang).hero.capacity} • {LTEXT(lang).hero.baths} • {LTEXT(lang).hero.area}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button variant="outline" size="lg" asChild>
-                <a href="#galerie">{L.nav.gallery}</a>
+                <a href="#galerie">{LTEXT(lang).nav.gallery}</a>
               </Button>
-              {/* Si tu souhaites ajouter un second CTA Réserver ici, dé-commente :
-              <BookingMenu lang={lang} size="lg" />
-              */}
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Description */}
-      <Section id="description" title={L.description.title}>
+      <Section id="description" title={LTEXT(lang).description.title}>
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
@@ -748,7 +772,7 @@ export default function Page() {
                   </div>
                   <div className="mt-2">
                     <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
-                      {showMore ? L.description.less : L.description.more}
+                      {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
                     </Button>
                   </div>
                 </>
@@ -800,7 +824,7 @@ export default function Page() {
       </Section>
 
       {/* Galerie */}
-      <Section id="galerie" title={L.nav.gallery}>
+      <Section id="galerie" title={LTEXT(lang).nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />))}
         </div>
