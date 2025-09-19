@@ -258,7 +258,6 @@ const LTEXT = (lang: Lang) => ({
 ------------------------------------------------------- */
 
 type BookingPlatformKey = "bestay" | "airbnb" | "booking" | "direct";
-
 const BOOKING_LINKS: Record<BookingPlatformKey, string> = {
   bestay: BESTAY_URL,
   airbnb: AIRBNB_URL,
@@ -360,7 +359,7 @@ function BookingMenu({
     </button>
   );
 
-  // simple brand glyphs for the menu
+  // simples carrés brandés (pas d'actifs externes)
   const IconBestay = () => <div className="h-5 w-5 rounded-md bg-blue-600" />;
   const IconAirbnb = () => <div className="h-5 w-5 rounded-md bg-rose-500" />;
   const IconBooking = () => <div className="h-5 w-5 rounded-md bg-blue-900" />;
@@ -598,22 +597,32 @@ export default function Page() {
       <Script id="jsonld-lodging" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }} />
       <Script id="jsonld-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
 
-      {/* Header — tout tient sur une ligne en mobile grâce au select */}
+      {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-3 md:px-4 max-w-6xl h-16 md:h-16 flex items-center justify-between gap-2">
-          {/* Titre */}
+          {/* Titre : 2 lignes en mobile, 1 ligne en ≥ sm */}
           <a href="#accueil" className="min-w-0 select-none">
+            {/* MOBILE (sm:hidden) */}
+            <span className="block sm:hidden text-center leading-tight">
+              <span className="block text-xl font-extrabold tracking-tight font-serif">
+                Villa Myassa
+              </span>
+              <span className="block text-base font-semibold">
+                <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
+              </span>
+            </span>
+            {/* TABLET/DESKTOP (hidden sm:block) */}
             <span
-              className="block text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none whitespace-nowrap overflow-hidden text-ellipsis"
+              className="hidden sm:block text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none whitespace-nowrap"
               title="Villa Myassa, Ubud, BALI"
             >
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
             </span>
           </a>
 
-          {/* Actions tassées à droite : select langue + réserver + réseaux (icônes 40x40 comme WhatsApp) */}
+          {/* Actions à droite : select langue + réserver + réseaux (icônes 40x40) */}
           <div className="flex items-center gap-2 shrink-0">
-            {/* Select Langue (compact) */}
+            {/* Select Langue */}
             <label className="sr-only" htmlFor="lang-select">Langue</label>
             <select
               id="lang-select"
@@ -627,10 +636,10 @@ export default function Page() {
               <option value="id">🇮🇩 ID</option>
             </select>
 
-            {/* Bouton Réserver (menu plateformes) */}
+            {/* Réserver (menu) */}
             <BookingMenu lang={lang} size="md" />
 
-            {/* TikTok (logo officiel, même taille que WhatsApp) */}
+            {/* TikTok & Instagram (40x40) */}
             <SocialIconImg
               href={TIKTOK_URL}
               src="/logos/tiktok.png"
@@ -638,8 +647,6 @@ export default function Page() {
               onClick={() => { try { trackContact({ cta: "tiktok", page: "home" }); } catch {} }}
               title="TikTok"
             />
-
-            {/* Instagram (logo officiel, même taille) */}
             <SocialIconImg
               href={INSTAGRAM_URL}
               src="/logos/instagram.png"
@@ -648,9 +655,9 @@ export default function Page() {
               title="Instagram"
             />
 
-            {/* WhatsApp (garde la même taille 40x40) */}
+            {/* WhatsApp (40x40) */}
             <a
-              href={`https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`}
+              href={waHref}
               target="_blank"
               rel="noreferrer"
               aria-label="WhatsApp"
@@ -698,11 +705,11 @@ export default function Page() {
               {DATA_BASE.baseline[lang]}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
-              {LTEXT(lang).hero.capacity} • {LTEXT(lang).hero.baths} • {LTEXT(lang).hero.area}
+              {L.hero.capacity} • {L.hero.baths} • {L.hero.area}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button variant="outline" size="lg" asChild>
-                <a href="#galerie">{LTEXT(lang).nav.gallery}</a>
+                <a href="#galerie">{L.nav.gallery}</a>
               </Button>
               <BookingMenu lang={lang} size="lg" />
             </div>
@@ -711,18 +718,30 @@ export default function Page() {
       </section>
 
       {/* Description */}
-      <Section id="description" title={LTEXT(lang).description.title}>
+      <Section id="description" title={L.description.title}>
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {/** 1er & 2e paragraphes */}
-              {(DATA_BASE.description as any)[lang]
-                .trim()
-                .split(/\n\s*\n/)
-                .slice(0, 2)
-                .map((p: string, i: number) => (
-                  <p key={i} className="mb-4">{p.trim()}</p>
-                ))}
+              {firstTwo.map((p, i) => (
+                <p key={i} className="mb-4">{p}</p>
+              ))}
+              {rest.length > 0 && (
+                <>
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
+                    aria-hidden={!showMore}
+                  >
+                    {rest.map((p, i) => (
+                      <p key={`rest-${i}`} className="mb-4">{p}</p>
+                    ))}
+                  </div>
+                  <div className="mt-2">
+                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
+                      {showMore ? L.description.less : L.description.more}
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -770,7 +789,7 @@ export default function Page() {
       </Section>
 
       {/* Galerie */}
-      <Section id="galerie" title={LTEXT(lang).nav.gallery}>
+      <Section id="galerie" title={L.nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => openLb(i)} />))}
         </div>
