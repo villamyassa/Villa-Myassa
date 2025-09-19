@@ -401,7 +401,74 @@ function BookingMenu({
 }
 
 /* -------------------------------------------------------
-   4) PAGE
+   4) HERO SLIDER (défilement 3s)
+------------------------------------------------------- */
+
+function HeroSlider({ images }: { images: GalleryItem[] }) {
+  const [index, setIndex] = useState(0);
+  const intervalRef = useRef<number | null>(null);
+
+  // Avance toutes les 3s
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const tick = () => setIndex((i) => (i + 1) % images.length);
+    intervalRef.current = window.setInterval(tick, 3000);
+    return () => {
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
+    };
+  }, [images.length]);
+
+  // Pause on hover (desktop)
+  const onMouseEnter = () => {
+    if (intervalRef.current) {
+      window.clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+  const onMouseLeave = () => {
+    if (images.length <= 1 || intervalRef.current) return;
+    intervalRef.current = window.setInterval(() => {
+      setIndex((i) => (i + 1) % images.length);
+    }, 3000);
+  };
+
+  return (
+    <div
+      className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      aria-label="Diaporama des photos de la villa"
+    >
+      {/* Images superposées avec fondu */}
+      {images.map((img, i) => (
+        <img
+          key={i}
+          src={img.src}
+          alt={img.alt}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0"}`}
+          loading={i === 0 ? "eager" : "lazy"}
+        />
+      ))}
+
+      {/* Légère ombre en bas pour lisibilité si on met du texte un jour */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
+
+      {/* Petits indicateurs (dots) */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+        {images.map((_, i) => (
+          <span
+            key={i}
+            className={`h-2 w-2 rounded-full ${i === index ? "bg-white" : "bg-white/50"}`}
+            aria-label={i === index ? "Slide actif" : `Aller au slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------
+   5) PAGE
 ------------------------------------------------------- */
 
 export default function Page() {
@@ -418,11 +485,6 @@ export default function Page() {
 
   // Form
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-
-  const hero = (DATA_BASE.images.find((i) => i.featured) ?? DATA_BASE.images[0]) as {
-    src: string;
-    alt: string;
-  };
 
   const images = DATA_BASE.images;
   const [lbIndex, setLbIndex] = useState<number | null>(null);
@@ -479,7 +541,7 @@ export default function Page() {
   };
   const coverSrc =
     (DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) ||
-    hero.src;
+    images[0]?.src;
 
   // Description
   const description = (DATA_BASE.description as any)[lang] as string;
@@ -544,7 +606,7 @@ export default function Page() {
           "@type": "Answer",
           text:
             lang === "fr"
-              ? "Oui, la Villa Myassa possède une piscine privée dengan sunken lounge et gazebo."
+              ? "Oui, la Villa Myassa possède une piscine privée avec sunken lounge et gazebo."
               : lang === "id"
               ? "Ya, Villa Myassa memiliki kolam renang pribadi dengan sunken lounge dan bale bengong."
               : "Yes, Villa Myassa features a private pool with a sunken lounge and a gazebo.",
@@ -593,26 +655,21 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* CSS header responsive : 
-         - Mobile portrait : 2 lignes (titre puis actions)
-         - Landscape & Desktop : 2 lignes (titre très grand, puis "Réserver" centré + actions à droite) */}
+      {/* CSS header responsive */}
       <style jsx global>{`
         .header-grid { display: grid; grid-template-rows: auto auto; align-items: center; }
         .header-title { display: flex; justify-content: center; }
         .title-text { font-weight: 800; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; white-space: nowrap; text-align: center; }
 
-        /* Ligne 2 conteneur relatif pour centrer "Réserver" absolument */
         .header-row2 { position: relative; display: flex; align-items: center; }
         .book-center-desktop { position: absolute; left: 50%; transform: translateX(-50%); }
         .actions-right { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
 
-        /* Tailles de titre par défaut (mobile paysage & desktop) */
-        .title-text { font-size: 1.75rem; line-height: 1.15; }          /* ~text-2xl */
-        @media (min-width: 640px) { .title-text { font-size: 2.25rem; } } /* ~text-3xl */
-        @media (min-width: 768px) { .title-text { font-size: 2.75rem; } } /* ~text-4xl */
-        @media (min-width: 1024px) { .title-text { font-size: 3.25rem; } }/* ~text-5xl */
+        .title-text { font-size: 1.75rem; line-height: 1.15; }
+        @media (min-width: 640px) { .title-text { font-size: 2.25rem; } }
+        @media (min-width: 768px) { .title-text { font-size: 2.75rem; } }
+        @media (min-width: 1024px) { .title-text { font-size: 3.25rem; } }
 
-        /* Mobile portrait : empilement, actions centrées et "Réserver" dans le groupe actions (pas au centre absolu) */
         .book-actions-mobile { display: none; }
         @media (max-width: 640px) and (orientation: portrait) {
           .header-grid { grid-template-rows: auto auto; padding: .35rem 0 .5rem; }
@@ -623,7 +680,6 @@ export default function Page() {
           .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
         }
 
-        /* Mobile paysage + ≥ sm : montrer le "Réserver" centré en absolu */
         @media (max-width: 640px) and (orientation: landscape) {
           .book-center-desktop { display: inline-flex; }
           .book-actions-mobile { display: none; }
@@ -640,30 +696,26 @@ export default function Page() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-3 md:px-4 max-w-6xl header-grid">
-          {/* LIGNE 1 : TITRE CENTRÉ (très grand en desktop/paysage) */}
+          {/* LIGNE 1 : TITRE */}
           <div className="header-title h-16 items-center">
-            <a href="#accueil" className="min-w-0 select-none block">
-              <span className="title-text" title="Villa Myassa, Ubud, BALI">
+            <a href="#accueil" className="min-w-0 select-none block" title="Villa Myassa, Ubud, BALI">
+              <span className="title-text">
                 Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
               </span>
             </a>
           </div>
 
-          {/* LIGNE 2 : "Réserver" centré, actions à droite (langues, réseaux, WhatsApp) */}
+          {/* LIGNE 2 : Réserver centré + actions droite */}
           <div className="header-row2 h-14">
-            {/* Réserver centré pour desktop & paysage */}
             <div className="book-center-desktop">
               <BookingMenu lang={lang} size="md" />
             </div>
 
-            {/* Groupe actions (mobile portrait: centré; autres: à droite) */}
             <div className="actions-right">
-              {/* Réserver dans le groupe actions UNIQUEMENT pour mobile portrait */}
               <div className="book-actions-mobile">
                 <BookingMenu lang={lang} size="md" />
               </div>
 
-              {/* Langue */}
               <label className="sr-only" htmlFor="lang-select">Langue</label>
               <select
                 id="lang-select"
@@ -677,7 +729,6 @@ export default function Page() {
                 <option value="id">🇮🇩 ID</option>
               </select>
 
-              {/* TikTok & Instagram (40x40) */}
               <SocialIconImg
                 href={TIKTOK_URL}
                 src="/logos/tiktok.png"
@@ -693,7 +744,6 @@ export default function Page() {
                 title="Instagram"
               />
 
-              {/* WhatsApp (40x40) */}
               <a
                 href={waHref}
                 target="_blank"
@@ -723,11 +773,9 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero -> Slideshow */}
       <section id="accueil">
-        <div className="w-full">
-          <img src={hero.src} alt={hero.alt} className="w-full h-[60vh] md:h-[70vh] object-cover" />
-        </div>
+        <HeroSlider images={images} />
 
         <div className="container mx-auto px-4 max-w-6xl py-10">
           <motion.div
@@ -794,8 +842,8 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={coverSrc || hero.src}
-              onError={(e) => { e.currentTarget.src = hero.src; }}
+              src={coverSrc}
+              onError={(e) => { e.currentTarget.src = images[0]?.src || ""; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -959,7 +1007,7 @@ export default function Page() {
 }
 
 /* -------------------------------------------------------
-   5) COMPOSANTS
+   6) COMPOSANTS (Section / GalleryCard)
 ------------------------------------------------------- */
 
 function Section({
