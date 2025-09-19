@@ -357,7 +357,6 @@ function BookingMenu({
     </button>
   );
 
-  // mini “logos” colorés (placeholders)
   const IconBestay = () => <div className="h-5 w-5 rounded-md bg-blue-600" />;
   const IconAirbnb = () => <div className="h-5 w-5 rounded-md bg-rose-500" />;
   const IconBooking = () => <div className="h-5 w-5 rounded-md bg-blue-900" />;
@@ -592,18 +591,28 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* CSS pour gérer le titre 2 lignes UNIQUEMENT en mobile portrait */}
+      {/* CSS : empiler header sur 2 lignes UNIQUEMENT en mobile portrait,
+         et garantir que le titre tienne sur sa ligne, centré */}
       <style jsx global>{`
-        .title-mobile-portrait { display: none; }
-        .title-default { display: block; }
+        /* par défaut : header en une seule ligne */
+        .header-wrap { display: flex; align-items: center; justify-content: space-between; height: 4rem; gap: .5rem; }
+        .title-line { font-weight: 800; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; }
+        .title-single { white-space: nowrap; }
+
+        /* Mobile portrait : 2 lignes -> titre centré sur la 1ère ligne, actions sur 2ème */
         @media (max-width: 640px) and (orientation: portrait) {
-          .title-mobile-portrait { display: block; }
-          .title-default { display: none; }
+          .header-wrap { flex-direction: column; height: auto; padding: .35rem 0 .5rem; }
+          .header-title { width: 100%; display: flex; align-items: center; justify-content: center; }
+          .title-single { font-size: 18px; line-height: 1.2; white-space: nowrap; text-align: center; }
+          .header-actions { width: 100%; display: flex; justify-content: center; gap: .5rem; margin-top: .25rem; flex-wrap: nowrap; }
         }
-        /* sur mobile paysage et tous écrans >= sm : version une ligne */
+
+        /* Mobile paysage + ≥ sm : une seule ligne */
         @media (max-width: 640px) and (orientation: landscape) {
-          .title-mobile-portrait { display: none; }
-          .title-default { display: block; }
+          .header-wrap { flex-direction: row; height: 4rem; }
+          .header-title { justify-content: flex-start; }
+          .header-actions { justify-content: flex-end; margin-top: 0; }
+          .title-single { font-size: 1.25rem; }
         }
       `}</style>
 
@@ -612,29 +621,20 @@ export default function Page() {
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div className="container mx-auto px-3 md:px-4 max-w-6xl h-16 md:h-16 flex items-center justify-between gap-2">
-          {/* Titre : 2 lignes uniquement en mobile portrait */}
-          <a href="#accueil" className="min-w-0 select-none text-center sm:text-left">
-            {/* Mobile PORTRAIT (2 lignes) */}
-            <span className="title-mobile-portrait leading-tight">
-              <span className="block text-xl font-extrabold tracking-tight font-serif">
-                Villa Myassa
-              </span>
-              <span className="block text-base font-semibold">
-                <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
-              </span>
-            </span>
-            {/* Autres cas : une seule ligne */}
+        <div className="container mx-auto px-3 md:px-4 max-w-6xl header-wrap">
+          {/* Ligne 1 (mobile portrait) / Colonne gauche (autres) : TITRE CENTRÉ */}
+          <a href="#accueil" className="min-w-0 select-none header-title">
             <span
-              className="title-default text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none whitespace-nowrap"
+              className="block title-line title-single"
               title="Villa Myassa, Ubud, BALI"
             >
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
             </span>
           </a>
 
-          {/* Actions à droite : select langue + Réserver + réseaux (UN SEUL bouton Réserver) */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Ligne 2 (mobile portrait) / Colonne droite (autres) : ACTIONS */}
+          <div className="header-actions">
+            {/* Select Langue */}
             <label className="sr-only" htmlFor="lang-select">Langue</label>
             <select
               id="lang-select"
@@ -669,7 +669,7 @@ export default function Page() {
 
             {/* WhatsApp (40x40) */}
             <a
-              href={waHref}
+              href={`https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`}
               target="_blank"
               rel="noreferrer"
               aria-label="WhatsApp"
@@ -720,8 +720,9 @@ export default function Page() {
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">{L.nav.gallery}</a>
               </Button>
-              {/* un seul CTA Réserver : si tu veux aussi ici, commente la ligne suivante */}
-              {/* <BookingMenu lang={lang} size="lg" /> */}
+              {/* Si tu souhaites ajouter un second CTA Réserver ici, dé-commente :
+              <BookingMenu lang={lang} size="lg" />
+              */}
             </div>
           </motion.div>
         </div>
@@ -732,18 +733,26 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {(() => {
-                const paragraphs = (DATA_BASE.description as any)[lang]
-                  .trim().split(/\n\s*\n/).map((p: string) => p.trim());
-                const firstTwo = paragraphs.slice(0, 2);
-                const rest = paragraphs.slice(2);
-                return (
-                  <>
-                    {firstTwo.map((p: string, i: number) => <p key={i} className="mb-4">{p}</p>)}
-                    <Expandable rest={rest} more={L.description.more} less={L.description.less} />
-                  </>
-                );
-              })()}
+              {firstTwo.map((p, i) => (
+                <p key={i} className="mb-4">{p}</p>
+              ))}
+              {rest.length > 0 && (
+                <>
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
+                    aria-hidden={!showMore}
+                  >
+                    {rest.map((p, i) => (
+                      <p key={`rest-${i}`} className="mb-4">{p}</p>
+                    ))}
+                  </div>
+                  <div className="mt-2">
+                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
+                      {showMore ? L.description.less : L.description.more}
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -761,7 +770,7 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`}
+              src={coverSrc || hero.src}
               onError={(e) => { e.currentTarget.src = hero.src; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
@@ -793,7 +802,7 @@ export default function Page() {
       {/* Galerie */}
       <Section id="galerie" title={L.nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {IMAGES.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />))}
+          {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />))}
         </div>
       </Section>
 
@@ -820,8 +829,8 @@ export default function Page() {
 
           <div className="absolute inset-0 flex items-center justify-center p-4">
             <img
-              src={IMAGES[lbIndex].src}
-              alt={IMAGES[lbIndex].alt}
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
               onClick={(e) => e.stopPropagation()}
               className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
             />
@@ -950,23 +959,6 @@ function Section({
         <div className="mt-6 md:mt-8">{children}</div>
       </div>
     </section>
-  );
-}
-
-function Expandable({ rest, more, less }: { rest: string[]; more: string; less: string }) {
-  const [open, setOpen] = useState(false);
-  if (!rest.length) return null;
-  return (
-    <>
-      <div className={`overflow-hidden transition-[max-height,opacity] duration-300 ${open ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`} aria-hidden={!open}>
-        {rest.map((p, i) => (<p key={i} className="mb-4">{p}</p>))}
-      </div>
-      <div className="mt-2">
-        <Button variant="outline" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
-          {open ? less : more}
-        </Button>
-      </div>
-    </>
   );
 }
 
