@@ -122,9 +122,9 @@ const DATA_BASE = {
     id: ["Kolam renang pribadi","AC (penyejuk udara)","Wi-Fi berkecepatan tinggi","Parkir gratis di lokasi","Dapur lengkap (oven, kompor, kulkas, pemanggang roti, ketel)","TV / Smart TV di kamar tidur","Kamar mandi dalam","Brankas","Kelambu nyamuk"],
   },
   description: {
-    fr: `Bienvenue à la Villa Myassa, **villa à Ubud** idéale pour des **vacances à Bali**...`,
-    en: `Welcome to Villa Myassa — a **villa in Ubud, Bali**...`,
-    id: `Selamat datang di Villa Myassa — **vila di Ubud, Bali**...`,
+    fr: `Bienvenue à la Villa Myassa, **villa à Ubud** idéale pour des **vacances à Bali**. ...`,
+    en: `Welcome to Villa Myassa — a **villa in Ubud, Bali** ...`,
+    id: `Selamat datang di Villa Myassa — **vila di Ubud, Bali** ...`,
   },
 };
 
@@ -368,18 +368,10 @@ function BookingMenu({
         >
           <div className="px-3 py-2 text-xs text-neutral-500">Choisir une plateforme</div>
           <ul className="max-h-[75vh] overflow-auto">
-            <li>
-              <Item k="bestay" label={L.platforms.bestay} logoSrc="/logos/bestay.svg" />
-            </li>
-            <li>
-              <Item k="airbnb" label={L.platforms.airbnb} logoSrc="/logos/airbnb.svg" />
-            </li>
-            <li>
-              <Item k="booking" label={L.platforms.booking} logoSrc="/logos/booking.svg" />
-            </li>
-            <li>
-              <Item k="direct" label={L.platforms.direct} logoSrc="/logos/direct.svg" />
-            </li>
+            <li><Item k="bestay" label={L.platforms.bestay} logoSrc="/logos/bestay.svg" /></li>
+            <li><Item k="airbnb" label={L.platforms.airbnb} logoSrc="/logos/airbnb.svg" /></li>
+            <li><Item k="booking" label={L.platforms.booking} logoSrc="/logos/booking.svg" /></li>
+            <li><Item k="direct" label={L.platforms.direct} logoSrc="/logos/direct.svg" /></li>
           </ul>
         </div>
       )}
@@ -618,47 +610,48 @@ export default function Page() {
     try { trackViewContent({ page: "home" }); } catch {}
   }, []);
 
+  /* ===== Styles header (mobile portrait : titre très grand sur 1 ligne) ===== */
+  const headerStyles = (
+    <style jsx global>{`
+      .header-grid { display: grid; grid-template-rows: auto auto; align-items: center; }
+      .header-title { display: flex; justify-content: center; }
+      .title-text { font-weight: 800; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; white-space: nowrap; text-align: center; letter-spacing: -0.01em; }
+      .header-row2 { position: relative; display: flex; align-items: center; }
+      .book-center-desktop { position: absolute; left: 50%; transform: translateX(-50%); }
+      .actions-right { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
+
+      .title-text { font-size: 1.75rem; line-height: 1.15; }
+      @media (min-width: 640px) { .title-text { font-size: 2.25rem; } }
+      @media (min-width: 768px) { .title-text { font-size: 2.75rem; } }
+      @media (min-width: 1024px) { .title-text { font-size: 3.25rem; } }
+
+      .book-actions-mobile { display: none; }
+
+      @media (max-width: 640px) and (orientation: portrait) {
+        .header-grid { grid-template-rows: auto auto; padding: .3rem 0 .5rem; }
+        .title-text { font-size: clamp(22px, 8.5vw, 32px); line-height: 1.15; }
+        .header-row2 { position: static; justify-content: center; }
+        .book-center-desktop { display: none; }
+        .book-actions-mobile { display: inline-flex; }
+        .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
+        .booking-menu { right: auto !important; }
+        header .container { padding-left: .5rem !important; padding-right: .5rem !important; }
+      }
+
+      @media (max-width: 640px) and (orientation: landscape) {
+        .book-center-desktop { display: inline-flex; }
+        .book-actions-mobile { display: none; }
+      }
+      @media (min-width: 640px) {
+        .book-center-desktop { display: inline-flex; }
+        .book-actions-mobile { display: none; }
+      }
+    `}</style>
+  );
+
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* Styles header */}
-      <style jsx global>{`
-        .header-grid { display: grid; grid-template-rows: auto auto; align-items: center; }
-        .header-title { display: flex; justify-content: center; }
-        .title-text { font-weight: 800; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; white-space: nowrap; text-align: center; letter-spacing: -0.01em; }
-        .header-row2 { position: relative; display: flex; align-items: center; }
-        .book-center-desktop { position: absolute; left: 50%; transform: translateX(-50%); }
-        .actions-right { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
-
-        .title-text { font-size: 1.75rem; line-height: 1.15; }
-        @media (min-width: 640px) { .title-text { font-size: 2.25rem; } }
-        @media (min-width: 768px) { .title-text { font-size: 2.75rem; } }
-        @media (min-width: 1024px) { .title-text { font-size: 3.25rem; } }
-
-        .book-actions-mobile { display: none; }
-
-        /* === MOBILE PORTRAIT : Titre au max sur 1 ligne === */
-        @media (max-width: 640px) and (orientation: portrait) {
-          .header-grid { grid-template-rows: auto auto; padding: .3rem 0 .5rem; }
-          /* Agrandir au maximum mais garantir 1 seule ligne grâce à nowrap + valeurs bornées */
-          .title-text { font-size: clamp(22px, 8.5vw, 32px); line-height: 1.15; }
-          .header-row2 { position: static; justify-content: center; }
-          .book-center-desktop { display: none; }
-          .book-actions-mobile { display: inline-flex; }
-          .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
-          .booking-menu { right: auto !important; }
-          /* Légère réduction des marges horizontales du header pour laisser de la place au titre */
-          header .container { padding-left: .5rem !important; padding-right: .5rem !important; }
-        }
-
-        @media (max-width: 640px) and (orientation: landscape) {
-          .book-center-desktop { display: inline-flex; }
-          .book-actions-mobile { display: none; }
-        }
-        @media (min-width: 640px) {
-          .book-center-desktop { display: inline-flex; }
-          .book-actions-mobile { display: none; }
-        }
-      `}</style>
+      {headerStyles}
 
       <Script id="jsonld-lodging" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }} />
       <Script id="jsonld-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
@@ -766,44 +759,197 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {/* ... le reste du contenu reste inchangé ... */}
+              {firstTwo.map((p, i) => (
+                <p key={i} className="mb-4">{p}</p>
+              ))}
+              {rest.length > 0 && (
+                <>
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
+                      showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                    aria-hidden={!showMore}
+                  >
+                    {rest.map((p, i) => (
+                      <p key={`rest-${i}`} className="mb-4">{p}</p>
+                    ))}
+                  </div>
+                  <div className="mt-2">
+                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
+                      {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
       </Section>
 
-      {/* Visite 3D */}
+      {/* Visite 3D — (CONTENU AJOUTÉ pour éviter l'erreur children) */}
       <Section id="visite-3d" title={LTEXT(lang).tour.title} subtitle={LTEXT(lang).tour.subtitle}>
-        {/* ... idem ... */}
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={openVirtualTour}
+          onKeyDown={(e) => ((e as any).key === "Enter" || (e as any).key === " ") && openVirtualTour()}
+          className="group relative w-full cursor-pointer overflow-hidden rounded-2xl outline-none focus:ring-2 focus:ring-black/20"
+          aria-label="Ouvrir la visite 3D"
+        >
+          <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
+            <img
+              src={coverSrc || images[0]?.src}
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = images[0]?.src; }}
+              alt="Visite 3D de la villa"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+            <div className="absolute inset-0 flex items-center justify-center text-white">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
+                <Rotate3D className="h-4 w-4" />
+                <PlayCircle className="h-4 w-4" />
+                {LTEXT(lang).tour.button}
+              </span>
+            </div>
+          </div>
+        </div>
+        <p className="mt-3 text-xs text-neutral-600">
+          {LTEXT(lang).tour.fallbackText}
+          <a className="underline" href={DATA_BASE.virtualTour.url} target="_blank" rel="noopener noreferrer">
+            {LTEXT(lang).tour.fallback1}
+          </a>
+          {LTEXT(lang).tour.fallbackText2}
+          <a className="underline" href={DATA_BASE.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
+            {LTEXT(lang).tour.fallback2}
+          </a>
+          .
+        </p>
       </Section>
 
       {/* Galerie */}
       <Section id="galerie" title={LTEXT(lang).nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {DATA_BASE.images.map((img, i) => (
-            <GalleryCard key={i} item={img} onOpen={() => setLbIndex(i)} />
+            <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
           ))}
         </div>
       </Section>
 
+      {/* Lightbox */}
       {lbIndex !== null && (
-        /* ... lightbox identique ... */
-        <div />
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
+          <button
+            type="button"
+            onClick={closeLb}
+            aria-label="Fermer"
+            className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
+          >
+            <X className="h-6 w-6" />
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); prevLb(); }}
+            aria-label="Image précédente"
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+          >
+            <ChevronLeft className="h-7 w-7" />
+          </button>
+
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <img
+              src={images[lbIndex].src}
+              alt={images[lbIndex].alt}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); nextLb(); }}
+            aria-label="Image suivante"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
+          >
+            <ChevronRight className="h-7 w-7" />
+          </button>
+        </div>
       )}
 
       {/* Atouts */}
       <Section id="atouts" title={LTEXT(lang).features.title} subtitle={LTEXT(lang).features.subtitle}>
-        {/* ... */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {(DATA_BASE.pointsForts as any)[lang].map((p: string, i: number) => (
+            <Card key={i} className="rounded-2xl">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">{p}</CardTitle>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
       </Section>
 
       {/* Localisation */}
       <Section id="localisation" title={LTEXT(lang).location.title} subtitle={DATA_BASE.localisation[lang]}>
-        {/* ... */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card className="rounded-2xl order-2 lg:order-1">
+            <CardContent className="py-6">
+              <ul className="grid gap-2 py-4">
+                <li className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5" /> {DATA_BASE.adresse}
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="rounded-2xl order-1 lg:order-2">
+            <CardContent className="p-0">
+              <div dangerouslySetInnerHTML={{ __html: DATA_BASE.mapsEmbed }} />
+            </CardContent>
+          </Card>
+        </div>
       </Section>
 
       {/* Contact */}
       <Section id="contact" title={LTEXT(lang).contact.title}>
-        {/* ... */}
+        <Card className="rounded-2xl">
+          <CardContent className="py-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid gap-3">
+                <Input
+                  placeholder={LTEXT(lang).contact.yourName}
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                <Input
+                  placeholder={LTEXT(lang).contact.yourEmail}
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+                <Textarea
+                  placeholder={LTEXT(lang).contact.yourMessage}
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                />
+                <div className="flex flex-wrap gap-3">
+                  <Button onClick={handleMailto}>{LTEXT(lang).contact.sendEmail}</Button>
+                  <Button variant="outline" asChild>
+                    <a href={`mailto:${DATA_BASE.email}`}>{LTEXT(lang).contact.openMailer}</a>
+                  </Button>
+                </div>
+              </div>
+              <div className="text-sm text-neutral-600">
+                <p>
+                  {LTEXT(lang).contact.emailLabel} :{" "}
+                  <a className="underline" href={`mailto:${DATA_BASE.email}`}>
+                    {DATA_BASE.email}
+                  </a>
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </Section>
 
       <a
