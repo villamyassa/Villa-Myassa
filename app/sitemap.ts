@@ -1,21 +1,15 @@
 // app/sitemap.ts
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://www.villamyassa.com";
-  const now = new Date();
   return [
-    {
-      url: base,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    // Sections d'une page (bonus pour certains crawlers)
-    { url: `${base}#visite-3d`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}#galerie`,   lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}#atouts`,    lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}#localisation`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}#contact`,   lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${base}/`, changeFrequency: "weekly", priority: 1 },
+    { url: `${base}/?lang=fr`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/?lang=en`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/?lang=id`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/fr/villa-ubud-piscine-privee`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/en/ubud-villa-private-pool`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/id/vila-ubud-kolam-renang-pribadi`, changeFrequency: "monthly", priority: 0.8 },
   ];
 }
