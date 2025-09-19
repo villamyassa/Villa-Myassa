@@ -266,7 +266,6 @@ function BookingMenu({
   const L = LTEXT(lang);
   const [open, setOpen] = useState(false);
   const menuRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
-  const btnRef = useRef<HTMLButtonElement | null>(null);
 
   // mobile portrait detection
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
@@ -278,24 +277,25 @@ function BookingMenu({
     return () => mq.removeEventListener("change", update);
   }, []);
 
-  // compute top (bottom of button + 8px)
+  // compute top (bottom of wrapper + 8px)
   const [anchorTop, setAnchorTop] = useState<number>(0);
-  const updateTop = () => {
-    if (!btnRef.current) return;
-    const rect = btnRef.current.getBoundingClientRect();
+  const updateTopFromWrapper = () => {
+    if (!menuRef.current) return;
+    const rect = menuRef.current.getBoundingClientRect();
     setAnchorTop(rect.bottom + 8);
   };
+
   useEffect(() => {
     if (!open) return;
-    updateTop();
-    const onScrollOrResize = () => updateTop();
+    updateTopFromWrapper();
+    const onScrollOrResize = () => updateTopFromWrapper();
     window.addEventListener("scroll", onScrollOrResize, true);
     window.addEventListener("resize", onScrollOrResize);
     return () => {
       window.removeEventListener("scroll", onScrollOrResize, true);
       window.removeEventListener("resize", onScrollOrResize);
     };
-  }, [open]);
+  }, [open, menuRef]);
 
   useEffect(() => {
     if (!open) return;
@@ -336,14 +336,17 @@ function BookingMenu({
   return (
     <div className={`relative ${fullWidth ? "w-full" : "w-auto"}`} ref={menuRef}>
       <Button
-        ref={btnRef}
         variant={variant}
         size={buttonSize}
         className={`${btnClass} inline-flex items-center gap-2`}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls="booking-menu"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => !v);
+          // calcule la position au moment du clic
+          setTimeout(updateTopFromWrapper, 0);
+        }}
       >
         <CalendarDays className="h-4 w-4" />
         {L.nav.book}
@@ -642,7 +645,6 @@ export default function Page() {
           .book-center-desktop { display: none; }
           .book-actions-mobile { display: inline-flex; }
           .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
-          /* le menu est en fixed et centré (top calculé en JS) */
           .booking-menu { right: auto !important; }
         }
 
