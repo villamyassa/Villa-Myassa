@@ -117,39 +117,9 @@ const DATA_BASE = {
     cover: "/photos/virtual-tour-cover.jpg",
   },
   pointsForts: {
-    fr: [
-      "Piscine privée",
-      "Climatisation",
-      "Wifi haut débit",
-      "Parking gratuit sur place",
-      "Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)",
-      "TV / Smart TV dans les chambres",
-      "Salles de bain attenantes",
-      "Coffre-fort",
-      "Moustiquaires",
-    ],
-    en: [
-      "Private pool",
-      "Air conditioning",
-      "High-speed Wi-Fi",
-      "Free on-site parking",
-      "Full kitchen (oven, cooktop, fridge, toaster, kettle)",
-      "TV / Smart TV in bedrooms",
-      "En-suite bathrooms",
-      "Safe",
-      "Mosquito nets",
-    ],
-    id: [
-      "Kolam renang pribadi",
-      "AC (penyejuk udara)",
-      "Wi-Fi berkecepatan tinggi",
-      "Parkir gratis di lokasi",
-      "Dapur lengkap (oven, kompor, kulkas, pemanggang roti, ketel)",
-      "TV / Smart TV di kamar tidur",
-      "Kamar mandi dalam",
-      "Brankas",
-      "Kelambu nyamuk",
-    ],
+    fr: ["Piscine privée","Climatisation","Wifi haut débit","Parking gratuit sur place","Cuisine toute équipée (four, plaques, réfrigérateur, grille-pain, bouilloire)","TV / Smart TV dans les chambres","Salles de bain attenantes","Coffre-fort","Moustiquaires"],
+    en: ["Private pool","Air conditioning","High-speed Wi-Fi","Free on-site parking","Full kitchen (oven, cooktop, fridge, toaster, kettle)","TV / Smart TV in bedrooms","En-suite bathrooms","Safe","Mosquito nets"],
+    id: ["Kolam renang pribadi","AC (penyejuk udara)","Wi-Fi berkecepatan tinggi","Parkir gratis di lokasi","Dapur lengkap (oven, kompor, kulkas, pemanggang roti, ketel)","TV / Smart TV di kamar tidur","Kamar mandi dalam","Brankas","Kelambu nyamuk"],
   },
   description: {
     fr: `Bienvenue à la Villa Myassa, **villa à Ubud** idéale pour des **vacances à Bali**...`,
@@ -184,8 +154,7 @@ const LTEXT = (lang: Lang) => ({
     less: lang === "fr" ? "LIRE MOINS" : lang === "id" ? "SEMBUNYIKAN" : "READ LESS",
   },
   tour: {
-    title:
-      lang === "fr" ? "Visite 3D (360°)" : lang === "id" ? "Tur Virtual 3D (360°)" : "3D Virtual Tour (360°)",
+    title: lang === "fr" ? "Visite 3D (360°)" : lang === "id" ? "Tur Virtual 3D (360°)" : "3D Virtual Tour (360°)",
     subtitle:
       lang === "fr"
         ? "Cliquez sur l’image — la visite s’ouvre dans un onglet, et Bestay dans un second."
@@ -204,8 +173,7 @@ const LTEXT = (lang: Lang) => ({
     fallbackText2: lang === "fr" ? " ou " : lang === "id" ? " atau " : " or ",
   },
   features: {
-    title:
-      lang === "fr" ? "Atouts & Équipements" : lang === "id" ? "Keunggulan & Fasilitas" : "Highlights & Amenities",
+    title: lang === "fr" ? "Atouts & Équipements" : lang === "id" ? "Keunggulan & Fasilitas" : "Highlights & Amenities",
     subtitle:
       lang === "fr"
         ? "Tout ce dont vous avez besoin pour un séjour réussi"
@@ -278,7 +246,6 @@ const SocialIconImg = ({
   </a>
 );
 
-/** Icône image générique pour items du menu Réserver (logos) */
 const MenuLogo = ({ src, alt }: { src: string; alt: string }) => (
   <img src={src} alt={alt} className="h-5 w-5 object-contain" />
 );
@@ -299,6 +266,36 @@ function BookingMenu({
   const L = LTEXT(lang);
   const [open, setOpen] = useState(false);
   const menuRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
+  const btnRef = useRef<HTMLButtonElement | null>(null);
+
+  // mobile portrait detection
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
+    const update = () => setIsMobilePortrait(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // compute top (bottom of button + 8px)
+  const [anchorTop, setAnchorTop] = useState<number>(0);
+  const updateTop = () => {
+    if (!btnRef.current) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    setAnchorTop(rect.bottom + 8);
+  };
+  useEffect(() => {
+    if (!open) return;
+    updateTop();
+    const onScrollOrResize = () => updateTop();
+    window.addEventListener("scroll", onScrollOrResize, true);
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize, true);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -339,6 +336,7 @@ function BookingMenu({
   return (
     <div className={`relative ${fullWidth ? "w-full" : "w-auto"}`} ref={menuRef}>
       <Button
+        ref={btnRef}
         variant={variant}
         size={buttonSize}
         className={`${btnClass} inline-flex items-center gap-2`}
@@ -357,37 +355,30 @@ function BookingMenu({
           id="booking-menu"
           role="menu"
           aria-label="Choisir une plateforme"
-          className="booking-menu absolute mt-2 w-80 rounded-xl border bg-white shadow-lg overflow-hidden z-50 right-0"
+          style={
+            isMobilePortrait
+              ? { top: anchorTop, left: "50%", transform: "translateX(-50%)" }
+              : undefined
+          }
+          className={`booking-menu ${
+            isMobilePortrait
+              ? "fixed w-[min(92vw,360px)]"
+              : "absolute right-0 w-80"
+          } mt-2 rounded-xl border bg-white shadow-lg overflow-hidden z-50`}
         >
           <div className="px-3 py-2 text-xs text-neutral-500">Choisir une plateforme</div>
-          <ul className="max-h-[70vh] overflow-auto">
+          <ul className="max-h-[75vh] overflow-auto">
             <li>
-              <Item
-                k="bestay"
-                label={L.platforms.bestay}
-                logoSrc="/logos/bestay.svg"
-              />
+              <Item k="bestay" label={L.platforms.bestay} logoSrc="/logos/bestay.svg" />
             </li>
             <li>
-              <Item
-                k="airbnb"
-                label={L.platforms.airbnb}
-                logoSrc="/logos/airbnb.svg"
-              />
+              <Item k="airbnb" label={L.platforms.airbnb} logoSrc="/logos/airbnb.svg" />
             </li>
             <li>
-              <Item
-                k="booking"
-                label={L.platforms.booking}
-                logoSrc="/logos/booking.svg"
-              />
+              <Item k="booking" label={L.platforms.booking} logoSrc="/logos/booking.svg" />
             </li>
             <li>
-              <Item
-                k="direct"
-                label={L.platforms.direct}
-                logoSrc="/logos/direct.svg"
-              />
+              <Item k="direct" label={L.platforms.direct} logoSrc="/logos/direct.svg" />
             </li>
           </ul>
         </div>
@@ -509,9 +500,7 @@ export default function Page() {
     window.location.href = `mailto:${DATA_BASE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
       body
     )}`;
-    try {
-      trackSubmitForm({ method: "mailto", page: "home" });
-    } catch {}
+    try { trackSubmitForm({ method: "mailto", page: "home" }); } catch {}
   };
 
   const openVirtualTour = () => {
@@ -626,19 +615,16 @@ export default function Page() {
   };
 
   useEffect(() => {
-    try {
-      trackViewContent({ page: "home" });
-    } catch {}
+    try { trackViewContent({ page: "home" }); } catch {}
   }, []);
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* Styles header + correctif menu mobile portrait */}
+      {/* Styles header */}
       <style jsx global>{`
         .header-grid { display: grid; grid-template-rows: auto auto; align-items: center; }
         .header-title { display: flex; justify-content: center; }
         .title-text { font-weight: 800; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; white-space: nowrap; text-align: center; }
-
         .header-row2 { position: relative; display: flex; align-items: center; }
         .book-center-desktop { position: absolute; left: 50%; transform: translateX(-50%); }
         .actions-right { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
@@ -656,8 +642,8 @@ export default function Page() {
           .book-center-desktop { display: none; }
           .book-actions-mobile { display: inline-flex; }
           .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
-          /* Décalage vers la DROITE du menu pour que les logos restent visibles */
-          .booking-menu { left: 58% !important; right: auto !important; transform: translateX(-58%) !important; }
+          /* le menu est en fixed et centré (top calculé en JS) */
+          .booking-menu { right: auto !important; }
         }
 
         @media (max-width: 640px) and (orientation: landscape) {
@@ -676,7 +662,6 @@ export default function Page() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-3 md:px-4 max-w-6xl header-grid">
-          {/* LIGNE 1 : TITRE */}
           <div className="header-title h-16 items-center">
             <a href="#accueil" className="min-w-0 select-none block" title="Villa Myassa, Ubud, BALI">
               <span className="title-text">
@@ -685,7 +670,6 @@ export default function Page() {
             </a>
           </div>
 
-          {/* LIGNE 2 : Réserver centré + actions droite */}
           <div className="header-row2 h-14">
             <div className="book-center-desktop">
               <BookingMenu lang={lang} size="md" />
@@ -725,7 +709,7 @@ export default function Page() {
               />
 
               <a
-                href={waHref}
+                href={`https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="WhatsApp"
@@ -739,7 +723,6 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Nav liens (desktop) */}
         <div className="hidden md:block">
           <div className="container mx-auto px-4 max-w-6xl">
             <nav className="flex items-center gap-6 text-sm py-2">
@@ -753,18 +736,12 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero -> Slideshow */}
+      {/* Hero slideshow */}
       <section id="accueil">
         <HeroSlider images={DATA_BASE.images} />
 
         <div className="container mx-auto px-4 max-w-6xl py-10">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl"
-          >
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="max-w-3xl">
             <h1 className="mt-1 text-4xl md:text-5xl font-extrabold leading-tight">
               {DATA_BASE.baseline[lang]}
             </h1>
@@ -785,18 +762,11 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (
-                <p key={i} className="mb-4">{p}</p>
-              ))}
+              {firstTwo.map((p, i) => (<p key={i} className="mb-4">{p}</p>))}
               {rest.length > 0 && (
                 <>
-                  <div
-                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
-                    aria-hidden={!showMore}
-                  >
-                    {rest.map((p, i) => (
-                      <p key={`rest-${i}`} className="mb-4">{p}</p>
-                    ))}
+                  <div className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`} aria-hidden={!showMore}>
+                    {rest.map((p, i) => (<p key={`rest-${i}`} className="mb-4">{p}</p>))}
                   </div>
                   <div className="mt-2">
                     <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
@@ -822,7 +792,7 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={coverSrc}
+              src={(DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) || DATA_BASE.images[0]?.src}
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = DATA_BASE.images[0]?.src || ""; }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
@@ -863,39 +833,19 @@ export default function Page() {
       {/* Lightbox */}
       {lbIndex !== null && (
         <div role="dialog" aria-modal="true" className="fixed inset-0 z-[999] bg-black/90" onClick={closeLb}>
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); closeLb(); }}
-            aria-label="Fermer"
-            className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white"
-          >
+          <button type="button" onClick={(e) => { e.stopPropagation(); closeLb(); }} aria-label="Fermer" className="absolute top-4 right-4 rounded-full bg-white/10 hover:bg-white/20 p-2 text-white">
             <X className="h-6 w-6" />
           </button>
 
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); prevLb(); }}
-            aria-label="Image précédente"
-            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
-          >
+          <button type="button" onClick={(e) => { e.stopPropagation(); prevLb(); }} aria-label="Image précédente" className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white">
             <ChevronLeft className="h-7 w-7" />
           </button>
 
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            <img
-              src={DATA_BASE.images[lbIndex].src}
-              alt={DATA_BASE.images[lbIndex].alt}
-              onClick={(e) => e.stopPropagation()}
-              className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl"
-            />
+            <img src={DATA_BASE.images[lbIndex].src} alt={DATA_BASE.images[lbIndex].alt} onClick={(e) => e.stopPropagation()} className="max-h-[92vh] max-w-[92vw] rounded-2xl shadow-2xl" />
           </div>
 
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); nextLb(); }}
-            aria-label="Image suivante"
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
-          >
+          <button type="button" onClick={(e) => { e.stopPropagation(); nextLb(); }} aria-label="Image suivante" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white">
             <ChevronRight className="h-7 w-7" />
           </button>
         </div>
@@ -971,14 +921,11 @@ export default function Page() {
         aria-label="WhatsApp"
         className="fixed bottom-4 right-4 z-[1000] inline-flex items-center justify-center h-12 w-12 rounded-full bg-green-500 text-white shadow-lg hover:scale-105 transition"
         title="WhatsApp"
-        onClick={() => {
-          try { trackContact({ cta: "whatsapp", page: "home" }); } catch {}
-        }}
+        onClick={() => { try { trackContact({ cta: "whatsapp", page: "home" }); } catch {} }}
       >
         <MessageCircle className="h-6 w-6" />
       </a>
 
-      {/* Footer */}
       <footer className="py-10 border-t mt-10">
         <div className="container mx-auto px-4 max-w-6xl text-sm text-neutral-500">
           © {new Date().getFullYear()} {DATA_BASE.nom} — www.villamyassa.com — Tous droits réservés.
