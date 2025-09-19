@@ -309,10 +309,10 @@ export default function Page() {
   const [showA, setShowA] = useState(true);
   useEffect(() => {
     const interval = setInterval(() => {
-      setShowA((s) => !s);                 // bascule d'opacité
-      setTimeout(() => {                   // après le fondu, on avance l'index
+      setShowA((s) => !s);
+      setTimeout(() => {
         setCurrent((i) => (i + 1) % images.length);
-      }, 700); // durée du fade (doit matcher duration-700)
+      }, 700);
     }, 3000);
     return () => clearInterval(interval);
   }, [images.length]);
@@ -392,7 +392,7 @@ export default function Page() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
-  const menuPos =
+  const mobileMenuPos =
     "absolute top-full z-50 mt-2 w-[92vw] max-w-sm left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 md:w-80";
 
   return (
@@ -407,35 +407,17 @@ export default function Page() {
             </h1>
           </div>
 
-          {/* Mobile portrait : tout sur une seule ligne avec logos sociaux */}
-          <div className="md:hidden flex h-16 items-center justify-between gap-2">
-            <span className="block text-[19px] font-extrabold font-serif truncate">
-              Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
-            </span>
+          {/* MOBILE PORTRAIT : 2 lignes */}
+          <div className="md:hidden py-2">
+            {/* Ligne 1 : Titre centré, très grand */}
+            <div className="flex items-center justify-center">
+              <h1 className="text-[24px] font-extrabold font-serif text-center leading-tight">
+                Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
+              </h1>
+            </div>
 
-            <div className="flex items-center gap-1">
-              {/* TikTok + IG (même taille que WhatsApp) */}
-              <a
-                href="https://www.tiktok.com/@villa.myassa"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-neutral-50"
-                aria-label="TikTok"
-                title="TikTok"
-              >
-                <img src="/logos/tiktok.png" alt="TikTok" className="h-4 w-4 object-contain" />
-              </a>
-              <a
-                href="https://www.instagram.com/villa_myassa_luxe_bali/"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-neutral-50"
-                aria-label="Instagram"
-                title="Instagram"
-              >
-                <img src="/logos/instagram.png" alt="Instagram" className="h-4 w-4 object-contain" />
-              </a>
-
+            {/* Ligne 2 : Langue → Réserver → TikTok → Instagram */}
+            <div className="mt-2 flex items-center justify-center gap-2">
               <select
                 className="h-9 rounded-md border px-2 text-xs bg-white"
                 value={lang}
@@ -447,7 +429,6 @@ export default function Page() {
                 <option value="id">🇮🇩 ID</option>
               </select>
 
-              {/* Réserver + menu */}
               <div className="relative" ref={bookingRef}>
                 <Button onClick={toggleBooking} className="h-9 px-3 text-xs">
                   <CalendarDays className="mr-2 h-4 w-4" />
@@ -455,7 +436,7 @@ export default function Page() {
                 </Button>
                 {bookingOpen && (
                   <div
-                    className={`${menuPos} rounded-xl border bg-white p-3 shadow-xl`}
+                    className={`${mobileMenuPos} rounded-xl border bg-white p-3 shadow-xl`}
                     role="menu"
                     aria-label="Choisir une plateforme"
                   >
@@ -478,12 +459,7 @@ export default function Page() {
                             onClick={closeBooking}
                           >
                             <span className="inline-flex items-center gap-2">
-                              <img
-                                src={it.icon}
-                                alt=""
-                                className="h-5 w-5 object-contain"
-                                loading="lazy"
-                              />
+                              <img src={it.icon} alt="" className="h-5 w-5 object-contain" loading="lazy" />
                               <span className="text-sm">{it.label}</span>
                             </span>
                             <span aria-hidden>↗</span>
@@ -494,6 +470,27 @@ export default function Page() {
                   </div>
                 )}
               </div>
+
+              <a
+                href="https://www.tiktok.com/@villa.myassa"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-neutral-50"
+                aria-label="TikTok"
+                title="TikTok"
+              >
+                <img src="/logos/tiktok.png" alt="TikTok" className="h-4 w-4 object-contain" />
+              </a>
+              <a
+                href="https://www.instagram.com/villa_myassa_luxe_bali/"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-neutral-50"
+                aria-label="Instagram"
+                title="Instagram"
+              >
+                <img src="/logos/instagram.png" alt="Instagram" className="h-4 w-4 object-contain" />
+              </a>
             </div>
           </div>
 
@@ -519,7 +516,6 @@ export default function Page() {
                 <option value="id">🇮🇩 ID</option>
               </select>
 
-              {/* Réserver + menu */}
               <div className="relative" ref={bookingRef}>
                 <Button onClick={toggleBooking}>
                   <CalendarDays className="mr-2 h-4 w-4" />
@@ -550,12 +546,7 @@ export default function Page() {
                             onClick={closeBooking}
                           >
                             <span className="inline-flex items-center gap-2">
-                              <img
-                                src={it.icon}
-                                alt=""
-                                className="h-5 w-5 object-contain"
-                                loading="lazy"
-                              />
+                              <img src={it.icon} alt="" className="h-5 w-5 object-contain" />
                               <span className="text-sm">{it.label}</span>
                             </span>
                             <span aria-hidden>↗</span>
@@ -567,7 +558,6 @@ export default function Page() {
                 )}
               </div>
 
-              {/* Réseaux sociaux (desktop) */}
               <a
                 href="https://www.tiktok.com/@villa.myassa"
                 target="_blank"
@@ -603,10 +593,9 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero SLIDER avec vrai fondu */}
+      {/* Hero SLIDER */}
       <section id="accueil">
         <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
-          {/* couche A */}
           <img
             src={images[current].src}
             alt={images[current].alt}
@@ -614,7 +603,6 @@ export default function Page() {
               showA ? "opacity-100" : "opacity-0"
             }`}
           />
-          {/* couche B : image suivante */}
           <img
             src={images[(current + 1) % images.length].src}
             alt={images[(current + 1) % images.length].alt}
@@ -624,7 +612,6 @@ export default function Page() {
           />
         </div>
 
-        {/* Baseline + CTA */}
         <div className="container mx-auto px-4 max-w-6xl py-8">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
