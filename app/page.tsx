@@ -4,8 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
-  Waves,
-  Car,
   CalendarDays,
   X,
   ChevronLeft,
@@ -305,15 +303,18 @@ export default function Page() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const images = DATA_BASE.images;
-  const featured = images[0];
 
-  // ---- HERO SLIDER (défilement auto)
-  const [heroIndex, setHeroIndex] = useState(0);
+  // ---- HERO SLIDER : cross-fade fluide
+  const [current, setCurrent] = useState(0);
+  const [showA, setShowA] = useState(true);
   useEffect(() => {
-    const id = setInterval(() => {
-      setHeroIndex((i) => (i + 1) % images.length);
+    const interval = setInterval(() => {
+      setShowA((s) => !s);                 // bascule d'opacité
+      setTimeout(() => {                   // après le fondu, on avance l'index
+        setCurrent((i) => (i + 1) % images.length);
+      }, 700); // durée du fade (doit matcher duration-700)
     }, 3000);
-    return () => clearInterval(id);
+    return () => clearInterval(interval);
   }, [images.length]);
 
   // ---- Lightbox
@@ -359,14 +360,14 @@ export default function Page() {
     )}&body=${encodeURIComponent(body)}`;
   };
 
-  // Virtual tour — ouvrir uniquement Matterport (demande confirmée)
+  // Virtual tour — uniquement Matterport
   const openVirtualTour = () => {
     window.open(DATA_BASE.virtualTour.url, "_blank", "noopener,noreferrer");
   };
   const coverSrc =
     (DATA_BASE.virtualTour.cover?.startsWith("/")
       ? DATA_BASE.virtualTour.cover
-      : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) || featured.src;
+      : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) || images[0].src;
 
   // Description "Lire plus"
   const description = DATA_BASE.description[lang];
@@ -378,12 +379,10 @@ export default function Page() {
   // WhatsApp & Social
   const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT)}`;
 
-  // --------- Menu Réserver (dropdown simple + logos) ----------
+  // --------- Menu Réserver ----------
   const [bookingOpen, setBookingOpen] = useState(false);
   const toggleBooking = () => setBookingOpen((v) => !v);
   const closeBooking = () => setBookingOpen(false);
-
-  // pour fermer en cliquant dehors
   const bookingRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -393,8 +392,6 @@ export default function Page() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
-
-  // Position mobile centrée
   const menuPos =
     "absolute top-full z-50 mt-2 w-[92vw] max-w-sm left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 md:w-80";
 
@@ -403,20 +400,42 @@ export default function Page() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="container mx-auto px-4 max-w-6xl">
-          {/* Ligne 1 : Titre centré (desktop & paysage) */}
+          {/* Desktop / paysage : titre centré */}
           <div className="hidden md:flex h-20 items-center justify-center">
             <h1 className="text-4xl lg:text-5xl font-extrabold font-serif text-center leading-tight">
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
             </h1>
           </div>
 
-          {/* Ligne 1 (mobile portrait) : tout sur une ligne */}
+          {/* Mobile portrait : tout sur une seule ligne avec logos sociaux */}
           <div className="md:hidden flex h-16 items-center justify-between gap-2">
-            <span className="block text-xl font-extrabold font-serif truncate">
+            <span className="block text-[19px] font-extrabold font-serif truncate">
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
             </span>
 
             <div className="flex items-center gap-1">
+              {/* TikTok + IG (même taille que WhatsApp) */}
+              <a
+                href="https://www.tiktok.com/@villa.myassa"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-neutral-50"
+                aria-label="TikTok"
+                title="TikTok"
+              >
+                <img src="/logos/tiktok.png" alt="TikTok" className="h-4 w-4 object-contain" />
+              </a>
+              <a
+                href="https://www.instagram.com/villa_myassa_luxe_bali/"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-neutral-50"
+                aria-label="Instagram"
+                title="Instagram"
+              >
+                <img src="/logos/instagram.png" alt="Instagram" className="h-4 w-4 object-contain" />
+              </a>
+
               <select
                 className="h-9 rounded-md border px-2 text-xs bg-white"
                 value={lang}
@@ -478,7 +497,7 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Ligne 2 (desktop & paysage) : nav + sélecteur + Réserver + réseaux */}
+          {/* Desktop / paysage : nav + sélecteurs + réseaux */}
           <div className="hidden md:flex h-16 items-center justify-between">
             <nav className="flex items-center gap-6 text-sm">
               <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
@@ -548,7 +567,7 @@ export default function Page() {
                 )}
               </div>
 
-              {/* Réseaux sociaux (taille = WhatsApp) */}
+              {/* Réseaux sociaux (desktop) */}
               <a
                 href="https://www.tiktok.com/@villa.myassa"
                 target="_blank"
@@ -584,19 +603,25 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero SLIDER */}
+      {/* Hero SLIDER avec vrai fondu */}
       <section id="accueil">
-        <div className="relative w-full">
+        <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
+          {/* couche A */}
           <img
-            key={images[heroIndex].src}
-            src={images[heroIndex].src}
-            alt={images[heroIndex].alt}
-            className="w-full h-[60vh] md:h-[70vh] object-cover transition-opacity duration-500"
+            src={images[current].src}
+            alt={images[current].alt}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              showA ? "opacity-100" : "opacity-0"
+            }`}
           />
-          {/* Titre centré (desktop/paysage) */}
-          <div className="hidden md:block absolute inset-x-0 top-2 left-0 right-0 text-center pointer-events-none">
-            {/* on a déjà le titre dans le header, donc overlay léger inutile ici */}
-          </div>
+          {/* couche B : image suivante */}
+          <img
+            src={images[(current + 1) % images.length].src}
+            alt={images[(current + 1) % images.length].alt}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              showA ? "opacity-0" : "opacity-100"
+            }`}
+          />
         </div>
 
         {/* Baseline + CTA */}
@@ -612,15 +637,15 @@ export default function Page() {
               {DATA_BASE.baseline[lang]}
             </p>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
-              {L.hero.capacity} • {L.hero.baths} • {L.hero.area}
+              {LTEXT(lang).hero.capacity} • {LTEXT(lang).hero.baths} • {LTEXT(lang).hero.area}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button variant="outline" size="lg" asChild>
-                <a href="#galerie">{L.nav.gallery}</a>
+                <a href="#galerie">{LTEXT(lang).nav.gallery}</a>
               </Button>
               <Button size="lg" asChild>
                 <a href={BESTAY_URL} target="_blank" rel="noreferrer">
-                  {L.nav.book}
+                  {LTEXT(lang).nav.book}
                 </a>
               </Button>
             </div>
@@ -629,7 +654,7 @@ export default function Page() {
       </section>
 
       {/* Description */}
-      <Section id="description" title={L.description.title}>
+      <Section id="description" title={LTEXT(lang).description.title}>
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
@@ -658,7 +683,7 @@ export default function Page() {
                       onClick={() => setShowMore((v) => !v)}
                       aria-expanded={showMore}
                     >
-                      {showMore ? L.description.less : L.description.more}
+                      {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
                     </Button>
                   </div>
                 </>
@@ -669,11 +694,7 @@ export default function Page() {
       </Section>
 
       {/* Visite 3D */}
-      <Section
-        id="visite-3d"
-        title={L.tour.title}
-        subtitle={L.tour.subtitle}
-      >
+      <Section id="visite-3d" title={LTEXT(lang).tour.title} subtitle={LTEXT(lang).tour.subtitle}>
         <div
           role="button"
           tabIndex={0}
@@ -684,9 +705,9 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={coverSrc || featured.src}
+              src={coverSrc || images[0].src}
               onError={(e) => {
-                e.currentTarget.src = featured.src;
+                e.currentTarget.src = images[0].src;
               }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
@@ -696,7 +717,7 @@ export default function Page() {
               <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
                 <Rotate3D className="h-4 w-4" />
                 <PlayCircle className="h-4 w-4" />
-                {L.tour.button}
+                {LTEXT(lang).tour.button}
               </span>
             </div>
           </div>
@@ -704,7 +725,7 @@ export default function Page() {
       </Section>
 
       {/* Galerie */}
-      <Section id="galerie" title={L.nav.gallery}>
+      <Section id="galerie" title={LTEXT(lang).nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((img, i) => (
             <GalleryCard key={i} item={img} onOpen={() => openLb(i)} />
@@ -760,7 +781,7 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-      <Section id="atouts" title={L.features.title} subtitle={L.features.subtitle}>
+      <Section id="atouts" title={LTEXT(lang).features.title} subtitle={LTEXT(lang).features.subtitle}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {DATA_BASE.pointsForts[lang].map((p, i) => (
             <Card key={i} className="rounded-2xl">
@@ -773,7 +794,7 @@ export default function Page() {
       </Section>
 
       {/* Localisation */}
-      <Section id="localisation" title={L.location.title} subtitle={DATA_BASE.localisation[lang]}>
+      <Section id="localisation" title={LTEXT(lang).location.title} subtitle={DATA_BASE.localisation[lang]}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-6">
@@ -793,38 +814,38 @@ export default function Page() {
       </Section>
 
       {/* Contact */}
-      <Section id="contact" title={L.contact.title}>
+      <Section id="contact" title={LTEXT(lang).contact.title}>
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
                 <Input
-                  placeholder={L.contact.yourName}
+                  placeholder={LTEXT(lang).contact.yourName}
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
                 <Input
-                  placeholder={L.contact.yourEmail}
+                  placeholder={LTEXT(lang).contact.yourEmail}
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                 />
                 <Textarea
-                  placeholder={L.contact.yourMessage}
+                  placeholder={LTEXT(lang).contact.yourMessage}
                   rows={5}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                 />
                 <div className="flex flex-wrap gap-3">
-                  <Button onClick={handleMailto}>{L.contact.sendEmail}</Button>
+                  <Button onClick={handleMailto}>{LTEXT(lang).contact.sendEmail}</Button>
                   <Button variant="outline" asChild>
-                    <a href={`mailto:${DATA_BASE.email}`}>{L.contact.openMailer}</a>
+                    <a href={`mailto:${DATA_BASE.email}`}>{LTEXT(lang).contact.openMailer}</a>
                   </Button>
                 </div>
               </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  {L.contact.emailLabel} :{" "}
+                  {LTEXT(lang).contact.emailLabel} :{" "}
                   <a className="underline" href={`mailto:${DATA_BASE.email}`}>
                     {DATA_BASE.email}
                   </a>
