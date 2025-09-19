@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
   CalendarDays,
@@ -304,26 +304,29 @@ export default function Page() {
 
   const images = DATA_BASE.images;
 
-  /* ---------------- HERO SLIDER — fondu sûr, 3 s par image ---------------- */
-  const [index, setIndex] = useState(0);
-  const [prev, setPrev] = useState(0);
-  const [fade, setFade] = useState(false);
-  const indexRef = useRef(index);
-  useEffect(() => { indexRef.current = index; }, [index]);
+  /* ---------------- HERO SLIDER — cross-fade Framer Motion --------------- */
+  // Pré-chargement pour éviter tout flash
+  useEffect(() => {
+    images.forEach((im) => {
+      const img = new Image();
+      img.src = im.src;
+      // pas besoin d'onload ici, on remplit le cache navigateur
+    });
+  }, [images]);
+
+  const [idx, setIdx] = useState(0);
+  const idxRef = useRef(idx);
+  useEffect(() => {
+    idxRef.current = idx;
+  }, [idx]);
 
   useEffect(() => {
     const id = setInterval(() => {
-      const current = indexRef.current;
-      const next = (current + 1) % images.length;
-      setPrev(current);        // image sortante
-      setIndex(next);          // image entrante
-      setFade(true);           // démarre l’animation (prev 100% -> 0, current 0 -> 100%)
-      const t = setTimeout(() => setFade(false), 700); // fin du fondu
-      return () => clearTimeout(t);
-    }, 3000); // 3 secondes par image
+      setIdx((i) => (i + 1) % images.length);
+    }, 3000); // 3 s par slide (fondu inclus)
     return () => clearInterval(id);
   }, [images.length]);
-  /* ----------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------- */
 
   // ---- Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
@@ -601,27 +604,26 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero SLIDER (2 calques avec fondu propre) */}
+      {/* Hero SLIDER (AnimatePresence pour cross-fade sans clignotement) */}
       <section id="accueil">
         <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
-          {/* calque PRECEDENT */}
-          <img
-            src={images[prev].src}
-            alt={images[prev].alt}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-              fade ? "opacity-100" : "opacity-0"
-            }`}
-          />
-          {/* calque COURANT */}
-          <img
-            src={images[index].src}
-            alt={images[index].alt}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-              fade ? "opacity-0" : "opacity-100"
-            }`}
-          />
+          <AnimatePresence /* cross-fade simultané */ initial={false}>
+            <motion.img
+              key={images[idx].src}
+              src={images[idx].src}
+              alt={images[idx].alt}
+              className="absolute inset-0 h-full w-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+              loading="eager"
+              decoding="async"
+            />
+          </AnimatePresence>
         </div>
 
+        {/* Baseline + CTA */}
         <div className="container mx-auto px-4 max-w-6xl py-8">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -655,34 +657,36 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
-              {(() => {
-                const description = DATA_BASE.description[lang];
-                const paragraphs = description.trim().split(/\n\s*\n/).map((p) => p.trim());
-                const firstTwo = paragraphs.slice(0, 2);
-                const rest = paragraphs.slice(2);
-                const [showMore, setShowMore] = useState(false);
-                return (
-                  <>
-                    {firstTwo.map((p, i) => (
-                      <p key={i} className="mb-4">{p}</p>
+              {firstTwo.map((p, i) => (
+                <p key={i} className="mb-4">
+                  {p}
+                </p>
+              ))}
+              {rest.length > 0 && (
+                <>
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
+                      showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                    aria-hidden={!showMore}
+                  >
+                    {rest.map((p, i) => (
+                      <p key={`rest-${i}`} className="mb-4">
+                        {p}
+                      </p>
                     ))}
-                    {rest.length > 0 && (
-                      <>
-                        <div className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`} aria-hidden={!showMore}>
-                          {rest.map((p, i) => (
-                            <p key={`rest-${i}`} className="mb-4">{p}</p>
-                          ))}
-                        </div>
-                        <div className="mt-2">
-                          <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
-                            {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
-                          </Button>
-                        </div>
-                      </>
-                    )}
-                  </>
-                );
-              })()}
+                  </div>
+                  <div className="mt-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowMore((v) => !v)}
+                      aria-expanded={showMore}
+                    >
+                      {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -701,7 +705,9 @@ export default function Page() {
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
               src={coverSrc || images[0].src}
-              onError={(e) => { e.currentTarget.src = images[0].src; }}
+              onError={(e) => {
+                e.currentTarget.src = images[0].src;
+              }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -740,7 +746,10 @@ export default function Page() {
 
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); prevLb(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              prevLb();
+            }}
             aria-label="Image précédente"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
@@ -758,7 +767,10 @@ export default function Page() {
 
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); nextLb(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              nextLb();
+            }}
             aria-label="Image suivante"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white"
           >
