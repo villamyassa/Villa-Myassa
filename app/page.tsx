@@ -254,7 +254,7 @@ const LTEXT = (lang: Lang) => ({
 });
 
 /* -------------------------------------------------------
-   3) HELPERS & MENU RÉSERVER (icônes inline)
+   3) HELPERS / MENU RÉSERVER / ICONES
 ------------------------------------------------------- */
 
 type BookingPlatformKey = "bestay" | "airbnb" | "booking" | "direct";
@@ -279,7 +279,6 @@ function useClickOutside<T extends HTMLElement>(onClose: () => void) {
   return ref;
 }
 
-/* Icônes SVG inline */
 const SvgAirbnb = () => (
   <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
     <path fill="#FF5A5F" d="M127.9 24c-13.1 0-24.5 8.1-35.6 27.1C77 80.5 54 126.7 54 153.2c0 28.5 23.3 51.8 51.8 51.8 10.7 0 20.7-3.2 29.1-9.1 8.3 5.9 18.3 9.1 29.1 9.1 28.5 0 51.8-23.3 51.8-51.8 0-26.5-23.1-72.7-38.3-102.1C152.5 32.1 141 24 127.9 24zm0 30.8c4.8 0 10.6 3.8 17.1 15.1 14.1 24.6 34.4 63.2 34.4 83.3 0 11.6-9.4 21-21 21-7.6 0-14.2-4-17.8-10.6l-12.7-23.5-12.7 23.5c-3.6 6.7-10.2 10.6-17.8 10.6-11.6 0-21-9.4-21-21 0-20.1 20.3-58.7 34.4-83.3 6.5-11.3 12.2-15.1 17.1-15.1z"/>
@@ -305,14 +304,16 @@ const SvgDirect = () => (
   </svg>
 );
 
-/* Nouveaux: TikTok & Instagram (inline) */
+/* TikTok — version multi-couches fidèle */
 const SvgTikTok = () => (
   <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
-    <path fill="#000" d="M170 24h-34v126.8c0 16.3-13.2 29.6-29.6 29.6S76.8 167 76.8 150.8c0-14.7 10.7-27.1 24.8-29.3v-35C68.6 89.9 44 118.2 44 150.8c0 34.8 28.2 63 63 63s63-28.2 63-63V106c10.1 8.4 23 13.5 37 13.5V83.6c-13.3 0-24.8-7.5-30.8-18.5C171.6 56.6 170 40.9 170 24z"/>
-    <path fill="#EE1D52" d="M170 24v39.1c6 11 17.5 18.5 30.8 18.5V106c-14 0-26.9-5.1-37-13.5v58.3c0 34.8-28.2 63-63 63-17.5 0-33.3-7.1-44.8-18.6 10.8 9.3 24.8 15 40.2 15 34.8 0 63-28.2 63-63V24h10.8z"/>
-    <path fill="#69C9D0" d="M101.6 86.4v35c-14.1 2.2-24.8 14.6-24.8 29.3 0 9.9 4.8 18.6 12.2 24.1-7.4-6.1-12.2-15.3-12.2-25.6 0-23.7 17.8-43.3 40.8-46.4V86.4h-16z"/>
+    <path fill="#000000" d="M160 24h-32v126.5c0 17-13.8 30.8-30.8 30.8S66.4 167.5 66.4 150.5c0-15.6 11.7-28.6 26.8-30.6V84.3C68.3 88.1 46 117.2 46 150.5c0 35.9 29.1 65 65 65s65-29.1 65-65v-45.8c10.2 8.9 23.7 14.3 38.6 14.3V86.2c-14.5 0-27.2-8.2-33.8-20.1C164 56.6 160 40.6 160 24z"/>
+    <path fill="#EE1D52" d="M160 24v39.1c6.6 11.9 19.3 20.1 33.8 20.1v32.3c-14.9 0-28.4-5.4-38.6-14.3v49.3c0 35.9-29.1 65-65 65-18.2 0-34.7-7.4-46.5-19.4 11.2 9.4 25.7 15 41.4 15 35.9 0 65-29.1 65-65V24h9.9z"/>
+    <path fill="#69C9D0" d="M92.2 88.2v31.7c-15.1 2-26.8 15-26.8 30.6 0 10.6 5.2 20 13.2 25.8-8.6-6.9-14.1-17.4-14.1-29 0-24.6 18.9-44.8 43-47.1V88.2H92.2z"/>
   </svg>
 );
+
+/* Instagram */
 const SvgInstagram = () => (
   <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
     <rect width="256" height="256" rx="56" fill="#E1306C"/>
@@ -607,91 +608,89 @@ export default function Page() {
       <Script id="jsonld-lodging" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLodging) }} />
       <Script id="jsonld-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
 
-      {/* Header */}
+      {/* Header — mobile portrait: tout sur une ligne */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div className="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row landscape:flex-col md:items-center md:justify-between gap-2 md:gap-0 py-3 md:h-16 landscape:h-auto">
-          {/* Titre */}
-          <div className="w-full md:w-auto">
-            <a href="#accueil" className="select-none block w-full">
-              <span
-                className="block text-2xl sm:text-3xl md:text-3xl font-extrabold tracking-tight font-serif leading-snug text-center md:text-left landscape:text-center md:whitespace-nowrap landscape:whitespace-normal"
-                title="Villa Myassa, Ubud, BALI"
-              >
-                Villa Myassa, <span className="italic">Ubud</span>,
-                <span className="hidden landscape:inline"><br /></span>{" "}
-                <span className="uppercase">BALI</span>
-              </span>
+        <div className="container mx-auto px-3 md:px-4 max-w-6xl h-14 md:h-16 flex items-center justify-between gap-2">
+          {/* Titre à gauche (taille réduite en mobile pour tenir) */}
+          <a href="#accueil" className="min-w-0 select-none">
+            <span
+              className="block text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none whitespace-nowrap overflow-hidden text-ellipsis"
+              title="Villa Myassa, Ubud, BALI"
+            >
+              Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">BALI</span>
+            </span>
+          </a>
+
+          {/* Actions tassées à droite (lang + réserver + réseaux) */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <label className="sr-only" htmlFor="lang-select">Langue</label>
+            <select
+              id="lang-select"
+              className="h-8 rounded-md border px-2 text-xs bg-white"
+              value={lang}
+              onChange={(e) => setLang(e.target.value as Lang)}
+              aria-label="Choisir la langue"
+            >
+              <option value="fr">🇫🇷 FR</option>
+              <option value="en">🇬🇧 EN</option>
+              <option value="id">🇮🇩 ID</option>
+            </select>
+
+            {/* Bouton Réserver compact */}
+            <div className="hidden xs:block">
+              <BookingMenu lang={lang} size="md" />
+            </div>
+
+            {/* Icônes sociales compacts */}
+            <a
+              href={TIKTOK_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="TikTok"
+              className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-black text-white hover:opacity-90 transition"
+              title="TikTok"
+              onClick={() => { try { trackContact({ cta: "tiktok", page: "home" }); } catch {} }}
+            >
+              <SvgTikTok />
+            </a>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-pink-600 text-white hover:opacity-90 transition"
+              title="Instagram"
+              onClick={() => { try { trackContact({ cta: "instagram", page: "home" }); } catch {} }}
+            >
+              <SvgInstagram />
+            </a>
+            <a
+              href={`https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="WhatsApp"
+              className="hidden md:inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-500 text-white hover:scale-105 transition"
+              title="WhatsApp"
+              onClick={() => { try { trackContact({ cta: "whatsapp", page: "home" }); } catch {} }}
+            >
+              <MessageCircle className="h-4 w-4" />
             </a>
           </div>
+        </div>
 
-          {/* Nav + actions */}
-          <div className="w-full md:w-auto flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end gap-2 landscape:gap-3">
-            <nav className="hidden md:flex landscape:flex w-full md:w-auto items-center justify-center md:justify-end gap-4 text-sm">
-              <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
-              <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
-              <a href="#atouts" className="hover:underline">{L.nav.features}</a>
-              <a href="#localisation" className="hover:underline">{L.nav.location}</a>
-              <a href="#contact" className="hover:underline">{L.nav.contact}</a>
+        {/* Nav liens (cachés en mobile) */}
+        <div className="hidden md:block">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <nav className="flex items-center gap-6 text-sm py-2">
+              <a href="#visite-3d" className="hover:underline">{LTEXT(lang).nav.tour}</a>
+              <a href="#galerie" className="hover:underline">{LTEXT(lang).nav.gallery}</a>
+              <a href="#atouts" className="hover:underline">{LTEXT(lang).nav.features}</a>
+              <a href="#localisation" className="hover:underline">{LTEXT(lang).nav.location}</a>
+              <a href="#contact" className="hover:underline">{LTEXT(lang).nav.contact}</a>
+              <div className="ml-auto">
+                <BookingMenu lang={lang} />
+              </div>
             </nav>
-
-            <div className="w-full md:w-auto flex items-center justify-center md:justify-end gap-2 flex-wrap">
-              <label className="sr-only" htmlFor="lang-select">Langue</label>
-              <select
-                id="lang-select"
-                className="h-9 rounded-md border px-2 text-sm bg-white"
-                value={lang}
-                onChange={(e) => setLang(e.target.value as Lang)}
-                aria-label="Choisir la langue"
-              >
-                <option value="fr">🇫🇷 Français</option>
-                <option value="en">🇬🇧 English</option>
-                <option value="id">🇮🇩 Bahasa Indonesia</option>
-              </select>
-
-              {/* Menu Réserver */}
-              <BookingMenu lang={lang} />
-
-              {/* TikTok */}
-              <a
-                href={TIKTOK_URL}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="TikTok"
-                className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-black text-white hover:opacity-90 transition"
-                title="TikTok"
-                onClick={() => { try { trackContact({ cta: "tiktok", page: "home" }); } catch {} }}
-              >
-                <SvgTikTok />
-              </a>
-
-              {/* Instagram */}
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-pink-600 text-white hover:opacity-90 transition"
-                title="Instagram"
-                onClick={() => { try { trackContact({ cta: "instagram", page: "home" }); } catch {} }}
-              >
-                <SvgInstagram />
-              </a>
-
-              {/* WhatsApp */}
-              <a
-                href={waHref}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="WhatsApp"
-                className="hidden md:inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-500 text-white hover:scale-105 transition"
-                title="WhatsApp"
-                onClick={() => {
-                  try { trackContact({ cta: "whatsapp", page: "home" }); } catch {}
-                }}
-              >
-                <MessageCircle className="h-5 w-5" />
-              </a>
-            </div>
           </div>
         </div>
       </header>
@@ -714,11 +713,11 @@ export default function Page() {
               {DATA_BASE.baseline[lang]}
             </h1>
             <p className="mt-3 text-base md:text-lg text-neutral-700">
-              {L.hero.capacity} • {L.hero.baths} • {L.hero.area}
+              {LTEXT(lang).hero.capacity} • {LTEXT(lang).hero.baths} • {LTEXT(lang).hero.area}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button variant="outline" size="lg" asChild>
-                <a href="#galerie">{L.nav.gallery}</a>
+                <a href="#galerie">{LTEXT(lang).nav.gallery}</a>
               </Button>
               <BookingMenu lang={lang} size="lg" />
             </div>
@@ -727,7 +726,7 @@ export default function Page() {
       </section>
 
       {/* Description */}
-      <Section id="description" title={L.description.title}>
+      <Section id="description" title={LTEXT(lang).description.title}>
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
@@ -742,7 +741,7 @@ export default function Page() {
                   </div>
                   <div className="mt-2">
                     <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
-                      {showMore ? L.description.less : L.description.more}
+                      {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
                     </Button>
                   </div>
                 </>
@@ -753,7 +752,7 @@ export default function Page() {
       </Section>
 
       {/* Visite 3D */}
-      <Section id="visite-3d" title={L.tour.title} subtitle={L.tour.subtitle}>
+      <Section id="visite-3d" title={LTEXT(lang).tour.title} subtitle={LTEXT(lang).tour.subtitle}>
         <div
           role="button"
           tabIndex={0}
@@ -774,27 +773,27 @@ export default function Page() {
               <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur">
                 <Rotate3D className="h-4 w-4" />
                 <PlayCircle className="h-4 w-4" />
-                {L.tour.button}
+                {LTEXT(lang).tour.button}
               </span>
             </div>
           </div>
         </div>
 
         <p className="mt-3 text-xs text-neutral-600">
-          {L.tour.fallbackText}
+          {LTEXT(lang).tour.fallbackText}
           <a className="underline" href={DATA_BASE.virtualTour.url} target="_blank" rel="noopener noreferrer">
-            {L.tour.fallback1}
+            {LTEXT(lang).tour.fallback1}
           </a>
-          {L.tour.fallbackText2}
+          {LTEXT(lang).tour.fallbackText2}
           <a className="underline" href={DATA_BASE.virtualTour.fallbackUrl} target="_blank" rel="noopener noreferrer">
-            {L.tour.fallback2}
+            {LTEXT(lang).tour.fallback2}
           </a>
           .
         </p>
       </Section>
 
       {/* Galerie */}
-      <Section id="galerie" title={L.nav.gallery}>
+      <Section id="galerie" title={LTEXT(lang).nav.gallery}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((img, i) => (<GalleryCard key={i} item={img} onOpen={() => openLb(i)} />))}
         </div>
@@ -842,7 +841,7 @@ export default function Page() {
       )}
 
       {/* Atouts */}
-      <Section id="atouts" title={L.features.title} subtitle={L.features.subtitle}>
+      <Section id="atouts" title={LTEXT(lang).features.title} subtitle={LTEXT(lang).features.subtitle}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {(DATA_BASE.pointsForts as any)[lang].map((p: string, i: number) => (
             <Card key={i} className="rounded-2xl">
@@ -855,7 +854,7 @@ export default function Page() {
       </Section>
 
       {/* Localisation */}
-      <Section id="localisation" title={L.location.title} subtitle={DATA_BASE.localisation[lang]}>
+      <Section id="localisation" title={LTEXT(lang).location.title} subtitle={DATA_BASE.localisation[lang]}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="rounded-2xl order-2 lg:order-1">
             <CardContent className="py-5">
@@ -875,24 +874,24 @@ export default function Page() {
       </Section>
 
       {/* Contact */}
-      <Section id="contact" title={L.contact.title}>
+      <Section id="contact" title={LTEXT(lang).contact.title}>
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="grid gap-3">
-                <Input placeholder={L.contact.yourName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                <Input placeholder={L.contact.yourEmail} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                <Textarea placeholder={L.contact.yourMessage} rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                <Input placeholder={LTEXT(lang).contact.yourName} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <Input placeholder={LTEXT(lang).contact.yourEmail} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <Textarea placeholder={LTEXT(lang).contact.yourMessage} rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                 <div className="flex flex-wrap gap-3">
-                  <Button onClick={handleMailto}>{L.contact.sendEmail}</Button>
+                  <Button onClick={handleMailto}>{LTEXT(lang).contact.sendEmail}</Button>
                   <Button variant="outline" asChild>
-                    <a href={`mailto:${DATA_BASE.email}`}>{L.contact.openMailer}</a>
+                    <a href={`mailto:${DATA_BASE.email}`}>{LTEXT(lang).contact.openMailer}</a>
                   </Button>
                 </div>
               </div>
               <div className="text-sm text-neutral-600">
                 <p>
-                  {L.contact.emailLabel} :{" "}
+                  {LTEXT(lang).contact.emailLabel} :{" "}
                   <a className="underline" href={`mailto:${DATA_BASE.email}`}>
                     {DATA_BASE.email}
                   </a>
