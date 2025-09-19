@@ -152,35 +152,9 @@ const DATA_BASE = {
     ],
   },
   description: {
-    fr: `Bienvenue à la Villa Myassa, **villa à Ubud** idéale pour des **vacances à Bali**. Située à Singakerta, dans un quartier paisible entouré de rizières et de jungle, notre **villa de Bali avec piscine privée** combine architecture contemporaine et chaleur balinaise — à quelques minutes du **centre d’Ubud** et de la célèbre **Monkey Forest**. Dès l’entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, donnant le ton d’un séjour raffiné.
-
-Les trois chambres raffinées de la Villa Myassa disposent chacune d’un lit queen-size, d’une Smart TV, de la climatisation et d’une salle de bain attenante. La chambre principale séduit avec sa moustiquaire à baldaquin et sa baignoire extérieure ; la deuxième chambre offre une douche extérieure ; la troisième propose une expérience semi-ouverte. Idéale pour des familles ou amis cherchant une **location de villa à Ubud** confortable et intime.
-
-La Villa Myassa relie naturellement intérieur et extérieur : grands espaces ouverts, ventilation croisée et ventilateurs de plafond. Une carte de Bali finement sculptée orne le salon, parfait pour se réunir ou se détendre. La salle à manger accueille six convives, et la cuisine moderne avec îlot central facilite la préparation de repas après une journée à explorer Ubud, ses temples et ses cafés.
-
-À l’extérieur, découvrez votre oasis privée : **piscine étincelante** surmontée d’une statue de Bouddha, **sunken lounge** face à l’eau et deux matelas flottants pour lézarder au soleil. Le **gazebo balinais (balé bengong)**, drapé de rideaux blancs, est idéal pour un massage. Deux bains de soleil supplémentaires bordent le jardin luxuriant ; la douche extérieure complète ce **havre tropical**.
-
-Grâce à son emplacement privilégié, la **Villa Myassa Ubud** vous place près des meilleurs restaurants, studios de yoga, marchés artisanaux et rizières en terrasse de Tegallalang. Que vous souhaitiez une retraite zen, un voyage en couple ou des **vacances en famille à Bali**, notre villa est un point de départ parfait.
-
-**Réservez** dès aujourd’hui votre escapade tropicale à la Villa Myassa et profitez d’une **villa à Ubud avec piscine privée**, élégante et sereine — le mélange idéal entre confort moderne et magie balinaise.`,
-    en: `Welcome to Villa Myassa — a **villa in Ubud, Bali** designed for effortless tropical living. Tucked away in Singakerta among rice fields and jungle, this **Bali private pool villa** blends contemporary lines with Balinese warmth. You’re minutes from **central Ubud** and the famous **Monkey Forest**, making it a perfect base for a relaxing **Ubud villa rental**.
-
-Each of the three refined bedrooms features a queen-size bed, Smart TV, air-conditioning and an en-suite bathroom. The master comes with a canopy mosquito net and an outdoor bathtub; the second bedroom has an outdoor shower; the third offers a semi-open bathing experience — ideal for friends or families seeking a comfortable **villa rental in Ubud**.
-
-Indoors meet outdoors through breezy open spaces, natural cross-ventilation and ceiling fans. A carved wooden map of Bali anchors the lounge, while the dining area seats six and the modern island kitchen invites easy meals after exploring Ubud’s temples, cafés and yoga studios.
-
-Step into your private oasis: a **sparkling pool** crowned by a Buddha statue, a **sunken lounge** overlooking the water, and two floating loungers for pure relaxation. Unwind in the **balé bengong gazebo** draped with white curtains — perfect for massages. Two additional sun loungers face the lush garden and an outdoor shower completes this **tropical haven**.
-
-With its privileged location, **Villa Myassa Ubud** places you close to restaurants, markets and the Tegallalang rice terraces. Whether you’re planning a couple’s getaway or a **family holiday in Bali**, this **Ubud private-pool villa** is an elegant, serene choice. **Book** your tropical escape today.`,
-    id: `Selamat datang di Villa Myassa — **vila di Ubud, Bali** yang nyaman untuk liburan tropis. Berada di Singakerta yang tenang, dikelilingi sawah dan hutan, **vila Ubud dengan kolam renang pribadi** ini memadukan desain kontemporer dan kehangatan Bali. Lokasi hanya beberapa menit dari **pusat Ubud** dan **Monkey Forest**, cocok sebagai **sewa vila Ubud** untuk keluarga maupun teman.
-
-Tiga kamar tidur elegan masing-masing memiliki kasur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama dilengkapi kelambu kanopi serta bak mandi luar ruang; kamar kedua dengan shower luar ruang; dan kamar ketiga menghadirkan pengalaman semi-terbuka — pas untuk tamu yang mencari **vila sewa di Ubud** yang nyaman dan privat.
-
-Ruang dalam dan luar menyatu melalui area terbuka yang lapang, ventilasi silang alami, serta kipas plafon. Peta Bali ukiran kayu mempercantik ruang keluarga; area makan untuk enam orang; dapur moden dengan island memudahkan memasak setelah menjelajah kafe, studio yoga, dan pura di Ubud.
-
-Di luar, nikmati oasis pribadi: **kolam renang berkilau** berhias patung Buddha, **sunken lounge** menghadap air, serta dua matras apung untuk bersantai. Rebahkan diri di **balé bengong** dengan tirai putih — ideal untuk pijat. Dua kursi berjemur menghadap taman rimbun, sementara shower luar ruang melengkapi **surga tropis** ini.
-
-Berkat lokasinya yang strategis, **Villa Myassa Ubud** dekat restoran, pasar, serta sawah terasering Tegallalang. Baik untuk pasangan maupun **liburan keluarga di Bali**, **vila dengan kolam renang pribadi** ini adalah pilihan tenang dan elegan. **Pesan** liburan tropis Anda hari ini.`,
+    fr: `Bienvenue à la Villa Myassa, **villa à Ubud** idéale pour des **vacances à Bali**...`,
+    en: `Welcome to Villa Myassa — a **villa in Ubud, Bali**...`,
+    id: `Selamat datang di Villa Myassa — **vila di Ubud, Bali**...`,
   },
 };
 
@@ -304,7 +278,7 @@ const SocialIconImg = ({
   </a>
 );
 
-/** Icône image générique pour items du menu Réserver (vrais logos) */
+/** Icône image générique pour items du menu Réserver (logos) */
 const MenuLogo = ({ src, alt }: { src: string; alt: string }) => (
   <img src={src} alt={alt} className="h-5 w-5 object-contain" />
 );
@@ -354,13 +328,11 @@ function BookingMenu({
     <button
       role="menuitem"
       onClick={() => handleClick(k)}
-      className="w-full text-left px-4 py-3 hover:bg-neutral-50 flex items-center justify-between"
+      className="w-full text-left px-4 py-3 hover:bg-neutral-50 grid grid-cols-[20px_1fr_16px] items-center gap-3"
     >
-      <span className="flex items-center gap-3">
-        <MenuLogo src={logoSrc} alt={label} />
-        <span>{label}</span>
-      </span>
-      <ExternalLink className="h-4 w-4 opacity-60" />
+      <MenuLogo src={logoSrc} alt={label} />
+      <span className="text-[15px] leading-snug">{label}</span>
+      <ExternalLink className="h-4 w-4 opacity-60 justify-self-end" />
     </button>
   );
 
@@ -385,7 +357,7 @@ function BookingMenu({
           id="booking-menu"
           role="menu"
           aria-label="Choisir une plateforme"
-          className="booking-menu absolute right-0 mt-2 w-72 rounded-xl border bg-white shadow-lg overflow-hidden z-50"
+          className="booking-menu absolute mt-2 w-80 rounded-xl border bg-white shadow-lg overflow-hidden z-50 right-0"
         >
           <div className="px-3 py-2 text-xs text-neutral-500">Choisir une plateforme</div>
           <ul className="max-h-[70vh] overflow-auto">
@@ -393,28 +365,28 @@ function BookingMenu({
               <Item
                 k="bestay"
                 label={L.platforms.bestay}
-                logoSrc="/logos/bestay.png"
+                logoSrc="/logos/bestay.svg"
               />
             </li>
             <li>
               <Item
                 k="airbnb"
                 label={L.platforms.airbnb}
-                logoSrc="/logos/airbnb.png"
+                logoSrc="/logos/airbnb.svg"
               />
             </li>
             <li>
               <Item
                 k="booking"
                 label={L.platforms.booking}
-                logoSrc="/logos/booking.png"
+                logoSrc="/logos/booking.svg"
               />
             </li>
             <li>
               <Item
                 k="direct"
                 label={L.platforms.direct}
-                logoSrc="/logos/direct.png"
+                logoSrc="/logos/direct.svg"
               />
             </li>
           </ul>
@@ -485,7 +457,6 @@ function HeroSlider({ images }: { images: GalleryItem[] }) {
 ------------------------------------------------------- */
 
 export default function Page() {
-  // Lang
   const [lang, setLang] = useState<Lang>("fr");
   useEffect(() => {
     const saved = typeof window !== "undefined" ? window.localStorage.getItem("lang") : null;
@@ -496,7 +467,6 @@ export default function Page() {
   }, [lang]);
   const L = useMemo(() => LTEXT(lang), [lang]);
 
-  // Form
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const images = DATA_BASE.images;
@@ -544,7 +514,6 @@ export default function Page() {
     } catch {}
   };
 
-  // Virtual tour
   const openVirtualTour = () => {
     window.open(DATA_BASE.virtualTour.url, "_blank", "noopener,noreferrer");
     setTimeout(() => {
@@ -555,17 +524,14 @@ export default function Page() {
     (DATA_BASE.virtualTour.cover?.startsWith("/") ? DATA_BASE.virtualTour.cover : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) ||
     images[0]?.src;
 
-  // Description
   const description = (DATA_BASE.description as any)[lang] as string;
   const paragraphs = description.trim().split(/\n\s*\n/).map((p) => p.trim());
   const firstTwo = paragraphs.slice(0, 2);
   const rest = paragraphs.slice(2);
   const [showMore, setShowMore] = useState(false);
 
-  // WhatsApp
   const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT[lang])}`;
 
-  // JSON-LD
   const jsonLdLodging = {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
@@ -690,8 +656,8 @@ export default function Page() {
           .book-center-desktop { display: none; }
           .book-actions-mobile { display: inline-flex; }
           .actions-right { margin-left: 0; justify-content: center; flex-wrap: nowrap; }
-          /* Centre le menu déroulant sous le bouton sur mobile portrait pour éviter la coupure à gauche */
-          .booking-menu { right: auto !important; left: 50% !important; transform: translateX(-50%); }
+          /* Décalage vers la DROITE du menu pour que les logos restent visibles */
+          .booking-menu { left: 58% !important; right: auto !important; transform: translateX(-58%) !important; }
         }
 
         @media (max-width: 640px) and (orientation: landscape) {
@@ -819,36 +785,26 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-5">
             <div className="prose max-w-none leading-relaxed">
-              {(() => {
-                const paragraphs = (DATA_BASE.description as any)[lang].trim().split(/\n\s*\n/).map((p: string) => p.trim());
-                const firstTwo = paragraphs.slice(0, 2);
-                const rest = paragraphs.slice(2);
-                const [showMore, setShowMore] = useState(false);
-                return (
-                  <>
-                    {firstTwo.map((p: string, i: number) => (
-                      <p key={i} className="mb-4">{p}</p>
+              {firstTwo.map((p, i) => (
+                <p key={i} className="mb-4">{p}</p>
+              ))}
+              {rest.length > 0 && (
+                <>
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
+                    aria-hidden={!showMore}
+                  >
+                    {rest.map((p, i) => (
+                      <p key={`rest-${i}`} className="mb-4">{p}</p>
                     ))}
-                    {rest.length > 0 && (
-                      <>
-                        <div
-                          className={`overflow-hidden transition-[max-height,opacity] duration-300 ${showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
-                          aria-hidden={!showMore}
-                        >
-                          {rest.map((p: string, i: number) => (
-                            <p key={`rest-${i}`} className="mb-4">{p}</p>
-                          ))}
-                        </div>
-                        <div className="mt-2">
-                          <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
-                            {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
-                          </Button>
-                        </div>
-                      </>
-                    )}
-                  </>
-                );
-              })()}
+                  </div>
+                  <div className="mt-2">
+                    <Button variant="outline" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore}>
+                      {showMore ? LTEXT(lang).description.less : LTEXT(lang).description.more}
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
