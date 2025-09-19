@@ -82,6 +82,9 @@ const BOOKING_URL = "https://www.booking.com/hotel/id/villa-myassa-by-balisuperh
 const DIRECT_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
 
+const TIKTOK_URL = "https://www.tiktok.com/@villa.myassa";
+const INSTAGRAM_URL = "https://www.instagram.com/villa_myassa_luxe_bali/";
+
 const WA_NUMBER_INTL = "33688647659";
 const WA_TEXT_DEFAULT: Record<Lang, string> = {
   fr: "Bonjour, je souhaite des informations sur la Villa Myassa (dates, tarifs, etc.).",
@@ -276,7 +279,7 @@ function useClickOutside<T extends HTMLElement>(onClose: () => void) {
   return ref;
 }
 
-/* Icônes SVG inline (pas de requête réseau) */
+/* Icônes SVG inline */
 const SvgAirbnb = () => (
   <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
     <path fill="#FF5A5F" d="M127.9 24c-13.1 0-24.5 8.1-35.6 27.1C77 80.5 54 126.7 54 153.2c0 28.5 23.3 51.8 51.8 51.8 10.7 0 20.7-3.2 29.1-9.1 8.3 5.9 18.3 9.1 29.1 9.1 28.5 0 51.8-23.3 51.8-51.8 0-26.5-23.1-72.7-38.3-102.1C152.5 32.1 141 24 127.9 24zm0 30.8c4.8 0 10.6 3.8 17.1 15.1 14.1 24.6 34.4 63.2 34.4 83.3 0 11.6-9.4 21-21 21-7.6 0-14.2-4-17.8-10.6l-12.7-23.5-12.7 23.5c-3.6 6.7-10.2 10.6-17.8 10.6-11.6 0-21-9.4-21-21 0-20.1 20.3-58.7 34.4-83.3 6.5-11.3 12.2-15.1 17.1-15.1z"/>
@@ -299,6 +302,23 @@ const SvgDirect = () => (
   <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
     <rect width="256" height="256" rx="44" fill="#111827"/>
     <path fill="#fff" d="M144 28L60 148h48l-16 80 104-140h-56l4-60z"/>
+  </svg>
+);
+
+/* Nouveaux: TikTok & Instagram (inline) */
+const SvgTikTok = () => (
+  <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
+    <path fill="#000" d="M170 24h-34v126.8c0 16.3-13.2 29.6-29.6 29.6S76.8 167 76.8 150.8c0-14.7 10.7-27.1 24.8-29.3v-35C68.6 89.9 44 118.2 44 150.8c0 34.8 28.2 63 63 63s63-28.2 63-63V106c10.1 8.4 23 13.5 37 13.5V83.6c-13.3 0-24.8-7.5-30.8-18.5C171.6 56.6 170 40.9 170 24z"/>
+    <path fill="#EE1D52" d="M170 24v39.1c6 11 17.5 18.5 30.8 18.5V106c-14 0-26.9-5.1-37-13.5v58.3c0 34.8-28.2 63-63 63-17.5 0-33.3-7.1-44.8-18.6 10.8 9.3 24.8 15 40.2 15 34.8 0 63-28.2 63-63V24h10.8z"/>
+    <path fill="#69C9D0" d="M101.6 86.4v35c-14.1 2.2-24.8 14.6-24.8 29.3 0 9.9 4.8 18.6 12.2 24.1-7.4-6.1-12.2-15.3-12.2-25.6 0-23.7 17.8-43.3 40.8-46.4V86.4h-16z"/>
+  </svg>
+);
+const SvgInstagram = () => (
+  <svg viewBox="0 0 256 256" className="h-5 w-5" aria-hidden="true">
+    <rect width="256" height="256" rx="56" fill="#E1306C"/>
+    <circle cx="176" cy="80" r="16" fill="#fff"/>
+    <circle cx="128" cy="128" r="44" fill="none" stroke="#fff" strokeWidth="18" />
+    <rect x="50" y="50" width="156" height="156" rx="40" fill="none" stroke="#fff" strokeWidth="18"/>
   </svg>
 );
 
@@ -516,7 +536,7 @@ export default function Page() {
       name: f,
       value: true,
     })),
-    sameAs: [BESTAY_URL, AIRBNB_URL, BOOKING_URL, DIRECT_URL],
+    sameAs: [BESTAY_URL, AIRBNB_URL, BOOKING_URL, DIRECT_URL, TIKTOK_URL, INSTAGRAM_URL],
   };
 
   const jsonLdFAQ = {
@@ -628,8 +648,34 @@ export default function Page() {
                 <option value="id">🇮🇩 Bahasa Indonesia</option>
               </select>
 
-              {/* Menu Réserver avec icônes inline */}
+              {/* Menu Réserver */}
               <BookingMenu lang={lang} />
+
+              {/* TikTok */}
+              <a
+                href={TIKTOK_URL}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="TikTok"
+                className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-black text-white hover:opacity-90 transition"
+                title="TikTok"
+                onClick={() => { try { trackContact({ cta: "tiktok", page: "home" }); } catch {} }}
+              >
+                <SvgTikTok />
+              </a>
+
+              {/* Instagram */}
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+                className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-pink-600 text-white hover:opacity-90 transition"
+                title="Instagram"
+                onClick={() => { try { trackContact({ cta: "instagram", page: "home" }); } catch {} }}
+              >
+                <SvgInstagram />
+              </a>
 
               {/* WhatsApp */}
               <a
