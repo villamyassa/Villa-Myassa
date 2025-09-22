@@ -302,6 +302,18 @@ export default function Page() {
   // ---- Form
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
+  // ---- Responsive helper
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(min-width: 768px)");
+    const handler = (e: MediaQueryListEvent | MediaQueryList) =>
+      setIsDesktop("matches" in e ? e.matches : (e as MediaQueryList).matches);
+    handler(mql);
+    mql.addEventListener("change", handler as any);
+    return () => mql.removeEventListener("change", handler as any);
+  }, []);
+
   const images = DATA_BASE.images;
 
   /* ---------- HERO SLIDER — cross-fade Framer Motion (sans clignotement) ---------- */
@@ -383,24 +395,24 @@ export default function Page() {
   // WhatsApp & Social
   const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT)}`;
 
-  // --------- Menu Réserver ----------
-  const [bookingOpen, setBookingOpen] = useState(false);
-  const toggleBooking = () => setBookingOpen((v) => !v);
-  const closeBooking = () => setBookingOpen(false);
-  const bookingRef = useRef<HTMLDivElement | null>(null);
+  // --------- Réserver : Desktop DROPDOWN ----------
+  const [desktopBookingOpen, setDesktopBookingOpen] = useState(false);
+  const desktopRef = useRef<HTMLDivElement | null>(null);
 
-  // ⬇️ écoute 'click' (pas mousedown) pour éviter la fermeture avant le tap mobile
   useEffect(() => {
+    if (!isDesktop) return; // seulement desktop
     const onDocClick = (e: MouseEvent) => {
-      if (!bookingRef.current) return;
-      if (!bookingRef.current.contains(e.target as Node)) closeBooking();
+      if (!desktopRef.current) return;
+      if (!desktopRef.current.contains(e.target as Node)) setDesktopBookingOpen(false);
     };
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
-  }, []);
+  }, [isDesktop]);
 
-  const mobileMenuPos =
-    "absolute top-full z-50 mt-2 w-[92vw] max-w-sm left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 md:w-80";
+  // --------- Réserver : Mobile SHEET (plein écran) ----------
+  const [mobileBookingOpen, setMobileBookingOpen] = useState(false);
+  const openMobileBooking = () => setMobileBookingOpen(true);
+  const closeMobileBooking = () => setMobileBookingOpen(false);
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
@@ -436,49 +448,11 @@ export default function Page() {
                 <option value="id">🇮🇩 ID</option>
               </select>
 
-              <div className="relative" ref={bookingRef}>
-                <Button onClick={toggleBooking} className="h-9 px-3 text-xs" aria-expanded={bookingOpen}>
-                  <CalendarDays className="mr-2 h-4 w-4" />
-                  {L.nav.book}
-                </Button>
-                {bookingOpen && (
-                  <div
-                    className={`${mobileMenuPos} rounded-xl border bg-white p-3 shadow-xl`}
-                    role="menu"
-                    aria-label="Choisir une plateforme"
-                    // ⬇️ bloque la propagation pour que le doc listener ne ferme pas avant le clic du lien
-                    onClick={(e) => e.stopPropagation()}
-                    onTouchStart={(e) => e.stopPropagation()}
-                  >
-                    <div className="text-xs font-medium text-neutral-600 mb-2">
-                      Choisir une plateforme
-                    </div>
-                    <ul className="grid gap-1">
-                      {[
-                        { href: BESTAY_URL, label: "Bestay (site partenaire)", icon: "/logos/bestay.svg" },
-                        { href: AIRBNB_URL, label: "Airbnb", icon: "/logos/airbnb.svg" },
-                        { href: BOOKING_URL, label: "Booking.com", icon: "/logos/booking.svg" },
-                        { href: DIRECT_URL, label: "Réservation directe", icon: "/logos/direct.svg" },
-                      ].map((it, i) => (
-                        <li key={i}>
-                          <a
-                            className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-neutral-50 active:bg-neutral-100"
-                            href={it.href}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <span className="inline-flex items-center gap-2">
-                              <img src={it.icon} alt="" className="h-5 w-5 object-contain" loading="lazy" />
-                              <span className="text-sm">{it.label}</span>
-                            </span>
-                            <span aria-hidden>↗</span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
+              {/* MOBILE : ouvre le SHEET */}
+              <Button className="h-9 px-3 text-xs" onClick={openMobileBooking}>
+                <CalendarDays className="mr-2 h-4 w-4" />
+                {L.nav.book}
+              </Button>
 
               <a
                 href="https://www.tiktok.com/@villa.myassa"
@@ -525,12 +499,13 @@ export default function Page() {
                 <option value="id">🇮🇩 ID</option>
               </select>
 
-              <div className="relative" ref={bookingRef}>
-                <Button onClick={toggleBooking} aria-expanded={bookingOpen}>
+              {/* DESKTOP : bouton + dropdown ancré */}
+              <div className="relative" ref={desktopRef}>
+                <Button onClick={() => setDesktopBookingOpen((v) => !v)} aria-expanded={desktopBookingOpen}>
                   <CalendarDays className="mr-2 h-4 w-4" />
                   {L.nav.book}
                 </Button>
-                {bookingOpen && (
+                {desktopBookingOpen && (
                   <div
                     className="absolute top-full right-0 z-50 mt-2 w-80 rounded-xl border bg-white p-3 shadow-xl"
                     role="menu"
@@ -554,6 +529,7 @@ export default function Page() {
                             href={it.href}
                             target="_blank"
                             rel="noreferrer"
+                            onClick={() => setDesktopBookingOpen(false)}
                           >
                             <span className="inline-flex items-center gap-2">
                               <img src={it.icon} alt="" className="h-5 w-5 object-contain" />
@@ -603,6 +579,57 @@ export default function Page() {
         </div>
       </header>
 
+      {/* ====== MOBILE BOOKING SHEET ====== */}
+      {mobileBookingOpen && (
+        <div
+          className="fixed inset-0 z-[1000] bg-black/40 flex items-end md:hidden"
+          onClick={closeMobileBooking}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Choisir une plateforme de réservation"
+        >
+          <div
+            className="w-full rounded-t-2xl bg-white p-4 shadow-2xl max-h-[85vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-semibold">Choisir une plateforme</h3>
+              <button
+                aria-label="Fermer"
+                className="h-9 w-9 inline-flex items-center justify-center rounded-full hover:bg-neutral-100"
+                onClick={closeMobileBooking}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <ul className="mt-2 grid gap-1">
+              {[
+                { href: BESTAY_URL, label: "Bestay (site partenaire)", icon: "/logos/bestay.svg" },
+                { href: AIRBNB_URL, label: "Airbnb", icon: "/logos/airbnb.svg" },
+                { href: BOOKING_URL, label: "Booking.com", icon: "/logos/booking.svg" },
+                { href: DIRECT_URL, label: "Réservation directe", icon: "/logos/direct.svg" },
+              ].map((it, i) => (
+                <li key={i}>
+                  <a
+                    className="flex items-center justify-between rounded-lg px-2 py-3 active:bg-neutral-100"
+                    href={it.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={closeMobileBooking}
+                  >
+                    <span className="inline-flex items-center gap-3">
+                      <img src={it.icon} alt="" className="h-6 w-6 object-contain" loading="lazy" />
+                      <span className="text-base">{it.label}</span>
+                    </span>
+                    <span aria-hidden>↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
       {/* Hero SLIDER (AnimatePresence pour cross-fade sans clignotement) */}
       <section id="accueil">
         <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
@@ -641,9 +668,15 @@ export default function Page() {
               <Button variant="outline" size="lg" asChild>
                 <a href="#galerie">{LTEXT(lang).nav.gallery}</a>
               </Button>
-              <Button size="lg" asChild>
+
+              {/* MOBILE : ouvre le SHEET */}
+              <Button size="lg" className="md:hidden" onClick={openMobileBooking}>
+                {L.nav.book}
+              </Button>
+              {/* DESKTOP : lien direct (comme avant) */}
+              <Button size="lg" asChild className="hidden md:inline-flex">
                 <a href={BESTAY_URL} target="_blank" rel="noreferrer">
-                  {LTEXT(lang).nav.book}
+                  {L.nav.book}
                 </a>
               </Button>
             </div>
