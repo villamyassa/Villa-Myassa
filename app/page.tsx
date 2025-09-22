@@ -304,29 +304,22 @@ export default function Page() {
 
   const images = DATA_BASE.images;
 
-  /* ---------------- HERO SLIDER — cross-fade Framer Motion --------------- */
-  // Pré-chargement pour éviter tout flash
+  /* ---------- HERO SLIDER — cross-fade Framer Motion (sans clignotement) ---------- */
   useEffect(() => {
     images.forEach((im) => {
       const img = new Image();
       img.src = im.src;
-      // pas besoin d'onload ici, on remplit le cache navigateur
     });
   }, [images]);
 
   const [idx, setIdx] = useState(0);
-  const idxRef = useRef(idx);
-  useEffect(() => {
-    idxRef.current = idx;
-  }, [idx]);
-
   useEffect(() => {
     const id = setInterval(() => {
       setIdx((i) => (i + 1) % images.length);
-    }, 3000); // 3 s par slide (fondu inclus)
+    }, 3000);
     return () => clearInterval(id);
   }, [images.length]);
-  /* ---------------------------------------------------------------------- */
+  /* ------------------------------------------------------------------------------- */
 
   // ---- Lightbox
   const [lbIndex, setLbIndex] = useState<number | null>(null);
@@ -395,14 +388,17 @@ export default function Page() {
   const toggleBooking = () => setBookingOpen((v) => !v);
   const closeBooking = () => setBookingOpen(false);
   const bookingRef = useRef<HTMLDivElement | null>(null);
+
+  // ⬇️ écoute 'click' (pas mousedown) pour éviter la fermeture avant le tap mobile
   useEffect(() => {
-    const onClick = (e: MouseEvent) => {
+    const onDocClick = (e: MouseEvent) => {
       if (!bookingRef.current) return;
       if (!bookingRef.current.contains(e.target as Node)) closeBooking();
     };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
   }, []);
+
   const mobileMenuPos =
     "absolute top-full z-50 mt-2 w-[92vw] max-w-sm left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 md:w-80";
 
@@ -441,7 +437,7 @@ export default function Page() {
               </select>
 
               <div className="relative" ref={bookingRef}>
-                <Button onClick={toggleBooking} className="h-9 px-3 text-xs">
+                <Button onClick={toggleBooking} className="h-9 px-3 text-xs" aria-expanded={bookingOpen}>
                   <CalendarDays className="mr-2 h-4 w-4" />
                   {L.nav.book}
                 </Button>
@@ -450,6 +446,9 @@ export default function Page() {
                     className={`${mobileMenuPos} rounded-xl border bg-white p-3 shadow-xl`}
                     role="menu"
                     aria-label="Choisir une plateforme"
+                    // ⬇️ bloque la propagation pour que le doc listener ne ferme pas avant le clic du lien
+                    onClick={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
                   >
                     <div className="text-xs font-medium text-neutral-600 mb-2">
                       Choisir une plateforme
@@ -463,11 +462,10 @@ export default function Page() {
                       ].map((it, i) => (
                         <li key={i}>
                           <a
-                            className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-neutral-50"
+                            className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-neutral-50 active:bg-neutral-100"
                             href={it.href}
                             target="_blank"
                             rel="noreferrer"
-                            onClick={closeBooking}
                           >
                             <span className="inline-flex items-center gap-2">
                               <img src={it.icon} alt="" className="h-5 w-5 object-contain" loading="lazy" />
@@ -528,7 +526,7 @@ export default function Page() {
               </select>
 
               <div className="relative" ref={bookingRef}>
-                <Button onClick={toggleBooking}>
+                <Button onClick={toggleBooking} aria-expanded={bookingOpen}>
                   <CalendarDays className="mr-2 h-4 w-4" />
                   {L.nav.book}
                 </Button>
@@ -537,6 +535,8 @@ export default function Page() {
                     className="absolute top-full right-0 z-50 mt-2 w-80 rounded-xl border bg-white p-3 shadow-xl"
                     role="menu"
                     aria-label="Choisir une plateforme"
+                    onClick={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
                   >
                     <div className="text-xs font-medium text-neutral-600 mb-2">
                       Choisir une plateforme
@@ -550,11 +550,10 @@ export default function Page() {
                       ].map((it, i) => (
                         <li key={i}>
                           <a
-                            className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-neutral-50"
+                            className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-neutral-50 active:bg-neutral-100"
                             href={it.href}
                             target="_blank"
                             rel="noreferrer"
-                            onClick={closeBooking}
                           >
                             <span className="inline-flex items-center gap-2">
                               <img src={it.icon} alt="" className="h-5 w-5 object-contain" />
@@ -607,7 +606,7 @@ export default function Page() {
       {/* Hero SLIDER (AnimatePresence pour cross-fade sans clignotement) */}
       <section id="accueil">
         <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
-          <AnimatePresence /* cross-fade simultané */ initial={false}>
+          <AnimatePresence initial={false}>
             <motion.img
               key={images[idx].src}
               src={images[idx].src}
