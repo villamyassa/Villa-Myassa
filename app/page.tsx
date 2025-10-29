@@ -19,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,7 +95,7 @@ const DATA_BASE = {
     fr: "Singakerta, Ubud — Gianyar, Bali (Indonésie)",
     en: "Singakerta, Ubud — Gianyar, Bali (Indonesia)",
     id: "Singakerta, Ubud — Gianyar, Bali (Indonesia)",
-    zh: "Singakerta，乌布—吉安市，巴厘岛（印度尼西亚）",
+    zh: "Singakerta，乌布—Gianyar，巴厘岛（印度尼西亚）",
   } as Record<Lang, string>,
   capacite: {
     fr: "3 chambres (lits queen)",
@@ -153,7 +152,7 @@ const DATA_BASE = {
       "Wi-Fi cepat",
       "Parkir gratis di lokasi",
       "Dapur lengkap (oven, kompor, kulkas, pemanggang roti, ketel)",
-      "TV / Smart TV di kamar",
+      "TV / Smart TV di kamar tidur",
       "Kamar mandi dalam",
       "Brankas",
       "Kelambu nyamuk",
@@ -162,19 +161,60 @@ const DATA_BASE = {
       "私人泳池",
       "空调",
       "高速 Wi-Fi",
-      "免费停车",
-      "全套厨房（烤箱、灶台、冰箱、烤面包机、电热水壶）",
-      "卧室配备电视 / 智能电视",
-      "独立卫浴",
+      "免费停车位",
+      "全套厨房（烤箱、灶台、冰箱、吐司机、电热水壶）",
+      "卧室配备电视/智能电视",
+      "卧室独立卫浴",
       "保险箱",
       "蚊帐",
     ],
   } as Record<Lang, string[]>,
+  /* -----------  DESCRIPTION COMPLÈTE (4 langues) ------------ */
   description: {
-    fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. ...`,
-    en: `Welcome to Villa Myassa in Singakerta, where contemporary design meets the enchanting landscape of Ubud’s jungle. ...`,
-    id: `Selamat datang di Villa Myassa di Singakerta, di mana desain kontemporer bertemu suasana hutan Ubud yang memukau. ...`,
-    zh: `欢迎来到位于 Singakerta 的 Villa Myassa，这里现代设计与乌布丛林的迷人景致相互融合。...`,
+    fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
+
+Les trois chambres raffinées de la Villa Myassa disposent chacune d'un lit queen-size, d'une Smart TV, de la climatisation et d'une salle de bain attenante. La chambre principale vous enchantera avec sa moustiquaire à baldaquin et sa baignoire extérieure, la deuxième chambre vous rafraîchira avec sa douche extérieure, tandis que la troisième chambre offre une expérience de bain semi-extérieure.
+
+La Villa Myassa allie harmonieusement intérieur et extérieur avec ses espaces ouverts et aérés, naturellement rafraîchis par une ventilation transversale et des ventilateurs de plafond. Une magnifique carte balinaise en bois agrémente le confortable salon, idéal pour se réunir ou se détendre. La salle à manger peut accueillir confortablement six personnes, tandis que la cuisine moderne avec îlot central invite les convives à concocter des repas mémorables.
+
+Sortez de la Villa Myassa et pénétrez dans votre oasis privée, où une piscine étincelante, couronnée d'une statue de Bouddha, vous attend. Le coin salon en contrebas (Sunken) offre une vue imprenable sur l'eau, tandis que deux chaises longues flottantes invitent à la détente. Installez-vous dans le gazebo balinais « bale bengong », drapé de rideaux blancs pour d'excellents massages. Deux chaises longues supplémentaires donnent sur le jardin luxuriant, tandis que la douche extérieure de la piscine complète ce paradis tropical.
+
+L'emplacement privilégié de la Villa Myassa à Singakerta vous place aux portes de la scène culturelle dynamique d'Ubud. Explorez la célèbre Forêt des Singes, visitez le palais historique d'Ubud, plongez dans la scène artistique locale et découvrez d'innombrables restaurants et boutiques, le tout à proximité de votre sanctuaire privé.
+
+Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et découvrez l'alliance de l'élégance moderne et de la magie mystique de la jungle balinaise.`,
+    en: `Welcome to Villa Myassa in Singakerta, where contemporary design meets the enchanting landscape of Ubud’s jungle. From the entrance, an elegant fountain flows into a serene pond with stepping stones, setting the tone for an extraordinary stay.
+
+Each of the three refined bedrooms features a queen-size bed, Smart TV, air conditioning, and an en-suite bathroom. The master delights with a canopy mosquito net and an outdoor bathtub; the second bedroom offers a refreshing outdoor shower, and the third features a semi-open bathing experience.
+
+Villa Myassa blends indoors and outdoors with open, airy spaces, naturally cooled by cross-ventilation and ceiling fans. A beautiful carved wooden map of Bali anchors the cozy lounge, perfect for gathering or relaxing. The dining area seats six comfortably, while the modern kitchen with island invites memorable meals.
+
+Step into your private oasis: a sparkling pool crowned by a Buddha statue, a sunken lounge overlooking the water, and two floating loungers for pure relaxation. Unwind in the balé bengong gazebo draped with white curtains—perfect for massages. Two additional sun loungers face the lush garden, while the outdoor pool shower completes this tropical haven.
+
+Our privileged location in Singakerta places you at the gateway to Ubud’s vibrant cultural scene—Monkey Forest, Ubud Palace, art galleries, and countless cafés and boutiques—just minutes from your private sanctuary.
+
+Book your tropical escape at Villa Myassa today and experience the harmony of modern elegance and the mystical magic of Bali’s jungle.`,
+    id: `Selamat datang di Villa Myassa di Singakerta—perpaduan desain kontemporer dan suasana hutan Ubud yang memikat. Dari pintu masuk, air mancur elegan mengalir ke kolam yang tenang dengan pijakan batu, menghadirkan nuansa istimewa sejak awal masa inap Anda.
+
+Tiga kamar tidur yang menawan dilengkapi ranjang queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama memanjakan dengan kelambu kanopi dan bak mandi luar-ruang; kamar kedua memiliki shower luar-ruang yang menyegarkan, sementara kamar ketiga menawarkan pengalaman mandi semi-terbuka.
+
+Ruang-ruang terbuka yang lapang menyatukan area dalam dan luar, sejuk alami berkat ventilasi silang dan kipas plafon. Peta Bali ukir kayu memperindah ruang keluarga yang nyaman—tempat berkumpul atau bersantai. Ruang makan menampung enam orang, dan dapur modern dengan pulau dapur siap untuk memasak bersama.
+
+Di luar, oasis pribadi menanti: kolam renang berkilau dengan patung Buddha, sunken lounge yang menghadap air, serta dua sun lounger terapung untuk relaksasi total. Nikmati balé bengong berhias tirai putih—sempurna untuk pijat. Dua kursi berjemur tambahan menghadap taman rindang, dan shower kolam luar-ruang melengkapi suasana tropis ini.
+
+Lokasi kami di Singakerta hanya beberapa menit dari pusat budaya Ubud—Monkey Forest, Istana Ubud, galeri seni, serta kafe dan butik yang tak terhitung jumlahnya—semuanya dekat dari surga pribadi Anda.
+
+Pesan pelarian tropis Anda di Villa Myassa hari ini dan rasakan harmoni elegansi modern serta pesona mistis hutan Bali.`,
+    zh: `欢迎来到位于 Singakerta 的 Villa Myassa——现代设计与乌布丛林的迷人景致在这里相遇。自入口处起，优雅的喷泉流入静谧水池，配以踏脚石，预示着一次不凡的入住体验。
+
+别墅设有三间精致卧室，均配备大床、智能电视、空调与独立卫浴。主卧设有浪漫的帐幔与室外浴缸；第二卧配有清爽的室外淋浴；第三卧提供半露天的沐浴体验。
+
+别墅以通透的开放式布局自然衔接室内外空间，交叉通风与吊扇带来舒适清凉。客厅点缀木雕巴厘地图，温馨雅致，适合小憩与相聚；餐区可舒适容纳六人，带中岛的现代厨房让烹饪与交流更加愉悦。
+
+走出屋外，私人天堂即刻呈现：晶莹泳池旁立有佛像，半下沉式休闲区面向水景，两张漂浮式躺椅带来彻底放松。白纱轻拢的巴厘式凉亭（balé bengong）非常适合按摩理疗；花园朝向另设两张日光躺椅，室外淋浴完善了这片热带绿洲。
+
+别墅坐落于 Singakerta，毗邻乌布精彩的文化生活——猴林、乌布王宫、艺术画廊以及无数咖啡馆与精品小店均在数分钟车程内。出门即可享受热闹，回到家仍是一方私密静谧。
+
+立即预订 Villa Myassa，感受现代优雅与巴厘丛林神秘魅力的和谐相遇。`,
   } as Record<Lang, string>,
 };
 
@@ -552,8 +592,6 @@ export default function Page() {
             <Button variant="outline" size="lg" asChild>
               <a href="#galerie">{TEXT(lang).nav.gallery}</a>
             </Button>
-
-            {/* CTA “Réserver maintenant” = Bestay par défaut */}
             <Button size="lg" asChild>
               <a href={BESTAY_URL} target="_blank" rel="noreferrer">
                 {TEXT(lang).bookNow}
@@ -577,7 +615,7 @@ export default function Page() {
                 <>
                   <div
                     className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
-                      showMore ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                      showMore ? "max-h-[4000px] opacity-100" : "max-h-0 opacity-0"
                     }`}
                     aria-hidden={!showMore}
                   >
@@ -714,7 +752,6 @@ export default function Page() {
                 <li className="flex items-center gap-2">
                   <MapPin className="h-5 w-5" /> {DATA_BASE.adresse}
                 </li>
-                {/* Placeholders info locale si besoin */}
                 <li className="flex items-center gap-2">
                   <Waves className="h-5 w-5" /> Ubud – Bali
                 </li>
