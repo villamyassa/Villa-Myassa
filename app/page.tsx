@@ -80,6 +80,7 @@ const FLAGS: Record<Lang, string> = {
   id: "/flags/id.svg",
   zh: "/flags/zh.svg",
 };
+
 const tr = (table: Record<Lang, string>, l: Lang) => table[l];
 
 const BESTAY_URL =
@@ -274,7 +275,7 @@ const TEXT = (l: Lang) => ({
   bookNow: tr({ fr: "Réserver maintenant", en: "Book now", id: "Pesan sekarang", zh: "立即预订" }, l),
 });
 
-/* Réservation — logos dans /public/logos/ */
+/* Liens de réservation — logos dans /public/logos/ */
 const BOOK_LINKS = [
   { name: "Bestay", logo: "/logos/bestay.svg", url: BESTAY_URL },
   { name: "Airbnb", logo: "/logos/airbnb.svg", url: "https://www.airbnb.com/rooms/1505417552730386824" },
@@ -343,7 +344,7 @@ const GalleryCard = ({
 ------------------------------------------------------- */
 
 export default function Page() {
-  // ---- Lang
+  // Langues
   const [lang, setLang] = useState<Lang>("fr");
   useEffect(() => {
     const saved = typeof window !== "undefined" ? window.localStorage.getItem("lang") : null;
@@ -354,16 +355,10 @@ export default function Page() {
   }, [lang]);
   const L = useMemo(() => TEXT(lang), [lang]);
 
-  // ---- Form
+  // Formulaire contact
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
-  // Hero image (featured)
-  const hero = (DATA_BASE.images.find((i) => i.featured) ?? DATA_BASE.images[0]) as {
-    src: string;
-    alt: string;
-  };
-
-  // Slideshow (fondu toutes les 3s)
+  // Hero & carrousel (fondu 3s)
   const heroSlides = DATA_BASE.images.slice(0, 6).map((i) => i.src);
   const [slide, setSlide] = useState(0);
   const intervalRef = useRef<number | null>(null);
@@ -380,9 +375,9 @@ export default function Page() {
     };
   }, [heroSlides.length]);
 
+  // Lightbox galerie
   const images = DATA_BASE.images;
   const [lbIndex, setLbIndex] = useState<number | null>(null);
-
   const closeLb = () => setLbIndex(null);
   const openLb = (i: number) => setLbIndex(i);
   const prevLb = () =>
@@ -390,7 +385,6 @@ export default function Page() {
   const nextLb = () =>
     setLbIndex((i) => (i === null ? i : (i + 1) % images.length));
 
-  // ESC / ← →
   useEffect(() => {
     if (lbIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -407,6 +401,7 @@ export default function Page() {
     };
   }, [lbIndex, images.length]);
 
+  // Mailto
   const handleMailto = () => {
     const subject =
       lang === "fr"
@@ -429,14 +424,10 @@ export default function Page() {
     )}&body=${encodeURIComponent(body)}`;
   };
 
-  // Virtual tour — n’ouvre QUE Matterport
+  // Virtual tour — seulement Matterport
   const openVirtualTour = () => {
     window.open(DATA_BASE.virtualTour.url, "_blank", "noopener,noreferrer");
   };
-  const coverSrc =
-    (DATA_BASE.virtualTour.cover?.startsWith("/")
-      ? DATA_BASE.virtualTour.cover
-      : `${PUBLIC_PREFIX}/${DATA_BASE.virtualTour.cover}`) || hero.src;
 
   // Description "Lire plus"
   const description = DATA_BASE.description[lang];
@@ -445,21 +436,21 @@ export default function Page() {
   const rest = paragraphs.slice(2);
   const [showMore, setShowMore] = useState(false);
 
-  // WhatsApp links
-  const waHrefTop = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT)}`;
-  const waHrefFloating = waHrefTop;
+  // WhatsApp
+  const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT)}`;
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        {/* Mobile: 2 lignes */}
+        {/* Mobile (2 lignes centrées) */}
         <div className="flex flex-col items-center py-3 sm:hidden">
           <div className="text-center font-extrabold text-[8vw] leading-tight">
             Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
           </div>
+
           <div className="mt-2 flex items-center justify-center gap-2">
-            {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
+            {(Object.keys(FLAGS) as Lang[]).map((c) => {
               const active = lang === c;
               return (
                 <button
@@ -470,19 +461,12 @@ export default function Page() {
                   }`}
                   onClick={() => setLang(c)}
                 >
-                  <Image
-                    src={FLAGS[c]}
-                    alt={c}
-                    width={24}
-                    height={24}
-                    className="object-cover"
-                    priority={c === "fr"}
-                  />
+                  <Image src={FLAGS[c]} alt={c} width={24} height={24} className="object-cover" />
                 </button>
               );
             })}
 
-            {/* Menu Réserver */}
+            {/* Réserver (menu déroulant) */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="h-8 px-3 rounded-full">
@@ -490,7 +474,7 @@ export default function Page() {
                   {L.reserve}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center" className="w-72 p-2 bg-white rounded-xl shadow-2xl">
+              <DropdownMenuContent align="center" side="bottom" sideOffset={8} className="w-72 p-2 bg-white rounded-xl shadow-2xl">
                 <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
                 {BOOK_LINKS.map((b) => (
                   <DropdownMenuItem
@@ -509,12 +493,7 @@ export default function Page() {
             <a href="https://www.tiktok.com/@villa.myassa" target="_blank" rel="noreferrer" aria-label="TikTok">
               <Image src="/logos/tiktok.png" alt="TikTok" width={24} height={24} />
             </a>
-            <a
-              href="https://www.instagram.com/villa_myassa_luxe_bali"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Instagram"
-            >
+            <a href="https://www.instagram.com/villa_myassa_luxe_bali" target="_blank" rel="noreferrer" aria-label="Instagram">
               <Image src="/logos/instagram.png" alt="Instagram" width={24} height={24} />
             </a>
           </div>
@@ -526,23 +505,38 @@ export default function Page() {
             <div className="font-extrabold text-4xl md:text-5xl">
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
             </div>
-            <div className="mt-3 flex items-center justify-center gap-3">
-              {(Object.keys(FLAGS) as Lang[]).map((c) => {
-                const active = lang === c;
-                return (
-                  <button
-                    key={c}
-                    onClick={() => setLang(c)}
-                    aria-label={c.toUpperCase()}
-                    className={`h-9 w-9 rounded-full border overflow-hidden flex items-center justify-center ${
-                      active ? "ring-2 ring-black" : ""
-                    }`}
-                  >
-                    <Image src={FLAGS[c]} alt={c} width={28} height={28} className="object-cover" />
-                  </button>
-                );
-              })}
 
+            {/* Nav + outils */}
+            <div className="mt-3 flex items-center justify-center gap-4">
+              {/* Nav interne */}
+              <nav className="hidden md:flex items-center gap-6 text-sm">
+                <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
+                <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
+                <a href="#atouts" className="hover:underline">{L.nav.features}</a>
+                <a href="#localisation" className="hover:underline">{L.nav.location}</a>
+                <a href="#contact" className="hover:underline">{L.nav.contact}</a>
+              </nav>
+
+              {/* Langues */}
+              <div className="flex items-center gap-2">
+                {(Object.keys(FLAGS) as Lang[]).map((c) => {
+                  const active = lang === c;
+                  return (
+                    <button
+                      key={c}
+                      onClick={() => setLang(c)}
+                      aria-label={c.toUpperCase()}
+                      className={`h-9 w-9 rounded-full border overflow-hidden flex items-center justify-center ${
+                        active ? "ring-2 ring-black" : ""
+                      }`}
+                    >
+                      <Image src={FLAGS[c]} alt={c} width={28} height={28} className="object-cover" />
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Réserver dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="h-9 px-4 rounded-full">
@@ -550,7 +544,7 @@ export default function Page() {
                     {L.reserve}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-80 p-2 bg-white rounded-xl shadow-2xl">
+                <DropdownMenuContent align="center" sideOffset={8} className="w-80 p-2 bg-white rounded-xl shadow-2xl">
                   <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
                   {BOOK_LINKS.map((b) => (
                     <DropdownMenuItem
@@ -565,6 +559,7 @@ export default function Page() {
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {/* Réseaux */}
               <a href="https://www.tiktok.com/@villa.myassa" target="_blank" rel="noreferrer">
                 <Image src="/logos/tiktok.png" alt="TikTok" width={26} height={26} />
               </a>
@@ -591,7 +586,7 @@ export default function Page() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
       </section>
 
-      {/* Intro & CTA */}
+      {/* Accroche + CTAs */}
       <section className="container mx-auto px-4 max-w-6xl py-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -624,12 +619,12 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
-              {paragraphs.slice(0, 2).map((p, i) => (
+              {firstTwo.map((p, i) => (
                 <p key={i} className="mb-4">
                   {p}
                 </p>
               ))}
-              {paragraphs.length > 2 && (
+              {rest.length > 0 && (
                 <>
                   <div
                     className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
@@ -637,7 +632,7 @@ export default function Page() {
                     }`}
                     aria-hidden={!showMore}
                   >
-                    {paragraphs.slice(2).map((p, i) => (
+                    {rest.map((p, i) => (
                       <p key={`rest-${i}`} className="mb-4">
                         {p}
                       </p>
@@ -673,9 +668,9 @@ export default function Page() {
         >
           <div className="relative w-full aspect-[16/9] md:aspect-[21/9] max-h-[620px]">
             <img
-              src={coverSrc || hero.src}
+              src={DATA_BASE.virtualTour.cover || heroSlides[0]}
               onError={(e) => {
-                e.currentTarget.src = hero.src;
+                e.currentTarget.src = heroSlides[0];
               }}
               alt="Visite 3D de la villa"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
@@ -832,7 +827,7 @@ export default function Page() {
 
       {/* WhatsApp floating bubble */}
       <a
-        href={waHrefFloating}
+        href={waHref}
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
