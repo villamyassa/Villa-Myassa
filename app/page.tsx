@@ -358,7 +358,7 @@ export default function Page() {
   // Formulaire contact
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
-  // Hero & carrousel (fondu 3s)
+  // Carrousel (fondu 3s)
   const heroSlides = DATA_BASE.images.slice(0, 6).map((i) => i.src);
   const [slide, setSlide] = useState(0);
   const intervalRef = useRef<number | null>(null);
@@ -474,7 +474,8 @@ export default function Page() {
                   {L.reserve}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center" side="bottom" sideOffset={8} className="w-72 p-2 bg-white rounded-xl shadow-2xl">
+              {/* NOTE: align OK, side/sideOffset supprimés (non supportés dans ta lib) */}
+              <DropdownMenuContent align="center" className="w-72 p-2 bg-white rounded-xl shadow-2xl">
                 <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
                 {BOOK_LINKS.map((b) => (
                   <DropdownMenuItem
@@ -544,7 +545,8 @@ export default function Page() {
                     {L.reserve}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" sideOffset={8} className="w-80 p-2 bg-white rounded-xl shadow-2xl">
+                {/* NOTE: align OK, side/sideOffset supprimés */}
+                <DropdownMenuContent align="center" className="w-80 p-2 bg-white rounded-xl shadow-2xl">
                   <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
                   {BOOK_LINKS.map((b) => (
                     <DropdownMenuItem
