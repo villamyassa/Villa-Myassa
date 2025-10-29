@@ -72,6 +72,8 @@ const BOOKING_URL =
   "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
 const DIRECT_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
+const TRIP_URL =
+  "https://fr.trip.com/hotels/detail/?cityEnName=Bali&cityId=723&hotelId=131766860&checkIn=2025-10-29&checkOut=2025-10-30&adult=2&children=0&crn=1&ages=&curr=USD&barcurr=USD&hoteluniquekey=H4sIAAAAAAAA_-NaxsTFJMEkNZ-J49S2SQfZhBgNLH4LOmrG9B8qDVvo4Hn2zJkzPkKLHQJ4ZjCe2fLKbiOjLdf1xQV7sx12MLKdYLzBtIDpLFD4FAsrxzYJCZZLLFsYo6uVslMrlaxMdJRKMktyUpWslELCHJV0lFJSi5OBHCArMTe_NK8EyDY21DMyAwqUJFZ4poC1JCfmJJfmJJakhlQWALWa6ShlFjuXFGUWBKXmZpaUpAJVpSXmFKeCxINSi4EyyWBBJT-gMUVQgcz8PIh2AxSxsMSc0lSIC4AWuqVC7TCsjX3EwhQd-4mF4RcLQxMrQxcrwyRWVo73UhJMu1jZIsN8XcNdpeQNDQwMTA2NTU11DRItLVIMksx0TSwsjc0sdC0NjE1NNDavePxjkbGR7ClGKUNzM0NzIzNzYwNLIwO9VDOgurzI8gxvby8PxiA2RyMnM1OzKBsuZk-XIMGeL2e_Sf-3tpdiDg12UTTQWil8IUXGQQskZwiTC2QAgw_2kXoTFvwwTJNxSGJNK9J1C8rYK1zA2MDI2MXILcDowRjBWAHirWJk2MDIuIPxPwwwvmIEmQ4Ata6V8u0BAAA&masterhotelid_tracelogid=100051355-0a98d0b6-489368-90354&detailFilters=17%7C1%7E17%7E1*31%7C131766860%7E31%7E131766860*80%7C1%7C1%7E80%7E1*29%7C1%7E29%7E1%7C2&hotelType=normal&display=inctotal&subStamp=1840&isCT=true&locale=fr-FR";
 
 const WA_NUMBER_INTL = "33688647659";
 const WA_TEXT_DEFAULT =
@@ -414,6 +416,15 @@ export default function Page() {
   const openMobileBooking = () => setMobileBookingOpen(true);
   const closeMobileBooking = () => setMobileBookingOpen(false);
 
+  // Liste unique des plateformes (logo + libellé + href)
+  const BOOK_PLATFORMS = [
+    { href: BESTAY_URL, label: "Bestay (site partenaire)", icon: "/logos/bestay.svg" },
+    { href: AIRBNB_URL, label: "Airbnb", icon: "/logos/airbnb.svg" },
+    { href: BOOKING_URL, label: "Booking.com", icon: "/logos/booking.svg" },
+    { href: TRIP_URL, label: "Trip.com", icon: "/logos/trip.svg" }, // ⬅️ ajouté
+    { href: DIRECT_URL, label: "Réservation directe", icon: "/logos/direct.svg" },
+  ] as const;
+
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
@@ -517,12 +528,7 @@ export default function Page() {
                       Choisir une plateforme
                     </div>
                     <ul className="grid gap-1">
-                      {[
-                        { href: BESTAY_URL, label: "Bestay (site partenaire)", icon: "/logos/bestay.svg" },
-                        { href: AIRBNB_URL, label: "Airbnb", icon: "/logos/airbnb.svg" },
-                        { href: BOOKING_URL, label: "Booking.com", icon: "/logos/booking.svg" },
-                        { href: DIRECT_URL, label: "Réservation directe", icon: "/logos/direct.svg" },
-                      ].map((it, i) => (
+                      {BOOK_PLATFORMS.map((it, i) => (
                         <li key={i}>
                           <a
                             className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-neutral-50 active:bg-neutral-100"
@@ -603,12 +609,7 @@ export default function Page() {
               </button>
             </div>
             <ul className="mt-2 grid gap-1">
-              {[
-                { href: BESTAY_URL, label: "Bestay (site partenaire)", icon: "/logos/bestay.svg" },
-                { href: AIRBNB_URL, label: "Airbnb", icon: "/logos/airbnb.svg" },
-                { href: BOOKING_URL, label: "Booking.com", icon: "/logos/booking.svg" },
-                { href: DIRECT_URL, label: "Réservation directe", icon: "/logos/direct.svg" },
-              ].map((it, i) => (
+              {BOOK_PLATFORMS.map((it, i) => (
                 <li key={i}>
                   <a
                     className="flex items-center justify-between rounded-lg px-2 py-3 active:bg-neutral-100"
