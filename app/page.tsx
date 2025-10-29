@@ -1,241 +1,208 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import {
+  CalendarDays,
+  MessageCircle,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Rotate3D,
+  PlayCircle,
+  MapPin,
+} from "lucide-react";
 
-/** ─────────────────────────────────────────────────────────
- * Langues (tu peux élargir plus tard : "fr" | "en" | "id" | "zh")
- * ───────────────────────────────────────────────────────── */
+/* ---------------------------------------------------------
+   LANGUES ET DONNÉES
+---------------------------------------------------------- */
 type Lang = "fr" | "en" | "id" | "zh";
 
-/** ─────────────────────────────────────────────────────────
- * Données de base
- * ───────────────────────────────────────────────────────── */
-const BESTAY_URL =
-  "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
-const AIRBNB_URL =
-  "https://www.airbnb.com/rooms/1505417552730386824";
-const BOOKING_URL =
-  "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
-const TRIP_URL =
-  "https://fr.trip.com/hotels/detail/?cityEnName=Bali&cityId=723&hotelId=131766860";
-const WINGONTRAVEL_URL =
-  "https://www.wingontravel.com/hotel/detail-bali-131766860/villa-myassa-by-balisuperhost/";
+const tr = (table: Record<Lang, string>, l: Lang) => table[l];
 
 const DATA = {
-  name: "Villa Myassa",
+  nom: "Villa Myassa",
   baseline: {
-    fr: "Villa contemporaine avec piscine privée au cœur d’Ubud – BALI",
-    en: "Contemporary villa with private pool in the heart of Ubud – BALI",
-    id: "Vila kontemporer dengan kolam renang pribadi di pusat Ubud – BALI",
-    zh: "位于乌布中心的现代别墅，带私人泳池 – 巴厘岛",
-  },
-  gallery: [
-    "/photos/001-hero-piscine.jpg",
-    "/photos/002-salon.jpg",
-    "/photos/003-suite1.jpg",
-    "/photos/004-suite2.jpg",
-  ],
+    fr: "Villa contemporaine avec piscine privée à Ubud – Bali",
+    en: "Contemporary villa with private pool in Ubud – Bali",
+    id: "Vila kontemporer dengan kolam renang pribadi di Ubud – Bali",
+    zh: "现代别墅，配有私人泳池，位于巴厘岛乌布",
+  } as Record<Lang, string>,
+  email: "contact@villamyassa.com",
+  localisation: "Singakerta, Ubud — Bali, Indonésie",
 };
 
-/** ─────────────────────────────────────────────────────────
- * Libellés i18n ultra-light
- * ───────────────────────────────────────────────────────── */
-const L = (lang: Lang) => ({
-  reserve: { fr: "Réserver", en: "Book", id: "Pesan", zh: "预订" }[lang],
-  choose: {
-    fr: "Choisir une plateforme",
-    en: "Choose a platform",
-    id: "Pilih platform",
-    zh: "选择预订平台",
-  } as string,
+/* ---------------------------------------------------------
+   RÉSERVATION & LIENS
+---------------------------------------------------------- */
+const BOOK_LINKS = [
+  { name: "Bestay", logo: "/logos/bestay.svg", url: "https://villamyassa.guestybookings.com" },
+  { name: "Airbnb", logo: "/logos/airbnb.svg", url: "https://www.airbnb.com/rooms/1505417552730386824" },
+  { name: "Booking.com", logo: "/logos/booking.svg", url: "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html" },
+  { name: "Trip.com", logo: "/logos/trip.svg", url: "https://fr.trip.com/hotels/detail/?cityEnName=Bali&hotelId=131766860" },
+  { name: "WingOnTravel", logo: "/logos/wingontravel.svg", url: "https://www.wingontravel.com/hotel/detail-bali-131766860/villa-myassa-by-balisuperhost/" },
+];
+
+/* ---------------------------------------------------------
+   TEXTES TRADUITS
+---------------------------------------------------------- */
+const TEXT = (l: Lang) => ({
+  reserve: tr({ fr: "Réserver", en: "Book", id: "Pesan", zh: "预订" }, l),
+  choose: tr({ fr: "Choisir une plateforme", en: "Choose a platform", id: "Pilih platform", zh: "选择预订平台" }, l),
+  gallery: tr({ fr: "Galerie", en: "Gallery", id: "Galeri", zh: "相册" }, l),
+  features: tr({ fr: "Équipements", en: "Amenities", id: "Fasilitas", zh: "设施" }, l),
+  contact: tr({ fr: "Contact", en: "Contact", id: "Kontak", zh: "联系" }, l),
+  bookNow: tr({ fr: "Réserver maintenant", en: "Book now", id: "Pesan sekarang", zh: "立即预订" }, l),
 });
 
-/** ─────────────────────────────────────────────────────────
- * Menu « Réserver » (centré sur mobile, clic = ouverture 1 clic)
- * ───────────────────────────────────────────────────────── */
-function ReservationMenu({ lang = "fr" as Lang }) {
-  const [open, setOpen] = useState(false);
-  const label = useMemo(() => L(lang), [lang]);
+/* ---------------------------------------------------------
+   IMAGES POUR LE SLIDESHOW
+---------------------------------------------------------- */
+const IMAGES = [
+  "/photos/001-hero-piscine.jpg",
+  "/photos/002-salon.jpg",
+  "/photos/003-suite1.jpg",
+  "/photos/004-suite2.jpg",
+  "/photos/005-suite3.jpg",
+];
 
-  const items = [
-    { name: "Bestay (site partenaire)", logo: "/logos/bestay.svg", url: BESTAY_URL },
-    { name: "Airbnb", logo: "/logos/airbnb.svg", url: AIRBNB_URL },
-    { name: "Booking.com", logo: "/logos/booking.svg", url: BOOKING_URL },
-    { name: "Trip.com", logo: "/logos/trip.svg", url: TRIP_URL },
-    { name: "WingOnTravel", logo: "/logos/wingontravel.svg", url: WINGONTRAVEL_URL },
-    { name: "Réservation directe", logo: "/logos/direct.svg", url: BESTAY_URL },
-  ];
-
-  return (
-    <div className="relative">
-      <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            onClick={() => setOpen(!open)}
-            className="rounded-full px-4 h-10 bg-black text-white hover:bg-neutral-800"
-          >
-            <span className="inline-flex items-center gap-2">
-              <Image
-                src="/logos/direct.svg"
-                alt="book"
-                width={18}
-                height={18}
-                className="inline-block"
-              />
-              {label.reserve}
-              <span className="ml-1">▾</span>
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
-
-        {/* Centré sur mobile pour éviter d’être coupé à gauche */}
-        <DropdownMenuContent
-          align="center"
-          className="w-72 md:w-80 bg-white shadow-2xl rounded-xl p-2"
-        >
-          <div className="px-3 py-2 text-xs text-neutral-500">{label.choose}</div>
-          {items.map((p) => (
-            <DropdownMenuItem
-              key={p.name}
-              onClick={() => window.open(p.url, "_blank", "noopener,noreferrer")}
-              className="flex items-center gap-3 py-2"
-            >
-              <Image src={p.logo} alt={p.name} width={22} height={22} />
-              <span className="text-sm text-neutral-900">{p.name}</span>
-              <svg
-                viewBox="0 0 24 24"
-                className="w-4 h-4 ml-auto text-neutral-400"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M7 17L17 7M10 7h7v7" />
-              </svg>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
-}
-
-/** ─────────────────────────────────────────────────────────
- * Page
- * ───────────────────────────────────────────────────────── */
+/* ---------------------------------------------------------
+   PAGE PRINCIPALE
+---------------------------------------------------------- */
 export default function Page() {
   const [lang, setLang] = useState<Lang>("fr");
+  const L = useMemo(() => TEXT(lang), [lang]);
 
-  // image héro (1ère de la galerie)
-  const hero = DATA.gallery[0];
+  // Carrousel auto 3s fondu
+  const [slide, setSlide] = useState(0);
+  const fadeRef = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => {
+    fadeRef.current = setInterval(() => {
+      setSlide((s) => (s + 1) % IMAGES.length);
+    }, 3000);
+    return () => fadeRef.current && clearInterval(fadeRef.current);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      {/* ── Header ─────────────────────────────────────── */}
+      {/* HEADER */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div className="container mx-auto px-4 max-w-6xl h-16 flex items-center justify-between gap-3">
-          {/* Titre à gauche */}
-          <a href="#accueil" className="select-none">
-            <span className="block text-2xl md:text-3xl font-extrabold tracking-tight font-serif leading-none">
-              Villa Myassa, <span className="italic">Ubud</span>,{" "}
-              <span className="uppercase">BALI</span>
-            </span>
-          </a>
+        <div className="flex flex-col items-center py-3 sm:hidden">
+          {/* Ligne 1 : Titre centré */}
+          <div className="text-center font-extrabold text-[8vw] leading-tight">
+            Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
+          </div>
 
-          {/* Actions à droite */}
-          <div className="flex items-center gap-2">
-            {/* Switch langues minimal */}
-            <div className="hidden sm:flex items-center gap-1 mr-1">
-              {(["fr", "en", "id", "zh"] as Lang[]).map((code) => (
-                <button
-                  key={code}
-                  aria-label={code}
-                  onClick={() => setLang(code)}
-                  className={`h-8 px-2 rounded-md border text-xs ${
-                    lang === code ? "bg-black text-white" : "bg-white"
-                  }`}
-                >
-                  {code.toUpperCase()}
-                </button>
-              ))}
-            </div>
+          {/* Ligne 2 : Langues + Réserver + Réseaux */}
+          <div className="mt-2 flex items-center justify-center gap-2">
+            {(["fr", "en", "id", "zh"] as Lang[]).map((c) => (
+              <button
+                key={c}
+                onClick={() => setLang(c)}
+                className={`px-2 py-1 text-xs border rounded ${lang === c ? "bg-black text-white" : "bg-white"}`}
+              >
+                {c.toUpperCase()}
+              </button>
+            ))}
 
             {/* Menu Réserver */}
-            <ReservationMenu lang={lang} />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="h-8 px-3 bg-black text-white rounded-full">
+                  <CalendarDays className="mr-1 h-4 w-4" /> {L.reserve}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-72 p-2 bg-white rounded-xl shadow-2xl">
+                <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
+                {BOOK_LINKS.map((b) => (
+                  <DropdownMenuItem
+                    key={b.name}
+                    onClick={() => window.open(b.url, "_blank")}
+                    className="flex items-center gap-3 py-2"
+                  >
+                    <Image src={b.logo} alt={b.name} width={22} height={22} />
+                    <span className="text-sm">{b.name}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Réseaux sociaux */}
+            <a href="https://www.tiktok.com/@villa.myassa" target="_blank" rel="noreferrer">
+              <Image src="/logos/tiktok.png" alt="TikTok" width={24} height={24} />
+            </a>
+            <a href="https://www.instagram.com/villa_myassa_luxe_bali" target="_blank" rel="noreferrer">
+              <Image src="/logos/instagram.png" alt="Instagram" width={24} height={24} />
+            </a>
           </div>
         </div>
       </header>
 
-      {/* ── Hero ───────────────────────────────────────── */}
-      <section id="accueil">
-        <div className="w-full">
+      {/* SLIDESHOW HERO */}
+      <section className="relative w-full h-[70vh] overflow-hidden">
+        {IMAGES.map((src, i) => (
           <Image
-            src={hero}
-            alt="Piscine - Villa Myassa"
-            width={1920}
-            height={1080}
-            className="w-full h-[58vh] md:h-[70vh] object-cover"
-            priority
+            key={i}
+            src={src}
+            alt="Villa Myassa"
+            fill
+            className={`object-cover transition-opacity duration-700 ${i === slide ? "opacity-100" : "opacity-0"}`}
           />
-        </div>
-
-        <div className="container mx-auto px-4 max-w-6xl py-10">
-          <h1 className="mt-1 text-4xl md:text-5xl font-extrabold leading-tight">
-            {DATA.baseline[lang]}
-          </h1>
-          <p className="mt-3 text-base md:text-lg text-neutral-700">
-            3 chambres • 3.5 salles de bain • Singakerta, Ubud (Bali)
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button
-              className="border border-neutral-300"
-              variant="outline"
-              onClick={() => {
-                const el = document.getElementById("galerie");
-                el?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            >
-              Galerie
-            </Button>
-            <ReservationMenu lang={lang} />
-          </div>
-        </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
       </section>
 
-      {/* ── Galerie (mini) ─────────────────────────────── */}
-      <section id="galerie" className="py-12">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h2 className="text-2xl md:text-3xl font-bold">Galerie</h2>
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {DATA.gallery.map((src, i) => (
-              <div key={i} className="overflow-hidden rounded-xl">
-                <Image
-                  src={src}
-                  alt={`Photo ${i + 1} - Villa Myassa`}
-                  width={800}
-                  height={600}
-                  className="h-40 w-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* DESCRIPTION */}
+      <section className="max-w-4xl mx-auto p-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="text-3xl font-bold mb-4"
+        >
+          {DATA.baseline[lang]}
+        </motion.h1>
+        <p className="text-neutral-700">{DATA.localisation}</p>
+        <a
+          href={BOOK_LINKS[0].url}
+          target="_blank"
+          className="inline-flex mt-6 px-4 py-2 rounded-full bg-black text-white text-sm"
+        >
+          {L.bookNow}
+        </a>
       </section>
 
-      {/* ── Footer ─────────────────────────────────────── */}
-      <footer className="py-10 border-t mt-6">
-        <div className="container mx-auto px-4 max-w-6xl text-sm text-neutral-500">
-          © {new Date().getFullYear()} {DATA.name} — www.villamyassa.com — Tous droits réservés.
-        </div>
+      {/* CONTACT */}
+      <section id="contact" className="max-w-4xl mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-3">{L.contact}</h2>
+        <p>
+          Email:{" "}
+          <a href={`mailto:${DATA.email}`} className="underline">
+            {DATA.email}
+          </a>
+        </p>
+      </section>
+
+      {/* WHATSAPP */}
+      <a
+        href="https://wa.me/33688647659"
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-4 right-4 bg-green-500 text-white rounded-full p-3 shadow-lg"
+      >
+        <MessageCircle className="h-6 w-6" />
+      </a>
+
+      {/* FOOTER */}
+      <footer className="text-center text-sm text-neutral-500 py-8 border-t mt-10">
+        © {new Date().getFullYear()} Villa Myassa — All rights reserved
       </footer>
     </div>
   );
