@@ -74,7 +74,12 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 ------------------------------------------------------- */
 
 type Lang = "fr" | "en" | "id" | "zh";
-
+const FLAGS: Record<Lang, string> = {
+  fr: "/flags/fr.svg",
+  en: "/flags/en.svg",
+  id: "/flags/id.svg",
+  zh: "/flags/zh.svg",
+};
 const tr = (table: Record<Lang, string>, l: Lang) => table[l];
 
 const BESTAY_URL =
@@ -169,7 +174,6 @@ const DATA_BASE = {
       "蚊帐",
     ],
   } as Record<Lang, string[]>,
-  /* -----------  DESCRIPTION COMPLÈTE (4 langues) ------------ */
   description: {
     fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
 
@@ -425,7 +429,7 @@ export default function Page() {
     )}&body=${encodeURIComponent(body)}`;
   };
 
-  // Virtual tour — n’ouvre QUE Matterport (plus Bestay)
+  // Virtual tour — n’ouvre QUE Matterport
   const openVirtualTour = () => {
     window.open(DATA_BASE.virtualTour.url, "_blank", "noopener,noreferrer");
   };
@@ -455,18 +459,28 @@ export default function Page() {
             Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
           </div>
           <div className="mt-2 flex items-center justify-center gap-2">
-            {(["fr", "en", "id", "zh"] as Lang[]).map((c) => (
-              <button
-                key={c}
-                aria-label={c.toUpperCase()}
-                className={`h-8 px-2 rounded-md border text-xs ${
-                  lang === c ? "bg-black text-white" : "bg-white"
-                }`}
-                onClick={() => setLang(c)}
-              >
-                {c.toUpperCase()}
-              </button>
-            ))}
+            {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
+              const active = lang === c;
+              return (
+                <button
+                  key={c}
+                  aria-label={c.toUpperCase()}
+                  className={`h-8 w-8 rounded-full border overflow-hidden flex items-center justify-center ${
+                    active ? "ring-2 ring-black" : ""
+                  }`}
+                  onClick={() => setLang(c)}
+                >
+                  <Image
+                    src={FLAGS[c]}
+                    alt={c}
+                    width={24}
+                    height={24}
+                    className="object-cover"
+                    priority={c === "fr"}
+                  />
+                </button>
+              );
+            })}
 
             {/* Menu Réserver */}
             <DropdownMenu>
@@ -513,17 +527,21 @@ export default function Page() {
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
             </div>
             <div className="mt-3 flex items-center justify-center gap-3">
-              {(["fr", "en", "id", "zh"] as Lang[]).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setLang(c)}
-                  className={`h-8 px-2 text-xs border rounded ${
-                    lang === c ? "bg-black text-white" : "bg-white"
-                  }`}
-                >
-                  {c.toUpperCase()}
-                </button>
-              ))}
+              {(Object.keys(FLAGS) as Lang[]).map((c) => {
+                const active = lang === c;
+                return (
+                  <button
+                    key={c}
+                    onClick={() => setLang(c)}
+                    aria-label={c.toUpperCase()}
+                    className={`h-9 w-9 rounded-full border overflow-hidden flex items-center justify-center ${
+                      active ? "ring-2 ring-black" : ""
+                    }`}
+                  >
+                    <Image src={FLAGS[c]} alt={c} width={28} height={28} className="object-cover" />
+                  </button>
+                );
+              })}
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -606,12 +624,12 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (
+              {paragraphs.slice(0, 2).map((p, i) => (
                 <p key={i} className="mb-4">
                   {p}
                 </p>
               ))}
-              {rest.length > 0 && (
+              {paragraphs.length > 2 && (
                 <>
                   <div
                     className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
@@ -619,7 +637,7 @@ export default function Page() {
                     }`}
                     aria-hidden={!showMore}
                   >
-                    {rest.map((p, i) => (
+                    {paragraphs.slice(2).map((p, i) => (
                       <p key={`rest-${i}`} className="mb-4">
                         {p}
                       </p>
