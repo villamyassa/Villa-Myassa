@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="WingOnTravel">
+  <!-- Fond -->
+  <rect width="512" height="512" rx="90" fill="#F97316"></rect>
+
+  <!-- W stylisé -->
+  <g fill="#ffffff">
+    <path d="M140 160h60l56 192 56-192h60l-74 240h-84z"></path>
+    <path d="M352 260h56l16 140h-56z"></path>
+  </g>
+
+  <!-- Texte -->
+  <text x="50%" y="90%" font-family="Helvetica, Arial, sans-serif" font-size="72" fill="#ffffff" text-anchor="middle">
+    WingOnTravel
+  </text>
+</svg>
