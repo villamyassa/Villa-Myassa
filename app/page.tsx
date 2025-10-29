@@ -74,11 +74,40 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 ------------------------------------------------------- */
 
 type Lang = "fr" | "en" | "id" | "zh";
-const FLAGS: Record<Lang, string> = {
-  fr: "/flags/fr.svg",
-  en: "/flags/en.svg",
-  id: "/flags/id.svg",
-  zh: "/flags/zh.svg",
+
+/* Affichage drapeau robuste :
+   - on commence par /flags/xx.svg (si /public/flags/xx.svg)
+   - si 404 (ou placé dans /public/public/flags), on bascule vers /public/flags/xx.svg
+*/
+const FlagImg = ({
+  code,
+  size = 24,
+  className = "",
+  alt,
+}: {
+  code: Lang;
+  size?: number;
+  className?: string;
+  alt: string;
+}) => {
+  const [src, setSrc] = useState<string>(`/flags/${code}.svg`);
+  return (
+    <img
+      src={src}
+      width={size}
+      height={Math.round((size * 2) / 3)}
+      alt={alt}
+      className={`object-cover ${className}`}
+      onError={(e) => {
+        // une seule bascule pour éviter boucle
+        const img = e.currentTarget as HTMLImageElement;
+        if (img.dataset.fallback !== "1") {
+          img.dataset.fallback = "1";
+          setSrc(`/public/flags/${code}.svg`);
+        }
+      }}
+    />
+  );
 };
 
 const tr = (table: Record<Lang, string>, l: Lang) => table[l];
@@ -450,7 +479,7 @@ export default function Page() {
           </div>
 
           <div className="mt-2 flex items-center justify-center gap-2">
-            {(Object.keys(FLAGS) as Lang[]).map((c) => {
+            {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
               const active = lang === c;
               return (
                 <button
@@ -461,7 +490,7 @@ export default function Page() {
                   }`}
                   onClick={() => setLang(c)}
                 >
-                  <Image src={FLAGS[c]} alt={c} width={24} height={24} className="object-cover" />
+                  <FlagImg code={c} alt={c.toUpperCase()} size={24} className="" />
                 </button>
               );
             })}
@@ -474,7 +503,7 @@ export default function Page() {
                   {L.reserve}
                 </Button>
               </DropdownMenuTrigger>
-              {/* NOTE: align OK, side/sideOffset supprimés (non supportés dans ta lib) */}
+              {/* align OK ; side/sideOffset supprimés pour compatibilité */}
               <DropdownMenuContent align="center" className="w-72 p-2 bg-white rounded-xl shadow-2xl">
                 <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
                 {BOOK_LINKS.map((b) => (
@@ -520,7 +549,7 @@ export default function Page() {
 
               {/* Langues */}
               <div className="flex items-center gap-2">
-                {(Object.keys(FLAGS) as Lang[]).map((c) => {
+                {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
                   const active = lang === c;
                   return (
                     <button
@@ -531,7 +560,7 @@ export default function Page() {
                         active ? "ring-2 ring-black" : ""
                       }`}
                     >
-                      <Image src={FLAGS[c]} alt={c} width={28} height={28} className="object-cover" />
+                      <FlagImg code={c} alt={c.toUpperCase()} size={28} className="" />
                     </button>
                   );
                 })}
@@ -545,7 +574,6 @@ export default function Page() {
                     {L.reserve}
                   </Button>
                 </DropdownMenuTrigger>
-                {/* NOTE: align OK, side/sideOffset supprimés */}
                 <DropdownMenuContent align="center" className="w-80 p-2 bg-white rounded-xl shadow-2xl">
                   <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
                   {BOOK_LINKS.map((b) => (
@@ -621,12 +649,12 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
-              {firstTwo.map((p, i) => (
+              {paragraphs.slice(0, 2).map((p, i) => (
                 <p key={i} className="mb-4">
                   {p}
                 </p>
               ))}
-              {rest.length > 0 && (
+              {paragraphs.length > 2 && (
                 <>
                   <div
                     className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
@@ -634,7 +662,7 @@ export default function Page() {
                     }`}
                     aria-hidden={!showMore}
                   >
-                    {rest.map((p, i) => (
+                    {paragraphs.slice(2).map((p, i) => (
                       <p key={`rest-${i}`} className="mb-4">
                         {p}
                       </p>
