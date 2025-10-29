@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Trip.com">
+  <rect width="512" height="512" rx="90" fill="#2563EB"></rect>
+  <text x="50%" y="58%" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="200" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">
+    Trip
+  </text>
+  <text x="50%" y="80%" font-family="Helvetica, Arial, sans-serif" font-size="110" fill="#FCD34D" text-anchor="middle">
+    .com
+  </text>
+</svg>
