@@ -75,10 +75,10 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 type Lang = "fr" | "en" | "id" | "zh";
 
-/* Affichage drapeau robuste :
-   - on commence par /flags/xx.svg (si /public/flags/xx.svg)
-   - si 404 (ou placé dans /public/public/flags), on bascule vers /public/flags/xx.svg
-*/
+/** Drapeaux robustes :
+ *  1) essaie /flags/xx.svg
+ *  2) fallback automatique vers /public/flags/xx.svg (si arborescence = public/public/flags)
+ */
 const FlagImg = ({
   code,
   size = 24,
@@ -99,7 +99,6 @@ const FlagImg = ({
       alt={alt}
       className={`object-cover ${className}`}
       onError={(e) => {
-        // une seule bascule pour éviter boucle
         const img = e.currentTarget as HTMLImageElement;
         if (img.dataset.fallback !== "1") {
           img.dataset.fallback = "1";
@@ -461,12 +460,45 @@ export default function Page() {
   // Description "Lire plus"
   const description = DATA_BASE.description[lang];
   const paragraphs = description.trim().split(/\n\s*\n/).map((p) => p.trim());
-  const firstTwo = paragraphs.slice(0, 2);
-  const rest = paragraphs.slice(2);
   const [showMore, setShowMore] = useState(false);
 
   // WhatsApp
   const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT)}`;
+
+  // -------- NAV améliorée : boutons pill + section active ----------
+  const navLinks = useMemo(
+    () => [
+      { id: "visite-3d", label: TEXT(lang).nav.tour },
+      { id: "galerie", label: TEXT(lang).nav.gallery },
+      { id: "atouts", label: TEXT(lang).nav.features },
+      { id: "localisation", label: TEXT(lang).nav.location },
+      { id: "contact", label: TEXT(lang).nav.contact },
+    ],
+    [lang]
+  );
+
+  const [activeSection, setActiveSection] = useState<string>("visite-3d");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActiveSection(e.target.id);
+        });
+      },
+      {
+        root: null,
+        // on déclenche quand ~40% du bloc est visible
+        rootMargin: "-40% 0px -40% 0px",
+        threshold: 0,
+      }
+    );
+    navLinks.forEach((n) => {
+      const el = document.getElementById(n.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [navLinks]);
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
@@ -490,7 +522,7 @@ export default function Page() {
                   }`}
                   onClick={() => setLang(c)}
                 >
-                  <FlagImg code={c} alt={c.toUpperCase()} size={24} className="" />
+                  <FlagImg code={c} alt={c.toUpperCase()} size={24} />
                 </button>
               );
             })}
@@ -500,12 +532,11 @@ export default function Page() {
               <DropdownMenuTrigger asChild>
                 <Button className="h-8 px-3 rounded-full">
                   <CalendarDays className="mr-1 h-4 w-4" />
-                  {L.reserve}
+                  {TEXT(lang).reserve}
                 </Button>
               </DropdownMenuTrigger>
-              {/* align OK ; side/sideOffset supprimés pour compatibilité */}
               <DropdownMenuContent align="center" className="w-72 p-2 bg-white rounded-xl shadow-2xl">
-                <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
+                <div className="px-3 py-2 text-xs text-neutral-500">{TEXT(lang).choose}</div>
                 {BOOK_LINKS.map((b) => (
                   <DropdownMenuItem
                     key={b.name}
@@ -538,13 +569,29 @@ export default function Page() {
 
             {/* Nav + outils */}
             <div className="mt-3 flex items-center justify-center gap-4">
-              {/* Nav interne */}
-              <nav className="hidden md:flex items-center gap-6 text-sm">
-                <a href="#visite-3d" className="hover:underline">{L.nav.tour}</a>
-                <a href="#galerie" className="hover:underline">{L.nav.gallery}</a>
-                <a href="#atouts" className="hover:underline">{L.nav.features}</a>
-                <a href="#localisation" className="hover:underline">{L.nav.location}</a>
-                <a href="#contact" className="hover:underline">{L.nav.contact}</a>
+              {/* NAV PILL — joli groupe arrondi */}
+              <nav className="hidden md:flex items-center">
+                <div className="flex items-center gap-2 bg-white/70 backdrop-blur border rounded-full p-1 shadow-sm">
+                  {navLinks.map((n) => {
+                    const active = activeSection === n.id;
+                    return (
+                      <a
+                        key={n.id}
+                        href={`#${n.id}`}
+                        aria-current={active ? "page" : undefined}
+                        className={[
+                          "px-4 py-2 rounded-full text-sm font-medium transition outline-none",
+                          "focus-visible:ring-2 focus-visible:ring-black",
+                          active
+                            ? "bg-black text-white shadow"
+                            : "text-neutral-800 hover:bg-black/5",
+                        ].join(" ")}
+                      >
+                        {n.label}
+                      </a>
+                    );
+                  })}
+                </div>
               </nav>
 
               {/* Langues */}
@@ -560,7 +607,7 @@ export default function Page() {
                         active ? "ring-2 ring-black" : ""
                       }`}
                     >
-                      <FlagImg code={c} alt={c.toUpperCase()} size={28} className="" />
+                      <FlagImg code={c} alt={c.toUpperCase()} size={28} />
                     </button>
                   );
                 })}
@@ -571,11 +618,11 @@ export default function Page() {
                 <DropdownMenuTrigger asChild>
                   <Button className="h-9 px-4 rounded-full">
                     <CalendarDays className="mr-2 h-4 w-4" />
-                    {L.reserve}
+                    {TEXT(lang).reserve}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-80 p-2 bg-white rounded-xl shadow-2xl">
-                  <div className="px-3 py-2 text-xs text-neutral-500">{L.choose}</div>
+                  <div className="px-3 py-2 text-xs text-neutral-500">{TEXT(lang).choose}</div>
                   {BOOK_LINKS.map((b) => (
                     <DropdownMenuItem
                       key={b.name}
