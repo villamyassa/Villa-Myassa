@@ -75,29 +75,26 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 type Lang = "fr" | "en" | "id" | "zh";
 
-/** Drapeaux robustes :
- *  1) essaie /flags/xx.svg
- *  2) fallback automatique vers /public/flags/xx.svg (si arborescence = public/public/flags)
+/**
+ * Image de drapeau : rectangle centré dans le cercle
+ * - Fallback automatique si /flags/xx.svg n'existe pas et que tes fichiers sont en /public/flags/xx.svg
+ * - On laisse le rectangle (ratio 3:2) lisible, sans le rogner dans un cercle
  */
 const FlagImg = ({
   code,
-  size = 24,
-  className = "",
   alt,
+  className = "",
 }: {
   code: Lang;
-  size?: number;
-  className?: string;
   alt: string;
+  className?: string;
 }) => {
   const [src, setSrc] = useState<string>(`/flags/${code}.svg`);
   return (
     <img
       src={src}
-      width={size}
-      height={Math.round((size * 2) / 3)}
       alt={alt}
-      className={`object-cover ${className}`}
+      className={`block w-[74%] h-auto rounded-[2px] object-contain ${className}`}
       onError={(e) => {
         const img = e.currentTarget as HTMLImageElement;
         if (img.dataset.fallback !== "1") {
@@ -486,12 +483,7 @@ export default function Page() {
           if (e.isIntersecting) setActiveSection(e.target.id);
         });
       },
-      {
-        root: null,
-        // on déclenche quand ~40% du bloc est visible
-        rootMargin: "-40% 0px -40% 0px",
-        threshold: 0,
-      }
+      { root: null, rootMargin: "-40% 0px -40% 0px", threshold: 0 }
     );
     navLinks.forEach((n) => {
       const el = document.getElementById(n.id);
@@ -500,12 +492,41 @@ export default function Page() {
     return () => observer.disconnect();
   }, [navLinks]);
 
+  /* Classe utilitaire commune pour les cercles de langues */
+  const circleBase =
+    "inline-flex items-center justify-center rounded-full border bg-neutral-100 border-neutral-300";
+  const circleActive = "ring-2 ring-black";
+
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur overflow-visible">
+        {/* --- Décor latéral (desktop uniquement) --- */}
+        <div className="hidden lg:block pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+          {/* Gauche */}
+          <img
+            src="/decor/left.jpg"
+            alt=""
+            className="select-none absolute left-0 top-1/2 -translate-y-1/2 w-[22vw] max-w-[360px] rounded-md opacity-70 blur-[1px] object-cover"
+            style={{
+              maskImage: "linear-gradient(to right, black 80%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, black 80%, transparent)",
+            }}
+          />
+          {/* Droite */}
+          <img
+            src="/decor/right.jpg"
+            alt=""
+            className="select-none absolute right-0 top-1/2 -translate-y-1/2 w-[22vw] max-w-[360px] rounded-md opacity-70 blur-[1px] object-cover"
+            style={{
+              maskImage: "linear-gradient(to left, black 80%, transparent)",
+              WebkitMaskImage: "linear-gradient(to left, black 80%, transparent)",
+            }}
+          />
+        </div>
+
         {/* Mobile (2 lignes centrées) */}
-        <div className="flex flex-col items-center py-3 sm:hidden">
+        <div className="relative z-10 flex flex-col items-center py-3 sm:hidden">
           <div className="text-center font-extrabold text-[8vw] leading-tight">
             Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
           </div>
@@ -517,17 +538,15 @@ export default function Page() {
                 <button
                   key={c}
                   aria-label={c.toUpperCase()}
-                  className={`h-8 w-8 rounded-full border overflow-hidden flex items-center justify-center ${
-                    active ? "ring-2 ring-black" : ""
-                  }`}
+                  className={`${circleBase} ${active ? circleActive : ""} h-8 w-8 p-[3px]`}
                   onClick={() => setLang(c)}
+                  title={c.toUpperCase()}
                 >
-                  <FlagImg code={c} alt={c.toUpperCase()} size={24} />
+                  <FlagImg code={c} alt={c.toUpperCase()} />
                 </button>
               );
             })}
 
-            {/* Réserver (menu déroulant) */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="h-8 px-3 rounded-full">
@@ -550,7 +569,6 @@ export default function Page() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Réseaux */}
             <a href="https://www.tiktok.com/@villa.myassa" target="_blank" rel="noreferrer" aria-label="TikTok">
               <Image src="/logos/tiktok.png" alt="TikTok" width={24} height={24} />
             </a>
@@ -561,7 +579,7 @@ export default function Page() {
         </div>
 
         {/* Desktop / paysage */}
-        <div className="hidden sm:block">
+        <div className="relative z-10 hidden sm:block">
           <div className="container mx-auto px-4 max-w-6xl py-4 text-center">
             <div className="font-extrabold text-4xl md:text-5xl">
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
@@ -569,10 +587,16 @@ export default function Page() {
 
             {/* Nav + outils */}
             <div className="mt-3 flex items-center justify-center gap-4">
-              {/* NAV PILL — joli groupe arrondi */}
+              {/* NAV PILL */}
               <nav className="hidden md:flex items-center">
                 <div className="flex items-center gap-2 bg-white/70 backdrop-blur border rounded-full p-1 shadow-sm">
-                  {navLinks.map((n) => {
+                  {[
+                    { id: "visite-3d", label: TEXT(lang).nav.tour },
+                    { id: "galerie", label: TEXT(lang).nav.gallery },
+                    { id: "atouts", label: TEXT(lang).nav.features },
+                    { id: "localisation", label: TEXT(lang).nav.location },
+                    { id: "contact", label: TEXT(lang).nav.contact },
+                  ].map((n) => {
                     const active = activeSection === n.id;
                     return (
                       <a
@@ -594,7 +618,7 @@ export default function Page() {
                 </div>
               </nav>
 
-              {/* Langues */}
+              {/* Langues — fond gris + liseré sur toutes */}
               <div className="flex items-center gap-2">
                 {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
                   const active = lang === c;
@@ -603,11 +627,10 @@ export default function Page() {
                       key={c}
                       onClick={() => setLang(c)}
                       aria-label={c.toUpperCase()}
-                      className={`h-9 w-9 rounded-full border overflow-hidden flex items-center justify-center ${
-                        active ? "ring-2 ring-black" : ""
-                      }`}
+                      className={`${circleBase} ${active ? circleActive : ""} h-9 w-9 p-[3px]`}
+                      title={c.toUpperCase()}
                     >
-                      <FlagImg code={c} alt={c.toUpperCase()} size={28} />
+                      <FlagImg code={c} alt={c.toUpperCase()} />
                     </button>
                   );
                 })}
