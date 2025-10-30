@@ -75,10 +75,7 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 type Lang = "fr" | "en" | "id" | "zh";
 
-/**
- * Drapeau rectangle centré dans le cercle (fond gris + liseré sur le cercle)
- * Fallback automatique si /flags/xx.svg n'existe pas (teste /public/flags/xx.svg).
- */
+/** Drapeau rectangle centré dans le cercle (fond gris + liseré sur le cercle) */
 const FlagImg = ({
   code,
   alt,
@@ -107,7 +104,6 @@ const FlagImg = ({
 
 const tr = (table: Record<Lang, string>, l: Lang) => table[l];
 
-/** Lien Bestay par défaut du CTA principal */
 const BESTAY_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
 
@@ -307,10 +303,10 @@ const BOOK_LINKS = [
   { name: "Airbnb", logo: "/logos/airbnb.svg", url: "https://www.airbnb.com/rooms/1505417552730386824" },
   { name: "Booking.com", logo: "/logos/booking.svg", url: "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html" },
 
-  // 🆕 Marriott – Homes & Villas
+  // Marriott – Homes & Villas (nouveau logo)
   {
     name: "Marriott Homes & Villas",
-    logo: "/logos/marriott.svg",
+    logo: "/logos/marriott-hv.svg", // <-- fichier ci-dessous
     url: "https://homes-and-villas.marriott.com/en/properties/40580237-ubud-villa-myassa-3br-in-ubud-w-pool-and-garden",
   },
 
@@ -387,7 +383,6 @@ export default function Page() {
   useEffect(() => {
     if (typeof window !== "undefined") window.localStorage.setItem("lang", lang);
   }, [lang]);
-  const L = useMemo(() => TEXT(lang), [lang]);
 
   // Formulaire contact
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -499,7 +494,7 @@ export default function Page() {
     return () => observer.disconnect();
   }, [navLinks]);
 
-  /* Cercles de langues : fond gris + liseré pour toutes, ring noir sur actif */
+  /* Cercles de langues : fond gris + liseré sur toutes, ring noir sur actif */
   const circleBase =
     "inline-flex items-center justify-center rounded-full border bg-neutral-100 border-neutral-300";
   const circleActive = "ring-2 ring-black";
@@ -538,7 +533,7 @@ export default function Page() {
 
           <div className="mt-2 flex items-center justify-center gap-2">
             {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
-              const active = lang === c;
+              const active = (lang === c);
               return (
                 <button
                   key={c}
@@ -625,7 +620,7 @@ export default function Page() {
               {/* Langues */}
               <div className="flex items-center gap-2">
                 {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
-                  const active = lang === c;
+                  const active = (lang === c);
                   return (
                     <button
                       key={c}
