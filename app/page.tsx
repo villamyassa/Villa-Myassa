@@ -76,9 +76,8 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 type Lang = "fr" | "en" | "id" | "zh";
 
 /**
- * Image de drapeau : rectangle centré dans le cercle
- * - Fallback automatique si /flags/xx.svg n'existe pas et que tes fichiers sont en /public/flags/xx.svg
- * - On laisse le rectangle (ratio 3:2) lisible, sans le rogner dans un cercle
+ * Drapeau rectangle centré dans le cercle (fond gris + liseré sur le cercle)
+ * Fallback automatique si /flags/xx.svg n'existe pas (teste /public/flags/xx.svg).
  */
 const FlagImg = ({
   code,
@@ -108,8 +107,10 @@ const FlagImg = ({
 
 const tr = (table: Record<Lang, string>, l: Lang) => table[l];
 
+/** Lien Bestay par défaut du CTA principal */
 const BESTAY_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
+
 const WA_NUMBER_INTL = "33688647659";
 const WA_TEXT_DEFAULT =
   "Bonjour, je souhaite des informations sur la Villa Myassa (dates, tarifs, etc.).";
@@ -305,6 +306,14 @@ const BOOK_LINKS = [
   { name: "Bestay", logo: "/logos/bestay.svg", url: BESTAY_URL },
   { name: "Airbnb", logo: "/logos/airbnb.svg", url: "https://www.airbnb.com/rooms/1505417552730386824" },
   { name: "Booking.com", logo: "/logos/booking.svg", url: "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html" },
+
+  // 🆕 Marriott – Homes & Villas
+  {
+    name: "Marriott Homes & Villas",
+    logo: "/logos/marriott.svg",
+    url: "https://homes-and-villas.marriott.com/en/properties/40580237-ubud-villa-myassa-3br-in-ubud-w-pool-and-garden",
+  },
+
   { name: "Trip.com", logo: "/logos/trip.svg", url: "https://fr.trip.com/hotels/detail/?cityEnName=Bali&cityId=723&hotelId=131766860" },
   { name: "WingOnTravel", logo: "/logos/wingontravel.svg", url: "https://www.wingontravel.com/hotel/detail-bali-131766860/villa-myassa-by-balisuperhost/" },
 ];
@@ -462,7 +471,7 @@ export default function Page() {
   // WhatsApp
   const waHref = `https://wa.me/${WA_NUMBER_INTL}?text=${encodeURIComponent(WA_TEXT_DEFAULT)}`;
 
-  // -------- NAV améliorée : boutons pill + section active ----------
+  // NAV : pills + section active
   const navLinks = useMemo(
     () => [
       { id: "visite-3d", label: TEXT(lang).nav.tour },
@@ -473,9 +482,7 @@ export default function Page() {
     ],
     [lang]
   );
-
   const [activeSection, setActiveSection] = useState<string>("visite-3d");
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -492,7 +499,7 @@ export default function Page() {
     return () => observer.disconnect();
   }, [navLinks]);
 
-  /* Classe utilitaire commune pour les cercles de langues */
+  /* Cercles de langues : fond gris + liseré pour toutes, ring noir sur actif */
   const circleBase =
     "inline-flex items-center justify-center rounded-full border bg-neutral-100 border-neutral-300";
   const circleActive = "ring-2 ring-black";
@@ -501,9 +508,8 @@ export default function Page() {
     <div className="min-h-screen bg-white text-neutral-900">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur overflow-visible">
-        {/* --- Décor latéral (desktop uniquement) --- */}
+        {/* Décor latéral desktop */}
         <div className="hidden lg:block pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-          {/* Gauche */}
           <img
             src="/decor/left.jpg"
             alt=""
@@ -513,7 +519,6 @@ export default function Page() {
               WebkitMaskImage: "linear-gradient(to right, black 80%, transparent)",
             }}
           />
-          {/* Droite */}
           <img
             src="/decor/right.jpg"
             alt=""
@@ -525,7 +530,7 @@ export default function Page() {
           />
         </div>
 
-        {/* Mobile (2 lignes centrées) */}
+        {/* Mobile */}
         <div className="relative z-10 flex flex-col items-center py-3 sm:hidden">
           <div className="text-center font-extrabold text-[8vw] leading-tight">
             Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
@@ -578,16 +583,15 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Desktop / paysage */}
+        {/* Desktop */}
         <div className="relative z-10 hidden sm:block">
           <div className="container mx-auto px-4 max-w-6xl py-4 text-center">
             <div className="font-extrabold text-4xl md:text-5xl">
               Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
             </div>
 
-            {/* Nav + outils */}
             <div className="mt-3 flex items-center justify-center gap-4">
-              {/* NAV PILL */}
+              {/* NAV pills */}
               <nav className="hidden md:flex items-center">
                 <div className="flex items-center gap-2 bg-white/70 backdrop-blur border rounded-full p-1 shadow-sm">
                   {[
@@ -618,7 +622,7 @@ export default function Page() {
                 </div>
               </nav>
 
-              {/* Langues — fond gris + liseré sur toutes */}
+              {/* Langues */}
               <div className="flex items-center gap-2">
                 {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
                   const active = lang === c;
@@ -636,7 +640,7 @@ export default function Page() {
                 })}
               </div>
 
-              {/* Réserver dropdown */}
+              {/* Réserver */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="h-9 px-4 rounded-full">
@@ -869,7 +873,14 @@ export default function Page() {
                   <Waves className="h-5 w-5" /> Ubud – Bali
                 </li>
                 <li className="flex items-center gap-2">
-                  <Car className="h-5 w-5" /> {lang === "fr" ? "Accès / parking" : lang === "en" ? "Access / parking" : lang === "id" ? "Akses / parkir" : "交通 / 停车"}
+                  <Car className="h-5 w-5" />{" "}
+                  {lang === "fr"
+                    ? "Accès / parking"
+                    : lang === "en"
+                    ? "Access / parking"
+                    : lang === "id"
+                    ? "Akses / parkir"
+                    : "交通 / 停车"}
                 </li>
               </ul>
             </CardContent>
