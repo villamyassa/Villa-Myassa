@@ -1,0 +1,13 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Homes &amp; Villas by Marriott Bonvoy">
+  <title>Homes &amp; Villas by Marriott Bonvoy</title>
+  <g fill="none" stroke="#F26D3D" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Cadre -->
+    <rect x="14" y="14" width="228" height="228"></rect>
+    <!-- M architecturée (montants + diagonales) -->
+    <path d="M56 212V56l72 106 72-106v156"></path>
+    <!-- Petit chevron au sommet (détail caractéristique) -->
+    <path d="M128 84l-20-28M128 84l20-28"></path>
+    <!-- Lignes horizontales basses (rythme architectural) -->
+    <path d="M88 212h80M88 184h80M88 156h80"></path>
+  </g>
+</svg>
