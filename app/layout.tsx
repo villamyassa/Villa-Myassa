@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 
-/* ========= Drapeaux SVG inline (stables) ========= */
+/* ===== Drapeaux SVG inline (stables) ===== */
 function FlagFR(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 3 2" width="18" height="12" aria-hidden {...props}>
@@ -37,6 +37,7 @@ function FlagID(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 function FlagCN(props: React.SVGProps<SVGSVGElement>) {
+  // simplifié mais clair pour une icône
   return (
     <svg viewBox="0 0 30 20" width="18" height="12" aria-hidden {...props}>
       <rect width="30" height="20" fill="#DE2910"/>
@@ -49,7 +50,7 @@ function FlagCN(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-/* ========= SEO (comme validé) ========= */
+/* ===== META (ton code d’origine) ===== */
 const SITE = "https://www.villamyassa.com";
 const TITLE =
   "Villa Myassa – Ubud, Bali | Villa contemporaine avec piscine privée";
@@ -78,52 +79,56 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-/* ========= Layout ========= */
+/* ===== Layout ===== */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <body>
-        {/* ❌ PAS de drapeaux en haut à droite */}
+      {/* padding top pour que le header fixe ne recouvre pas le haut du contenu */}
+      <body className="pt-14">
+        {/* Header FIXE avec 4 drapeaux — mobile + desktop */}
+        <header className="fixed top-0 left-0 right-0 z-50 border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+          <div className="mx-auto max-w-6xl px-4 py-2">
+            <nav className="flex items-center justify-end gap-2 sm:gap-3 text-sm">
+              <Link
+                href="/"
+                aria-label="Français"
+                className="inline-flex items-center gap-2 rounded-full border px-2.5 py-1 hover:bg-gray-50"
+              >
+                <FlagFR />
+                <span>FR</span>
+              </Link>
+              <Link
+                href="/en"
+                aria-label="English"
+                className="inline-flex items-center gap-2 rounded-full border px-2.5 py-1 hover:bg-gray-50"
+              >
+                <FlagUK />
+                <span>EN</span>
+              </Link>
+              <Link
+                href="/id"
+                aria-label="Bahasa Indonesia"
+                className="inline-flex items-center gap-2 rounded-full border px-2.5 py-1 hover:bg-gray-50"
+              >
+                <FlagID />
+                <span>ID</span>
+              </Link>
+              <Link
+                href="/zh"
+                aria-label="中文"
+                className="inline-flex items-center gap-2 rounded-full border px-2.5 py-1 hover:bg-gray-50"
+              >
+                <FlagCN />
+                <span>ZH</span>
+              </Link>
+            </nav>
+          </div>
+        </header>
+
+        {/* Contenu du site */}
         {children}
 
-        {/* ✅ Sélecteur de langue STABLE (toujours visible, mobile + desktop) */}
-        <div
-          className="fixed bottom-4 right-4 z-[100] rounded-full border bg-white/95 px-2 py-2 shadow-lg backdrop-blur"
-          aria-label="Sélecteur de langue"
-        >
-          <nav className="flex items-center gap-2">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1 rounded-full border px-2 py-1 text-sm font-medium hover:bg-gray-50"
-              aria-label="Français"
-            >
-              <FlagFR /><span>FR</span>
-            </Link>
-            <Link
-              href="/en"
-              className="inline-flex items-center gap-1 rounded-full border px-2 py-1 text-sm font-medium hover:bg-gray-50"
-              aria-label="English"
-            >
-              <FlagUK /><span>EN</span>
-            </Link>
-            <Link
-              href="/id"
-              className="inline-flex items-center gap-1 rounded-full border px-2 py-1 text-sm font-medium hover:bg-gray-50"
-              aria-label="Bahasa Indonesia"
-            >
-              <FlagID /><span>ID</span>
-            </Link>
-            <Link
-              href="/zh"
-              className="inline-flex items-center gap-1 rounded-full border px-2 py-1 text-sm font-medium hover:bg-gray-50"
-              aria-label="中文"
-            >
-              <FlagCN /><span>ZH</span>
-            </Link>
-          </nav>
-        </div>
-
-        {/* JSON-LD Organisation (inchangé) */}
+        {/* Organization JSON-LD (inchangé) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
