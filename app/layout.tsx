@@ -1,10 +1,12 @@
+// app/layout.tsx
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
   title: "Villa Myassa – Ubud, Bali",
-  description: "Villa Myassa à Ubud, Bali — location avec piscine privée",
+  description:
+    "Villa Myassa à Ubud, Bali — villa moderne avec piscine privée et services haut de gamme.",
   alternates: {
     canonical: "https://www.villamyassa.com/",
     languages: {
@@ -16,7 +18,8 @@ export const metadata = {
   },
   openGraph: {
     title: "Villa Myassa – Ubud, Bali",
-    description: "Villa Myassa à Ubud, Bali — location avec piscine privée",
+    description:
+      "Villa Myassa à Ubud, Bali — villa moderne avec piscine privée et services haut de gamme.",
     url: "https://www.villamyassa.com",
     type: "website",
     images: [
@@ -30,25 +33,38 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="fr">
       <body>
-        {/* HEADER */}
+        {/* HEADER PRINCIPAL UNIQUEMENT */}
         <header className="flex flex-col md:flex-row justify-between items-center p-4 shadow-sm bg-white">
           <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
             <Link href="/" className="text-3xl font-bold text-gray-900">
               Villa Myassa, <em>Ubud</em>, BALI
             </Link>
-            <nav className="flex flex-wrap justify-center gap-4 mt-2 md:mt-0">
-              <Link href="#gallery">Galerie</Link>
-              <Link href="#features">Atouts</Link>
-              <Link href="#location">Localisation</Link>
-              <Link href="#contact">Contact</Link>
+
+            <nav className="flex flex-wrap justify-center gap-4 mt-2 md:mt-0 text-sm md:text-base">
+              <Link href="#gallery" className="hover:text-gray-700">
+                Galerie
+              </Link>
+              <Link href="#features" className="hover:text-gray-700">
+                Atouts
+              </Link>
+              <Link href="#location" className="hover:text-gray-700">
+                Localisation
+              </Link>
+              <Link href="#contact" className="hover:text-gray-700">
+                Contact
+              </Link>
             </nav>
           </div>
 
-          {/* 🌍 Drapeaux de langue (visibles et fixes dans le header) */}
+          {/* 🌍 Drapeaux de langue dans le header central */}
           <div className="flex items-center gap-2 mt-3 md:mt-0">
             <Link href="/?lang=fr">
               <Image
@@ -94,7 +110,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* FOOTER */}
         <footer className="text-center text-sm text-gray-500 py-6">
-          © {new Date().getFullYear()} Villa Myassa – Ubud, Bali. Tous droits réservés.
+          © {new Date().getFullYear()} Villa Myassa – Ubud, Bali. Tous droits
+          réservés.
         </footer>
       </body>
     </html>
