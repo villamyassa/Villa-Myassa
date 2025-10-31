@@ -191,12 +191,57 @@ const DATA_BASE = {
       "蚊帐",
     ],
   } as Record<Lang, string[]>,
-  description: {
-    fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud...`,
-    en: `Welcome to Villa Myassa in Singakerta, where contemporary design meets the enchanting landscape...`,
-    id: `Selamat datang di Villa Myassa di Singakerta—perpaduan desain kontemporer...`,
-    zh: `欢迎来到位于 Singakerta 的 Villa Myassa——现代设计与乌布丛林的迷人景致在这里相遇...`,
-  } as Record<Lang, string>,
+  
+description: {
+  fr: `Bienvenue à la Villa Myassa à Singakerta, où le design contemporain rencontre le paysage enchanteur de la jungle d'Ubud. Dès l'entrée, une élégante fontaine se jette dans un paisible bassin avec pas japonais, créant un chemin captivant qui donnera le ton à votre séjour extraordinaire.
+
+Les trois chambres raffinées de la Villa Myassa disposent chacune d'un lit queen-size, d'une Smart TV, de la climatisation et d'une salle de bain attenante. La chambre principale vous enchantera avec sa moustiquaire à baldaquin et sa baignoire extérieure ; la deuxième chambre vous rafraîchira avec sa douche extérieure, tandis que la troisième chambre offre une expérience de bain semi-extérieure.
+
+La Villa Myassa allie harmonieusement intérieur et extérieur avec ses espaces ouverts et aérés, naturellement rafraîchis par une ventilation croisée et des ventilateurs de plafond. Une magnifique carte balinaise en bois agrémente le salon convivial, idéal pour se réunir ou se détendre. La salle à manger peut accueillir confortablement six personnes, tandis que la cuisine moderne avec îlot central invite à concocter des repas mémorables.
+
+Sortez et pénétrez dans votre oasis privée : une piscine étincelante surmontée d'une statue de Bouddha, un salon « sunken » donnant sur l'eau, et deux matelas flottants qui invitent à la détente. Installez-vous dans le gazebo balinais « balé bengong », drapé de rideaux blancs — parfait pour un massage. Deux chaises longues supplémentaires font face au jardin luxuriant, complétées par une douche de piscine en plein air.
+
+L'emplacement privilégié de la Villa Myassa à Singakerta vous place aux portes de la scène culturelle d'Ubud : Forêt des Singes, Palais d'Ubud, galeries d'art, cafés et boutiques — tout est à quelques minutes de votre sanctuaire privé.
+
+Réservez dès aujourd'hui votre escapade tropicale à la Villa Myassa et découvrez l'alliance de l'élégance moderne et de la magie mystique de la jungle balinaise.`,
+
+  en: `Welcome to Villa Myassa in Singakerta, where contemporary design meets the enchanting landscape of Ubud’s jungle. From the entrance, an elegant fountain flows into a serene pond with stepping stones, setting the tone for an extraordinary stay.
+
+Each of the three refined bedrooms features a queen-size bed, Smart TV, air conditioning, and an en-suite bathroom. The master delights with a canopy mosquito net and an outdoor bathtub; the second bedroom offers a refreshing outdoor shower, and the third features a semi-open bathing experience.
+
+Villa Myassa blends indoors and outdoors with open, airy spaces naturally cooled by cross-ventilation and ceiling fans. A beautiful carved wooden map of Bali anchors the cozy lounge, perfect for gathering or relaxing. The dining area comfortably seats six, while the modern kitchen with an island invites memorable meals.
+
+Step into your private oasis: a sparkling pool crowned by a Buddha statue, a sunken lounge overlooking the water, and two floating loungers for pure relaxation. Unwind in the balé bengong gazebo draped with white curtains — ideal for massages. Two additional sun loungers face the lush garden, complemented by an outdoor pool shower.
+
+Our privileged location in Singakerta places you at the gateway to Ubud’s cultural scene — Monkey Forest, Ubud Palace, art galleries, cafés, and boutiques — just minutes from your private sanctuary.
+
+Book your tropical escape at Villa Myassa today and experience the harmony of modern elegance and the mystical magic of Bali’s jungle.`,
+
+  id: `Selamat datang di Villa Myassa di Singakerta, tempat desain kontemporer berpadu dengan lanskap hutan Ubud yang memikat. Dari pintu masuk, air mancur elegan mengalir ke kolam tenang dengan pijakan batu, memberi nuansa istimewa untuk masa inap Anda.
+
+Tiga kamar tidur yang nyaman masing-masing dilengkapi tempat tidur queen, Smart TV, AC, dan kamar mandi dalam. Kamar utama memanjakan dengan kelambu kanopi dan bak mandi luar ruang; kamar kedua memiliki shower luar ruang yang menyegarkan; kamar ketiga menghadirkan pengalaman mandi semi-terbuka.
+
+Villa Myassa menyatukan area dalam dan luar melalui ruang terbuka yang lapang, sejuk alami berkat ventilasi silang dan kipas langit-langit. Peta kayu Bali yang dipahat indah menjadi pusat ruang keluarga yang hangat, ideal untuk berkumpul atau bersantai. Area makan menampung enam orang dengan nyaman, sementara dapur modern ber-island mengundang Anda menyiapkan hidangan berkesan.
+
+Melangkah keluar, Anda akan menemukan oasis pribadi: kolam berkilau dengan patung Buddha, sunken lounge yang menghadap air, serta dua kasur terapung untuk relaksasi total. Nikmati gazebo balé bengong berkelambu putih — sempurna untuk pijat. Dua kursi berjemur tambahan menghadap taman tropis rindang, dilengkapi shower kolam di luar ruang.
+
+Lokasi istimewa di Singakerta menempatkan Anda di gerbang budaya Ubud — Monkey Forest, Istana Ubud, galeri seni, kafe, dan butik — hanya beberapa menit dari tempat peristirahatan Anda.
+
+Pesan liburan tropis Anda di Villa Myassa hari ini dan rasakan harmoni antara keanggunan modern dan pesona mistis hutan Bali.`,
+
+  zh: `欢迎来到位于 Singakerta 的 Villa Myassa——现代设计与乌布丛林的迷人风景在这里相遇。自入口起，优雅的喷泉流入宁静的水池，配以“踏脚石”小径，为您的非凡假期定下基调。
+
+别墅设有三间精致卧室，每间均配备大床、智能电视、空调与独立卫浴。主卧配有帐幔与户外浴缸；第二卧室设有清爽的户外淋浴；第三卧室提供半开放式沐浴体验。
+
+别墅通过通透的开放空间，将室内与室外自然衔接，并借助穿堂风与吊扇保持清凉。客厅以一幅精雕的巴厘岛木质地图为点睛，温馨惬意，适合小聚或放松。餐桌可舒适容纳六位宾客，现代化中岛厨房邀请您烹制难忘的美味。
+
+步入您的私密绿洲：闪耀的泳池上点缀佛像、临水而设的“下沉式”会客区，以及两张漂浮躺垫，尽享松弛时光。白纱环绕的巴厘式凉亭（balé bengong）非常适合按摩理疗。两张额外躺椅面向繁茂花园，并配有户外泳池淋浴，完善热带度假体验。
+
+别墅坐落于 Singakerta 的优越位置，紧邻乌布文化核心——猴林、乌布王宫、艺术画廊以及林立的咖啡馆与精品店——距您的静谧天地仅数分钟路程。
+
+即刻预订 Villa Myassa 的热带之旅，体验现代优雅与巴厘丛林神秘魅力的和谐交融。`,
+} as Record<Lang, string>,
+
 };
 
 const TEXT = (l: Lang) => ({
