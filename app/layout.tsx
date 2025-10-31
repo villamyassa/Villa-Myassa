@@ -37,28 +37,39 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr">
       <body>
-        {/* --- Drapeaux langues (ajout minimal) --- */}
-        <header className="w-full flex items-center justify-end p-4 text-sm">
-          <nav className="flex items-center gap-3">
-            <Link href="/" aria-label="Français" className="flex items-center gap-2 hover:opacity-80">
-              <span role="img" aria-hidden>
-                🇫🇷
-              </span>
-              <span>FR</span>
+        {/* Header visible partout (sticky + z-index) */}
+        <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+          <div className="mx-auto max-w-6xl px-4 py-2 flex items-center justify-end text-sm">
+            <nav className="hidden md:flex items-center gap-3">
+              <Link href="/" aria-label="Français" className="flex items-center gap-2 hover:opacity-80">
+                <span role="img" aria-hidden>🇫🇷</span>
+                <span>FR</span>
+              </Link>
+              <span className="opacity-40 select-none">|</span>
+              <Link href="/en" aria-label="English" className="flex items-center gap-2 hover:opacity-80">
+                <span role="img" aria-hidden>🇬🇧</span>
+                <span>EN</span>
+              </Link>
+            </nav>
+          </div>
+        </header>
+
+        {/* Sélecteur flottant spécial mobile (au cas où un autre header masque les drapeaux) */}
+        <div className="fixed bottom-4 right-4 z-[60] md:hidden">
+          <div className="flex items-center gap-2 rounded-full border bg-white/90 px-3 py-2 shadow-lg backdrop-blur">
+            <Link href="/" aria-label="Français" className="flex items-center gap-1">
+              <span role="img" aria-hidden>🇫🇷</span><span className="sr-only">FR</span>
             </Link>
             <span className="opacity-40 select-none">|</span>
-            <Link href="/en" aria-label="English" className="flex items-center gap-2 hover:opacity-80">
-              <span role="img" aria-hidden>
-                🇬🇧
-              </span>
-              <span>EN</span>
+            <Link href="/en" aria-label="English" className="flex items-center gap-1">
+              <span role="img" aria-hidden>🇬🇧</span><span className="sr-only">EN</span>
             </Link>
-          </nav>
-        </header>
+          </div>
+        </div>
 
         {children}
 
-        {/* Organization JSON-LD (simple et sûr) */}
+        {/* Organization JSON-LD (d’origine) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -81,4 +92,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
