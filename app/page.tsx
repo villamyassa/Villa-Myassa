@@ -69,7 +69,10 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
 
 type Lang = "fr" | "en" | "id" | "zh";
 
-/** Drapeau rectangle centré dans le cercle (fond gris + liseré cercle) */
+/** Drapeau rectangle centré dans le cercle
+ *  - fond gris et liseré sur le cercle (géré dans les boutons)
+ *  - outline noir discret autour du rectangle du drapeau (bien visible pour l’ID)
+ */
 const FlagImg = ({
   code,
   alt,
@@ -79,19 +82,13 @@ const FlagImg = ({
   alt: string;
   className?: string;
 }) => {
-  const [src, setSrc] = useState<string>(`/flags/${code}.svg`);
+  const src = `/flags/${code}.svg`; // fichiers à placer dans /public/flags/
   return (
     <img
       src={src}
       alt={alt}
-      className={`block w-[74%] h-auto rounded-[2px] object-contain ${className}`}
-      onError={(e) => {
-        const img = e.currentTarget as HTMLImageElement;
-        if (img.dataset.fallback !== "1") {
-          img.dataset.fallback = "1";
-          setSrc(`/public/flags/${code}.svg`);
-        }
-      }}
+      className={`block w-[74%] h-auto rounded-[2px] object-contain outline outline-1 outline-black/55 ${className}`}
+      draggable={false}
     />
   );
 };
@@ -546,7 +543,7 @@ export default function Page() {
 
           <div className="mt-2 flex items-center justify-center gap-2">
             {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
-              const active = (lang === c);
+              const active = lang === c;
               return (
                 <button
                   key={c}
@@ -614,7 +611,7 @@ export default function Page() {
               {/* Langues */}
               <div className="flex items-center gap-2">
                 {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
-                  const active = (lang === c);
+                  const active = lang === c;
                   return (
                     <button
                       key={c}
@@ -692,7 +689,6 @@ export default function Page() {
         <Card className="rounded-2xl">
           <CardContent className="py-6">
             <div className="prose max-w-none leading-relaxed">
-              {/* Raccourcie pour ne pas encombrer l’exemple */}
               <p className="mb-4">{DATA_BASE.description[lang]}</p>
             </div>
           </CardContent>
