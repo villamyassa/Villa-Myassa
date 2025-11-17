@@ -1,51 +1,49 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const SITE = "https://www.villamyassa.com";
-const TITLE = "Villa Myassa – Ubud, Bali | Villa contemporaine avec piscine privée";
-const DESC =
-  "Villa Myassa à Ubud (Singakerta), Bali : 3 chambres, 3.5 salles de bain, piscine privée, gazebo, cuisine équipée. Idéal familles & amis. Réservez Bestay, Airbnb, Booking.com ou en direct.";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE),
-  title: TITLE,
-  description: DESC,
-  alternates: {
-    canonical: "/",
-    languages: {
-      "fr": "/?lang=fr",
-      "en": "/?lang=en",
-      "id": "/?lang=id",
-      "zh": "/?lang=zh",
-    },
-  },
-  openGraph: {
-    type: "website",
-    url: SITE,
-    siteName: "Villa Myassa",
-    title: TITLE,
-    description: DESC,
-    images: [{ url: "/photos/001-hero-piscine.jpg", width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESC,
-    images: ["/photos/001-hero-piscine.jpg"],
-  },
-  robots: { index: true, follow: true },
+  title: "Villa Myassa Bali",
+  description: "Villa de luxe à Ubud, Bali, avec piscine privée et services haut de gamme."
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="fr">
-      {/* PAS DE HEADER ICI */}
+      <head>
+        {/* Meta Pixel Code */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '25598835056413193');
+              fbq('track', 'PageView');
+            `
+          }}
+        />
+        <noscript>
+          <img 
+            height="1" 
+            width="1" 
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=25598835056413193&ev=PageView&noscript=1"
+          />
+        </noscript>
+        {/* End Meta Pixel Code */}
+      </head>
+
       <body>
-        <main>{children}</main>
-        {/* (Optionnel) footer global si tu en veux un global :
-        <footer className="text-center text-sm text-neutral-500 py-6">
-          © {new Date().getFullYear()} Villa Myassa – Ubud, Bali.
-        </footer> */}
+        {children}
       </body>
     </html>
   );
