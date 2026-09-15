@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -67,7 +68,7 @@ const IMAGES_ALL: GalleryItem[] = GALLERY_FILES.map((f, i) => ({
    2) DONNÉES / I18N
 ------------------------------------------------------- */
 
-type Lang = "fr" | "en" | "id" | "zh";
+export type Lang = "fr" | "en" | "id" | "zh";
 
 /** Drapeau rectangle centré dans le cercle (fond gris + liseré cercle) */
 const FlagImg = ({
@@ -431,16 +432,7 @@ const GalleryCard = ({
    4) PAGE
 ------------------------------------------------------- */
 
-export default function Page() {
-  // Langues
-  const [lang, setLang] = useState<Lang>("fr");
-  useEffect(() => {
-    const saved = typeof window !== "undefined" ? window.localStorage.getItem("lang") : null;
-    if (saved === "fr" || saved === "en" || saved === "id" || saved === "zh") setLang(saved as Lang);
-  }, []);
-  useEffect(() => {
-    if (typeof window !== "undefined") window.localStorage.setItem("lang", lang);
-  }, [lang]);
+export default function VillaPage({ lang }: { lang: Lang }) {
 
   // Formulaire contact
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -593,15 +585,15 @@ export default function Page() {
             {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
               const active = (lang === c);
               return (
-                <button
+                <Link
                   key={c}
+                  href={`/${c}`}
                   aria-label={c.toUpperCase()}
                   className={`${circleBase} ${active ? circleActive : ""} h-8 w-8 p-[3px]`}
-                  onClick={() => setLang(c)}
                   title={c.toUpperCase()}
                 >
                   <FlagImg code={c} alt={c.toUpperCase()} />
-                </button>
+                </Link>
               );
             })}
 
@@ -661,15 +653,15 @@ export default function Page() {
                 {(["fr", "en", "id", "zh"] as Lang[]).map((c) => {
                   const active = (lang === c);
                   return (
-                    <button
+                    <Link
                       key={c}
-                      onClick={() => setLang(c)}
+                      href={`/${c}`}
                       aria-label={c.toUpperCase()}
                       className={`${circleBase} ${active ? circleActive : ""} h-9 w-9 p-[3px]`}
                       title={c.toUpperCase()}
                     >
                       <FlagImg code={c} alt={c.toUpperCase()} />
-                    </button>
+                    </Link>
                   );
                 })}
               </div>
