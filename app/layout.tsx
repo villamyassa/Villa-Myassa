@@ -1,9 +1,28 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 
+const VALID_LANGS = ["fr", "en", "id", "zh"];
+
+function getLanguageFromPath(pathname: string | null) {
+  if (!pathname) return "en";
+
+  const firstPart = pathname.split("/").filter(Boolean)[0];
+
+  if (VALID_LANGS.includes(firstPart)) {
+    return firstPart;
+  }
+
+  return "en";
+}
+
 export const metadata: Metadata = {
-  title: "Villa Myassa Bali",
-  description: "Villa de luxe à Ubud, Bali, avec piscine privée et services haut de gamme."
+  metadataBase: new URL("https://www.villamyassa.com"),
+
+  title: "Villa Myassa Ubud | 3-Bedroom Private Pool Villa in Bali",
+
+  description:
+    "Villa Myassa is a private 3-bedroom villa with pool and tropical garden in Singakerta, Ubud, Bali.",
 };
 
 export default function RootLayout({
@@ -11,8 +30,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = headers().get("x-pathname");
+  const lang = getLanguageFromPath(pathname);
+
   return (
-    <html lang="fr">
+    <html lang={lang}>
       <head>
         {/* Meta Pixel Code */}
         <script
@@ -28,23 +50,23 @@ export default function RootLayout({
               'https://connect.facebook.net/en_US/fbevents.js');
               fbq('init', '25598835056413193');
               fbq('track', 'PageView');
-            `
+            `,
           }}
         />
+
         <noscript>
-          <img 
-            height="1" 
-            width="1" 
+          <img
+            height="1"
+            width="1"
             style={{ display: "none" }}
             src="https://www.facebook.com/tr?id=25598835056413193&ev=PageView&noscript=1"
+            alt=""
           />
         </noscript>
         {/* End Meta Pixel Code */}
       </head>
 
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
