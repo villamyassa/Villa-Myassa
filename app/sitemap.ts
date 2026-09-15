@@ -43,5 +43,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages,
       },
     },
+    {
+      url: `${base}/en/3-bedroom-private-pool-villa-ubud`,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
   ];
 }
