@@ -65,7 +65,6 @@ a.rounded-2xl {
   max-width: 1200px;
 }
 
-/* Bali Zen: very pale translucent seafoam, inspired by water and tropical spas. */
 a.bg-black,
 button.bg-black {
   background-color: rgb(var(--accent) / 0.76) !important;
@@ -87,7 +86,6 @@ button.bg-black:hover {
   box-shadow: 0 12px 28px rgb(79 124 109 / 0.12);
 }
 
-/* Secondary actions are almost transparent, with a delicate water-green glass effect. */
 a.rounded-full.bg-white,
 button.rounded-full.bg-white {
   background-color: rgb(255 255 255 / 0.7) !important;
@@ -107,7 +105,6 @@ button.rounded-full.bg-white:hover {
   transform: translateY(-1px);
 }
 
-/* Softer text throughout the site: charcoal with a subtle green undertone. */
 .text-neutral-900,
 .text-black {
   color: rgb(var(--fg));
@@ -119,18 +116,15 @@ button.rounded-full.bg-white:hover {
   color: rgb(var(--ink-soft));
 }
 
-/* Keep text over photographic/dark backgrounds genuinely white. */
 .text-white {
   color: #fff !important;
 }
 
-/* Feature sections use a soft eucalyptus rather than black. */
 section.bg-black,
 div.bg-black:not(.absolute) {
   background-color: rgb(122 157 145) !important;
 }
 
-/* Very light water-green surfaces keep the site airy. */
 .bg-neutral-50,
 .bg-neutral-100 {
   background-color: rgb(247 251 249 / 0.88) !important;
@@ -141,7 +135,6 @@ div.bg-black:not(.absolute) {
   border-color: rgb(var(--line)) !important;
 }
 
-/* English SEO discovery card: real Villa Myassa lifestyle photo under a soft seafoam veil. */
 section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 {
   background-image:
     linear-gradient(rgb(244 251 248 / 0.66), rgb(236 248 244 / 0.66)),
@@ -172,8 +165,6 @@ section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-ne
   color: rgb(24 64 50) !important;
 }
 
-/* Main villa hero: lifestyle image with floating breakfast instead of the old slideshow.
-   The original slideshow remains in the DOM as a safe fallback, but is visually hidden. */
 section.h-\[70vh\] {
   background-image: url("/lifestyle/DSCF7659.webp");
   background-size: cover;
@@ -189,7 +180,6 @@ section.h-\[70vh\] > .absolute.inset-0 {
   background: linear-gradient(to top, rgb(28 52 44 / 0.22), transparent 55%) !important;
 }
 
-/* Mobile touch targets and calmer typography. */
 @media (max-width: 767px) {
   body {
     font-size: 16px;
@@ -219,7 +209,48 @@ section.h-\[70vh\] > .absolute.inset-0 {
   }
 }
 
-/* Phone in landscape: remove the large sticky navigation so the content stays visible. */
+/* Mobile portrait: restore the full section menu under the existing mobile header. */
+@media (orientation: portrait) and (max-width: 639px) {
+  div.min-h-screen > header.sticky > div[class~="sm:block"] {
+    display: block !important;
+  }
+
+  div.min-h-screen > header.sticky > div[class~="sm:block"] > .container {
+    padding: 0 0.75rem 0.65rem !important;
+  }
+
+  div.min-h-screen > header.sticky > div[class~="sm:block"] > .container > div:first-child {
+    display: none !important;
+  }
+
+  div.min-h-screen > header.sticky > div[class~="sm:block"] > .container > div:nth-child(2) {
+    display: block !important;
+    margin-top: 0 !important;
+  }
+
+  div.min-h-screen > header.sticky nav[class~="md:flex"] {
+    display: flex !important;
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  div.min-h-screen > header.sticky nav[class~="md:flex"]::-webkit-scrollbar {
+    display: none;
+  }
+
+  div.min-h-screen > header.sticky nav[class~="md:flex"] > div {
+    width: max-content;
+    margin: 0 auto;
+  }
+
+  div.min-h-screen > header.sticky nav[class~="md:flex"] ~ * {
+    display: none !important;
+  }
+}
+
 @media (orientation: landscape) and (max-height: 520px) and (max-width: 950px) {
   div.min-h-screen > header.sticky {
     display: none !important;
@@ -231,7 +262,6 @@ section.h-\[70vh\] > .absolute.inset-0 {
   }
 }
 
-/* Masque le bandeau langue très fin tout en haut (celui avec FR/EN/ID/ZH) */
 body > header:has(img[src^="/flags/"]) {
   display: none !important;
 }
