@@ -3,15 +3,229 @@
 @tailwind utilities;
 
 :root {
-  --bg: 255 255 255;
-  --fg: 17 24 39;
+  --bg: 252 252 249;
+  --fg: 57 64 61;
+  --ink-soft: 105 114 110;
+  --accent: 215 238 231;
+  --accent-dark: 181 219 207;
+  --accent-light: 239 248 245;
+  --accent-ink: 58 91 80;
+  --line: 224 235 231;
 }
-html, body { height: 100%; }
-body { color: rgb(var(--fg)); background: rgb(var(--bg)); }
 
-.container { max-width: 1200px; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  color: rgb(var(--fg));
+  background: rgb(var(--bg));
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  color: rgb(var(--fg));
+}
+
+h1 {
+  line-height: 0.98;
+}
+
+h2,
+h3 {
+  line-height: 1.05;
+}
+
+p {
+  line-height: 1.7;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a.rounded-full,
+a.rounded-2xl {
+  letter-spacing: 0.01em;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+/* Bali Zen: very pale translucent seafoam, inspired by water and tropical spas. */
+a.bg-black,
+button.bg-black {
+  background-color: rgb(var(--accent) / 0.76) !important;
+  border-color: rgb(183 218 207 / 0.7) !important;
+  color: rgb(var(--accent-ink)) !important;
+  box-shadow: 0 8px 24px rgb(79 124 109 / 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease,
+    border-color 180ms ease, color 180ms ease;
+}
+
+a.bg-black:hover,
+button.bg-black:hover {
+  background-color: rgb(var(--accent-dark) / 0.9) !important;
+  border-color: rgb(160 205 191 / 0.8) !important;
+  color: rgb(45 78 67) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgb(79 124 109 / 0.12);
+}
+
+/* Secondary actions are almost transparent, with a delicate water-green glass effect. */
+a.rounded-full.bg-white,
+button.rounded-full.bg-white {
+  background-color: rgb(255 255 255 / 0.7) !important;
+  border: 1px solid rgb(var(--line) / 0.85);
+  box-shadow: 0 6px 20px rgb(79 124 109 / 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease,
+    color 180ms ease, background-color 180ms ease;
+}
+
+a.rounded-full.bg-white:hover,
+button.rounded-full.bg-white:hover {
+  border-color: rgb(183 218 207 / 0.9);
+  background-color: rgb(var(--accent-light) / 0.88) !important;
+  color: rgb(var(--accent-ink));
+  transform: translateY(-1px);
+}
+
+/* Softer text throughout the site: charcoal with a subtle green undertone. */
+.text-neutral-900,
+.text-black {
+  color: rgb(var(--fg));
+}
+
+.text-neutral-700,
+.text-neutral-600,
+.text-neutral-500 {
+  color: rgb(var(--ink-soft));
+}
+
+/* Keep text over photographic/dark backgrounds genuinely white. */
+.text-white {
+  color: #fff !important;
+}
+
+/* Feature sections use a soft eucalyptus rather than black. */
+section.bg-black,
+div.bg-black:not(.absolute) {
+  background-color: rgb(122 157 145) !important;
+}
+
+/* Very light water-green surfaces keep the site airy. */
+.bg-neutral-50,
+.bg-neutral-100 {
+  background-color: rgb(247 251 249 / 0.88) !important;
+}
+
+.border-neutral-200,
+.border-neutral-300 {
+  border-color: rgb(var(--line)) !important;
+}
+
+/* English SEO discovery card: real Villa Myassa lifestyle photo under a soft seafoam veil. */
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 {
+  background-image:
+    linear-gradient(rgb(244 251 248 / 0.66), rgb(236 248 244 / 0.66)),
+    url("/lifestyle/DSCF7659.webp") !important;
+  background-size: cover;
+  background-position: center 56%;
+  background-repeat: no-repeat;
+  border-color: rgb(164 207 193 / 0.72) !important;
+  box-shadow: 0 14px 38px rgb(72 112 98 / 0.08);
+}
+
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 h2 {
+  font-weight: 800 !important;
+  color: rgb(20 52 42) !important;
+  text-shadow: 0 1px 12px rgb(255 255 255 / 0.78), 0 0 1px rgb(20 52 42 / 0.25);
+  -webkit-text-stroke: 0.15px rgb(20 52 42 / 0.35);
+}
+
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 p {
+  font-weight: 800 !important;
+  color: rgb(27 64 51) !important;
+  text-shadow: 0 1px 10px rgb(255 255 255 / 0.82), 0 0 1px rgb(27 64 51 / 0.22);
+  -webkit-text-stroke: 0.12px rgb(27 64 51 / 0.25);
+}
+
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 a {
+  font-weight: 800 !important;
+  color: rgb(24 64 50) !important;
+}
+
+/* Main villa hero: lifestyle image with floating breakfast instead of the old slideshow.
+   The original slideshow remains in the DOM as a safe fallback, but is visually hidden. */
+section.h-\[70vh\] {
+  background-image: url("/lifestyle/DSCF7659.webp");
+  background-size: cover;
+  background-position: center 52%;
+  background-repeat: no-repeat;
+}
+
+section.h-\[70vh\] > img {
+  opacity: 0 !important;
+}
+
+section.h-\[70vh\] > .absolute.inset-0 {
+  background: linear-gradient(to top, rgb(28 52 44 / 0.22), transparent 55%) !important;
+}
+
+/* Mobile touch targets and calmer typography. */
+@media (max-width: 767px) {
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    letter-spacing: -0.035em;
+  }
+
+  a.rounded-full,
+  button.rounded-full,
+  button.rounded-2xl {
+    min-height: 48px;
+  }
+
+  section.h-\[70vh\] {
+    height: 64vh;
+    min-height: 520px;
+    background-position: 52% center;
+  }
+
+  section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 {
+    background-position: 58% center;
+    background-image:
+      linear-gradient(rgb(244 251 248 / 0.7), rgb(236 248 244 / 0.7)),
+      url("/lifestyle/DSCF7659.webp") !important;
+  }
+}
+
 /* Masque le bandeau langue très fin tout en haut (celui avec FR/EN/ID/ZH) */
-body > header:has(img[src^="/flags/"]) { display: none !important; }
-body > nav:has(img[src^="/flags/"])    { display: none !important; }
-body > div:has(> img[src^="/flags/"])  { display: none !important; }
-
+body > header:has(img[src^="/flags/"]) {
+  display: none !important;
+}
+body > nav:has(img[src^="/flags/"]) {
+  display: none !important;
+}
+body > div:has(> img[src^="/flags/"]) {
+  display: none !important;
+}

@@ -106,48 +106,48 @@ export default function UbudGuidePage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-  src="/ubud-guide/hero-ubud-bali.png"
-  alt="Ubud Bali landscape with rice terraces and Balinese temple"
-  fill
-  priority
-  className="object-cover"
-/>
-<div className="absolute inset-0 bg-gradient-to-r from-white/35 via-white/10 to-transparent" />
+            src="/ubud-guide/hero-ubud-bali.png"
+            alt="Ubud Bali landscape with rice terraces and Balinese temple"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/45 md:bg-gradient-to-r md:from-black/35 md:via-black/15 md:to-transparent" />
         </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 py-8 md:py-10">
-  <Link
-    href="/en"
-    className="text-sm font-bold text-black underline"
-  >
-    ← Back to Villa Myassa
-  </Link>
+        <div className="relative mx-auto max-w-7xl px-5 py-8 text-white md:px-4 md:py-10">
+          <Link
+            href="/en"
+            className="text-sm font-bold text-white underline decoration-white/80 underline-offset-4 drop-shadow-md"
+          >
+            ← Back to Villa Myassa
+          </Link>
 
-  <div className="mt-5 max-w-2xl">
-    <p className="text-sm font-bold uppercase tracking-[0.18em] text-black">
-      Villa Myassa · Ubud · Bali
-    </p>
+          <div className="mt-5 max-w-2xl">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-white drop-shadow-md">
+              Villa Myassa · Ubud · Bali
+            </p>
 
-    <h1 className="mt-3 text-5xl font-extrabold leading-tight text-black md:text-7xl">
-      Ubud Travel Guide
-    </h1>
+            <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] text-white drop-shadow-lg sm:text-5xl md:text-7xl">
+              Ubud Travel Guide
+            </h1>
 
-    <p className="mt-4 text-lg font-bold leading-relaxed text-black md:text-xl">
-      Discover Ubud and central Bali from Villa Myassa. Explore temples,
-      rice terraces, waterfalls, Monkey Forest, restaurants, family
-      activities and ATV adventures.
-    </p>
+            <p className="mt-5 text-lg font-bold leading-relaxed text-white drop-shadow-md md:text-xl">
+              Discover Ubud and central Bali from Villa Myassa. Explore temples,
+              rice terraces, waterfalls, Monkey Forest, restaurants, family
+              activities and ATV adventures.
+            </p>
 
-    <p className="mt-2 max-w-xl font-semibold leading-relaxed text-black">
-      Villa Myassa is located in Singakerta in the Ubud area, offering
-      a peaceful base for exploring Bali while enjoying the privacy of
-      a three-bedroom villa with a private pool.
-    </p>
+            <p className="mt-3 max-w-xl font-semibold leading-relaxed text-white drop-shadow-md">
+              Villa Myassa is located in Singakerta in the Ubud area, offering
+              a peaceful base for exploring Bali while enjoying the privacy of
+              a three-bedroom villa with a private pool.
+            </p>
 
-            <div className="mt-4 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/en/3-bedroom-private-pool-villa-ubud"
-                className="rounded-full bg-black px-6 py-3 font-semibold text-white"
+                className="inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3 font-semibold text-black shadow-md transition hover:bg-neutral-100 sm:w-auto"
               >
                 Discover Villa Myassa
               </Link>
@@ -156,7 +156,7 @@ export default function UbudGuidePage() {
                 href={AIRBNB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full bg-white px-6 py-3 font-semibold text-black shadow-sm"
+                className="inline-flex w-full items-center justify-center rounded-full border border-white/70 bg-black/55 px-6 py-3 text-center font-semibold text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 sm:w-auto"
               >
                 Check availability on Airbnb
               </a>
@@ -288,7 +288,7 @@ export default function UbudGuidePage() {
             stay.
           </p>
 
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
             <Link
               href="/en/3-bedroom-private-pool-villa-ubud"
               className="rounded-full bg-white px-7 py-3 font-semibold text-black"

@@ -1,6 +1,20 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
 
 const VALID_LANGS = ["fr", "en", "id", "zh"];
 
@@ -66,7 +80,9 @@ export default function RootLayout({
         {/* End Meta Pixel Code */}
       </head>
 
-      <body>{children}</body>
+      <body className={`${manrope.variable} ${cormorant.variable}`}>
+        {children}
+      </body>
     </html>
   );
 }
