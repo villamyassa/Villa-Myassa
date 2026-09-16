@@ -33,7 +33,7 @@ const discoveries = [
     title: "Rice Terraces & Rural Landscapes",
     description:
       "Explore Bali's rice fields, traditional villages and tropical countryside around Ubud.",
-    image: "/ubud-guide/tegallalang-rice-terraces.jpg",
+    image: "/ubud-guide/9957A069-7B9D-4533-B989-1FF659AA19AC.png",
   },
   {
     title: "Waterfalls",
