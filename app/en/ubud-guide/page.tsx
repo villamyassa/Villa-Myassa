@@ -100,39 +100,6 @@ const attractions = [
   },
 ];
 
-const guides = [
-  {
-    category: "UBUD",
-    title: "Best Things to Do in Ubud",
-    image: "/ubud-guide/culture-temples.jpg",
-  },
-  {
-    category: "ATTRACTIONS",
-    title: "Ubud Monkey Forest Visitor Guide",
-    image: "/ubud-guide/monkey-forest-ubud.jpg",
-  },
-  {
-    category: "NATURE",
-    title: "Tegallalang Rice Terraces Guide",
-    image: "/ubud-guide/tegallalang-rice-terraces.jpg",
-  },
-  {
-    category: "NATURE",
-    title: "Best Waterfalls Near Ubud",
-    image: "/ubud-guide/waterfalls.jpg",
-  },
-  {
-    category: "CULTURE",
-    title: "Temples to Visit Around Ubud",
-    image: "/ubud-guide/culture-temples.jpg",
-  },
-  {
-    category: "ADVENTURE",
-    title: "ATV & Quad Adventures Near Ubud",
-    image: "/ubud-guide/atv-quad-ubud.jpg",
-  },
-];
-
 export default function UbudGuidePage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900">
@@ -277,54 +244,6 @@ export default function UbudGuidePage() {
 
                   <p className="mt-2 leading-relaxed text-neutral-600">
                     {item.description}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* UPCOMING GUIDES */}
-        <section className="mt-20">
-          <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
-            Villa Myassa Guides
-          </p>
-
-          <h2 className="mt-2 text-3xl font-bold md:text-4xl">
-            Upcoming Ubud travel guides
-          </h2>
-
-          <p className="mt-4 max-w-3xl text-lg text-neutral-600">
-            This section will grow with detailed guides to help visitors plan
-            their stay in Ubud and discover Bali from Villa Myassa.
-          </p>
-
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {guides.map((guide) => (
-              <article
-                key={guide.title}
-                className="overflow-hidden rounded-3xl border border-neutral-200"
-              >
-                <div className="relative aspect-[16/9]">
-                  <Image
-                    src={guide.image}
-                    alt={guide.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="p-5">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-                    {guide.category}
-                  </p>
-
-                  <h3 className="mt-2 text-xl font-bold">
-                    {guide.title}
-                  </h3>
-
-                  <p className="mt-4 text-sm font-semibold text-neutral-400">
-                    Guide coming soon
                   </p>
                 </div>
               </article>
