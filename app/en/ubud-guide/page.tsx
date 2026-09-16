@@ -115,34 +115,34 @@ export default function UbudGuidePage() {
 <div className="absolute inset-0 bg-gradient-to-r from-white/35 via-white/10 to-transparent" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 py-14 md:py-24">
-          <Link
-            href="/en"
-            className="text-sm font-medium text-neutral-700 underline"
-          >
-            ← Back to Villa Myassa
-          </Link>
+      <div className="relative mx-auto max-w-7xl px-4 py-8 md:py-10">
+  <Link
+    href="/en"
+    className="text-sm font-bold text-black underline"
+  >
+    ← Back to Villa Myassa
+  </Link>
 
-          <div className="mt-8 max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-600">
-              Villa Myassa · Ubud · Bali
-            </p>
+  <div className="mt-5 max-w-2xl">
+    <p className="text-sm font-bold uppercase tracking-[0.18em] text-black">
+      Villa Myassa · Ubud · Bali
+    </p>
 
-            <h1 className="mt-3 text-5xl font-extrabold leading-tight md:text-7xl">
-              Ubud Travel Guide
-            </h1>
+    <h1 className="mt-3 text-5xl font-extrabold leading-tight text-black md:text-7xl">
+      Ubud Travel Guide
+    </h1>
 
-            <p className="mt-5 text-lg leading-relaxed md:text-xl">
-              Discover Ubud and central Bali from Villa Myassa. Explore temples,
-              rice terraces, waterfalls, Monkey Forest, restaurants, family
-              activities and ATV adventures.
-            </p>
+    <p className="mt-4 text-lg font-bold leading-relaxed text-black md:text-xl">
+      Discover Ubud and central Bali from Villa Myassa. Explore temples,
+      rice terraces, waterfalls, Monkey Forest, restaurants, family
+      activities and ATV adventures.
+    </p>
 
-            <p className="mt-4 max-w-xl leading-relaxed text-neutral-700">
-              Villa Myassa is located in Singakerta in the Ubud area, offering
-              a peaceful base for exploring Bali while enjoying the privacy of
-              a three-bedroom villa with a private pool.
-            </p>
+    <p className="mt-4 max-w-xl font-semibold leading-relaxed text-black">
+      Villa Myassa is located in Singakerta in the Ubud area, offering
+      a peaceful base for exploring Bali while enjoying the privacy of
+      a three-bedroom villa with a private pool.
+    </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
