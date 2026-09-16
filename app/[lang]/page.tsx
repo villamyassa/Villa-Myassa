@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import VillaPage, { type Lang } from "../VillaPage";
 import LifestyleExperience from "../LifestyleExperience";
+import ZenMusic from "../ZenMusic";
 
 const LANGS: Lang[] = ["fr", "en", "id", "zh"];
 
@@ -105,6 +106,7 @@ export default function LanguagePage({
     <>
       <VillaPage lang={params.lang} />
       <LifestyleExperience lang={params.lang} />
+      <ZenMusic />
     </>
   );
 }
