@@ -42,11 +42,7 @@ const gallery = [
   },
   {
     src: "/photos/008-jardin.jpg",
-    alt: "Tropical garden at Villa Myassa in Ubud, Bali",
-  },
-  {
-    src: "/photos/006-facade-nuit.jpg",
-    alt: "Villa Myassa exterior at night in Ubud, Bali",
+    alt: "Tropical garden and pool area at Villa Myassa in Ubud, Bali",
   },
 ];
 
