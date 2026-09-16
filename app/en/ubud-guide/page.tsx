@@ -138,13 +138,13 @@ export default function UbudGuidePage() {
       activities and ATV adventures.
     </p>
 
-    <p className="mt-4 max-w-xl font-semibold leading-relaxed text-black">
+    <p className="mt-2 max-w-xl font-semibold leading-relaxed text-black">
       Villa Myassa is located in Singakerta in the Ubud area, offering
       a peaceful base for exploring Bali while enjoying the privacy of
       a three-bedroom villa with a private pool.
     </p>
 
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-4 flex flex-wrap gap-3">
               <Link
                 href="/en/3-bedroom-private-pool-villa-ubud"
                 className="rounded-full bg-black px-6 py-3 font-semibold text-white"
