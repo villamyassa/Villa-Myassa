@@ -15,6 +15,8 @@ export const metadata: Metadata = {
 const AIRBNB_URL =
   "https://www.airbnb.fr/rooms/1505417552730386824";
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
+const BESTAY_HERO_IMAGE =
+  "https://assets.guesty.com/image/upload/listing_images_s3/production/property-photos/37f7ddd453308192cf43238e05e134856084c1d6589fdb95/68be42d2e105720013f38336/3a803611-8fb5-4d-TgFzk";
 
 const gallery = [
   {
@@ -96,11 +98,12 @@ export default function PrivatePoolVillaUbudPage() {
 
         <section className="mt-12 overflow-hidden rounded-3xl">
           <Image
-            src="/photos/001-hero-piscine.jpg"
-            alt="Villa Myassa private pool villa in Ubud, Bali"
+            src={BESTAY_HERO_IMAGE}
+            alt="Villa Myassa in Singakerta, Ubud, Bali"
             width={1600}
             height={1000}
             priority
+            unoptimized
             className="h-auto w-full object-cover"
           />
         </section>
