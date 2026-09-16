@@ -141,6 +141,34 @@ div.bg-black:not(.absolute) {
   border-color: rgb(var(--line)) !important;
 }
 
+/* English SEO discovery card: real Villa Myassa lifestyle photo under a soft seafoam veil. */
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 {
+  background-image:
+    linear-gradient(rgb(244 251 248 / 0.66), rgb(236 248 244 / 0.66)),
+    url("/lifestyle/DSCF7659.webp") !important;
+  background-size: cover;
+  background-position: center 56%;
+  background-repeat: no-repeat;
+  border-color: rgb(164 207 193 / 0.72) !important;
+  box-shadow: 0 14px 38px rgb(72 112 98 / 0.08);
+}
+
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 h2 {
+  font-weight: 700;
+  color: rgb(39 67 58);
+  text-shadow: 0 1px 10px rgb(255 255 255 / 0.45);
+}
+
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 p {
+  font-weight: 600;
+  color: rgb(62 87 78) !important;
+  text-shadow: 0 1px 8px rgb(255 255 255 / 0.5);
+}
+
+section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 a {
+  font-weight: 600;
+}
+
 /* Main villa hero: lifestyle image with floating breakfast instead of the old slideshow.
    The original slideshow remains in the DOM as a safe fallback, but is visually hidden. */
 section.h-\[70vh\] {
@@ -178,6 +206,13 @@ section.h-\[70vh\] > .absolute.inset-0 {
     height: 64vh;
     min-height: 520px;
     background-position: 52% center;
+  }
+
+  section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 {
+    background-position: 58% center;
+    background-image:
+      linear-gradient(rgb(244 251 248 / 0.7), rgb(236 248 244 / 0.7)),
+      url("/lifestyle/DSCF7659.webp") !important;
   }
 }
 
