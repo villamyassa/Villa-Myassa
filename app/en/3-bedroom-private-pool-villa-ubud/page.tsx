@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 const AIRBNB_URL =
   "https://www.airbnb.fr/rooms/1505417552730386824";
+const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 
 const gallery = [
   {
@@ -212,6 +213,56 @@ export default function PrivatePoolVillaUbudPage() {
           </ul>
         </section>
 
+        <section className="mt-20 rounded-3xl bg-neutral-50 p-7 md:p-10">
+          <h2 className="text-3xl font-bold md:text-4xl">
+            Villa staff and services
+          </h2>
+
+          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-700">
+            Villa Myassa&apos;s current Airbnb listing includes a dedicated villa
+            manager, villa host, daily housekeeping, and garden and pool staff.
+            Additional services such as airport transfers, drivers, breakfast,
+            private dining, massages and activities can be arranged separately,
+            subject to availability and additional charges.
+          </p>
+
+          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <InfoCard title="Villa Manager" text="Dedicated support" />
+            <InfoCard title="Villa Host" text="Local guest assistance" />
+            <InfoCard title="Housekeeping" text="Daily service" />
+            <InfoCard title="Pool & Garden" text="Regular staff care" />
+          </div>
+        </section>
+
+        <section className="mt-20 rounded-3xl border border-neutral-200 p-7 md:p-10">
+          <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
+            Guest feedback · Airbnb
+          </p>
+
+          <div className="mt-3 flex flex-wrap items-end gap-x-4 gap-y-2">
+            <h2 className="text-4xl font-extrabold md:text-5xl">4.92 / 5</h2>
+            <p className="pb-1 text-lg font-semibold text-neutral-700">
+              from 12 guest reviews
+            </p>
+          </div>
+
+          <p className="mt-5 max-w-3xl text-lg leading-relaxed text-neutral-700">
+            This rating is displayed on Villa Myassa&apos;s Airbnb listing and was
+            checked in September 2026. Because guest ratings change as new stays
+            are reviewed, Airbnb remains the reference for the latest score and
+            verified guest feedback.
+          </p>
+
+          <a
+            href={AIRBNB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex rounded-full bg-black px-6 py-3 font-semibold text-white"
+          >
+            Read verified guest reviews on Airbnb
+          </a>
+        </section>
+
         <section className="mt-20">
           <h2 className="text-3xl font-bold md:text-4xl">
             Frequently asked questions
@@ -237,6 +288,11 @@ export default function PrivatePoolVillaUbudPage() {
               question="Is Villa Myassa suitable for families?"
               answer="Yes. With three bedrooms, a private pool, kitchen and spacious living areas, the villa is suitable for families and small groups."
             />
+
+            <Faq
+              question="Is housekeeping provided at Villa Myassa?"
+              answer="Yes. The current Airbnb listing states that daily housekeeping is included, together with villa host support and garden and pool staff."
+            />
           </div>
         </section>
 
@@ -244,18 +300,29 @@ export default function PrivatePoolVillaUbudPage() {
           <h2 className="text-3xl font-bold">Planning a stay in Ubud?</h2>
 
           <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-700">
-            Check Villa Myassa&apos;s current availability and guest information
-            on Airbnb.
+            Check current availability, booking information and guest feedback
+            for Villa Myassa on Airbnb or view the villa on Bestay.
           </p>
 
-          <a
-            href={AIRBNB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-7 inline-block rounded-full bg-black px-7 py-3 font-semibold text-white"
-          >
-            View Villa Myassa on Airbnb
-          </a>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <a
+              href={AIRBNB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-full bg-black px-7 py-3 font-semibold text-white"
+            >
+              View Villa Myassa on Airbnb
+            </a>
+
+            <a
+              href={BESTAY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-full border border-neutral-300 bg-white px-7 py-3 font-semibold text-black"
+            >
+              View Villa Myassa on Bestay
+            </a>
+          </div>
         </section>
       </section>
     </main>
@@ -270,7 +337,7 @@ function InfoCard({
   text: string;
 }) {
   return (
-    <div className="rounded-2xl border border-neutral-200 p-5">
+    <div className="rounded-2xl border border-neutral-200 bg-white p-5">
       <p className="text-xl font-bold">{title}</p>
       <p className="mt-1 text-neutral-600">{text}</p>
     </div>
