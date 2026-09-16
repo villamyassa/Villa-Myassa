@@ -4,25 +4,25 @@ import { useEffect, useRef, useState } from "react";
 
 export default function ZenMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const startedRef = useRef(false);
   const [playing, setPlaying] = useState(false);
-  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    const audio = new Audio("/audio/zen-temple.mp3");
+    const audio = new Audio("/audio/djovan-zen-temple-497099.mp3");
     audio.loop = true;
     audio.preload = "none";
     audio.volume = 0.12;
     audioRef.current = audio;
 
     const startOnFirstInteraction = async () => {
-      if (!audioRef.current || started) return;
+      if (!audioRef.current || startedRef.current) return;
 
       try {
         await audioRef.current.play();
-        setStarted(true);
+        startedRef.current = true;
         setPlaying(true);
       } catch {
-        // Browsers may still block playback. The visible button remains available.
+        // Autoplay may be blocked; the visible button remains available.
       }
     };
 
@@ -36,7 +36,7 @@ export default function ZenMusic() {
       audio.src = "";
       audioRef.current = null;
     };
-  }, [started]);
+  }, []);
 
   const toggleMusic = async () => {
     const audio = audioRef.current;
@@ -50,7 +50,7 @@ export default function ZenMusic() {
 
     try {
       await audio.play();
-      setStarted(true);
+      startedRef.current = true;
       setPlaying(true);
     } catch {
       setPlaying(false);
