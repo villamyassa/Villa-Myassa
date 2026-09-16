@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import MobileDescriptionToggle from "@/components/MobileDescriptionToggle";
+import LocalizedSeoDiscoveryCard from "@/components/LocalizedSeoDiscoveryCard";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -33,9 +34,7 @@ function getLanguageFromPath(pathname: string | null) {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.villamyassa.com"),
-
   title: "Villa Myassa Ubud | 3-Bedroom Private Pool Villa in Bali",
-
   description:
     "Villa Myassa is a private 3-bedroom villa with pool and tropical garden in Singakerta, Ubud, Bali.",
 };
@@ -83,6 +82,7 @@ export default function RootLayout({
 
       <body className={`${manrope.variable} ${cormorant.variable}`}>
         {children}
+        <LocalizedSeoDiscoveryCard />
         <MobileDescriptionToggle />
       </body>
     </html>
