@@ -141,6 +141,23 @@ div.bg-black:not(.absolute) {
   border-color: rgb(var(--line)) !important;
 }
 
+/* Main villa hero: lifestyle image with floating breakfast instead of the old slideshow.
+   The original slideshow remains in the DOM as a safe fallback, but is visually hidden. */
+section.h-\[70vh\] {
+  background-image: url("/lifestyle/DSCF7659.webp");
+  background-size: cover;
+  background-position: center 52%;
+  background-repeat: no-repeat;
+}
+
+section.h-\[70vh\] > img {
+  opacity: 0 !important;
+}
+
+section.h-\[70vh\] > .absolute.inset-0 {
+  background: linear-gradient(to top, rgb(28 52 44 / 0.22), transparent 55%) !important;
+}
+
 /* Mobile touch targets and calmer typography. */
 @media (max-width: 767px) {
   body {
@@ -155,6 +172,12 @@ div.bg-black:not(.absolute) {
   button.rounded-full,
   button.rounded-2xl {
     min-height: 48px;
+  }
+
+  section.h-\[70vh\] {
+    height: 64vh;
+    min-height: 520px;
+    background-position: 52% center;
   }
 }
 
