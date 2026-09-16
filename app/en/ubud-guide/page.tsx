@@ -30,9 +30,9 @@ const discoveries = [
     image: "/ubud-guide/culture-temples.jpg",
   },
   {
-    title: "Tegallalang Rice Terraces",
+    title: "Rice Terraces & Rural Landscapes",
     description:
-      "Explore the famous Tegallalang Rice Terraces, one of the most iconic landscapes in the Ubud region.",
+      "Explore Bali's rice fields, traditional villages and tropical countryside around Ubud.",
     image: "/ubud-guide/tegallalang-rice-terraces.jpg",
   },
   {
@@ -103,7 +103,6 @@ const attractions = [
 export default function UbudGuidePage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
@@ -135,8 +134,8 @@ export default function UbudGuidePage() {
 
             <p className="mt-5 text-lg leading-relaxed md:text-xl">
               Discover Ubud and central Bali from Villa Myassa. Explore temples,
-              Tegallalang Rice Terraces, waterfalls, Monkey Forest, restaurants,
-              family activities and ATV adventures.
+              rice terraces, waterfalls, Monkey Forest, restaurants, family
+              activities and ATV adventures.
             </p>
 
             <p className="mt-4 max-w-xl leading-relaxed text-neutral-700">
@@ -167,7 +166,6 @@ export default function UbudGuidePage() {
       </section>
 
       <div className="mx-auto max-w-7xl px-4 py-14 md:py-20">
-        {/* DISCOVER */}
         <section>
           <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
             Explore Ubud
@@ -209,7 +207,6 @@ export default function UbudGuidePage() {
           </div>
         </section>
 
-        {/* POPULAR PLACES */}
         <section className="mt-20 rounded-[2rem] bg-neutral-100 p-6 md:p-10">
           <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
             Start here
@@ -251,7 +248,6 @@ export default function UbudGuidePage() {
           </div>
         </section>
 
-        {/* VILLA CTA */}
         <section className="mt-20 grid overflow-hidden rounded-3xl border border-neutral-200 md:grid-cols-2">
           <div className="relative min-h-[320px]">
             <Image
@@ -282,7 +278,6 @@ export default function UbudGuidePage() {
           </div>
         </section>
 
-        {/* FINAL CTA */}
         <section className="relative mt-20 overflow-hidden rounded-3xl bg-black px-6 py-12 text-center text-white md:px-12">
           <h2 className="text-3xl font-bold">
             Planning your stay in Ubud?
