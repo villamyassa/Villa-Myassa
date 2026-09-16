@@ -16,7 +16,7 @@ const AIRBNB_URL =
   "https://www.airbnb.fr/rooms/1505417552730386824";
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 const BESTAY_HERO_IMAGE =
-  "https://assets.guesty.com/image/upload/listing_images_s3/production/property-photos/37f7ddd453308192cf43238e05e134856084c1d6589fdb95/68be42d2e105720013f38336/3a803611-8fb5-4d-TgFzk";
+  "https://assets.guesty.com/image/upload/listing_images_s3/production/property-photos/37f7ddd453308192cf43238e05e134856084c1d6589fdb95/68be42d2e105720013f38336/c4dd9bc1-3641-4e-7nNBl";
 
 const gallery = [
   {
@@ -245,7 +245,7 @@ export default function PrivatePoolVillaUbudPage() {
           <div className="mt-3 flex flex-wrap items-end gap-x-4 gap-y-2">
             <h2 className="text-4xl font-extrabold md:text-5xl">4.92 / 5</h2>
             <p className="pb-1 text-lg font-semibold text-neutral-700">
-              from 12 guest reviews
+              from 13 guest reviews
             </p>
           </div>
 
