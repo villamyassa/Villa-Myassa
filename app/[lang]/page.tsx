@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import VillaPage, { type Lang } from "../VillaPage";
+import LifestyleExperience from "../LifestyleExperience";
 
 const LANGS: Lang[] = ["fr", "en", "id", "zh"];
 
@@ -79,6 +80,14 @@ export function generateMetadata({
       url: `https://www.villamyassa.com/${lang}`,
       siteName: "Villa Myassa",
       type: "website",
+      images: [
+        {
+          url: "/lifestyle/DSCF7659.webp",
+          width: 1600,
+          height: 1067,
+          alt: "Villa Myassa floating breakfast and private pool in Ubud, Bali",
+        },
+      ],
     },
   };
 }
@@ -92,5 +101,10 @@ export default function LanguagePage({
     notFound();
   }
 
-  return <VillaPage lang={params.lang} />;
+  return (
+    <>
+      <VillaPage lang={params.lang} />
+      <LifestyleExperience lang={params.lang} />
+    </>
+  );
 }
