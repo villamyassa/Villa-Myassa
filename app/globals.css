@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --bg: 250 249 245;
-  --fg: 47 52 48;
-  --ink-soft: 91 99 92;
-  --accent: 102 132 111;
-  --accent-dark: 61 91 72;
-  --accent-light: 226 235 226;
-  --line: 218 224 216;
+  --bg: 251 251 248;
+  --fg: 53 61 57;
+  --ink-soft: 101 111 106;
+  --accent: 166 204 191;
+  --accent-dark: 128 178 161;
+  --accent-light: 231 242 238;
+  --accent-ink: 43 76 65;
+  --line: 218 230 225;
 }
 
 html,
@@ -64,42 +65,44 @@ a.rounded-2xl {
   max-width: 1200px;
 }
 
-/* Bali Zen palette: deep botanical green for primary calls to action. */
+/* Bali Zen palette: pastel seafoam green for primary calls to action. */
 a.bg-black,
 button.bg-black {
-  background-color: rgb(var(--accent-dark)) !important;
-  border-color: rgb(var(--accent-dark)) !important;
-  box-shadow: 0 10px 28px rgb(45 72 55 / 0.13);
+  background-color: rgb(var(--accent)) !important;
+  border-color: rgb(var(--accent)) !important;
+  color: rgb(var(--accent-ink)) !important;
+  box-shadow: 0 10px 28px rgb(79 124 109 / 0.12);
   transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease,
     border-color 180ms ease, color 180ms ease;
 }
 
 a.bg-black:hover,
 button.bg-black:hover {
-  background-color: rgb(var(--accent)) !important;
-  border-color: rgb(var(--accent)) !important;
+  background-color: rgb(var(--accent-dark)) !important;
+  border-color: rgb(var(--accent-dark)) !important;
+  color: #fff !important;
   transform: translateY(-1px);
-  box-shadow: 0 14px 32px rgb(45 72 55 / 0.17);
+  box-shadow: 0 14px 32px rgb(79 124 109 / 0.16);
 }
 
-/* Light secondary actions with a soft botanical outline. */
+/* Light secondary actions with a delicate seafoam outline. */
 a.rounded-full.bg-white,
 button.rounded-full.bg-white {
   border: 1px solid rgb(var(--line));
-  box-shadow: 0 8px 24px rgb(48 65 53 / 0.07);
+  box-shadow: 0 8px 24px rgb(79 124 109 / 0.06);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease,
     color 180ms ease, background-color 180ms ease;
 }
 
 a.rounded-full.bg-white:hover,
 button.rounded-full.bg-white:hover {
-  border-color: rgb(var(--accent));
+  border-color: rgb(var(--accent-dark));
   background-color: rgb(var(--accent-light)) !important;
-  color: rgb(var(--accent-dark));
+  color: rgb(var(--accent-ink));
   transform: translateY(-1px);
 }
 
-/* Softer text throughout the site: charcoal-green rather than pure black. */
+/* Softer text throughout the site: charcoal with a subtle green undertone. */
 .text-neutral-900,
 .text-black {
   color: rgb(var(--fg));
@@ -116,16 +119,16 @@ button.rounded-full.bg-white:hover {
   color: #fff !important;
 }
 
-/* Dark feature sections become a deep jungle green instead of black. */
+/* Feature sections use a muted eucalyptus tone instead of black. */
 section.bg-black,
 div.bg-black:not(.absolute) {
-  background-color: rgb(35 61 47) !important;
+  background-color: rgb(91 128 115) !important;
 }
 
-/* Subtle Zen surfaces: warm white with a very light botanical cast. */
+/* Subtle Zen surfaces with a very light water-green cast. */
 .bg-neutral-50,
 .bg-neutral-100 {
-  background-color: rgb(246 247 242) !important;
+  background-color: rgb(246 250 248) !important;
 }
 
 .border-neutral-200,
