@@ -3,12 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --bg: 252 250 247;
-  --fg: 47 45 42;
-  --ink-soft: 91 87 81;
-  --accent: 128 111 88;
-  --accent-dark: 91 78 61;
-  --line: 224 218 209;
+  --bg: 250 249 245;
+  --fg: 47 52 48;
+  --ink-soft: 91 99 92;
+  --accent: 102 132 111;
+  --accent-dark: 61 91 72;
+  --accent-light: 226 235 226;
+  --line: 218 224 216;
 }
 
 html,
@@ -32,6 +33,7 @@ h3 {
   font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
   letter-spacing: -0.025em;
   font-weight: 600;
+  color: rgb(var(--fg));
 }
 
 h1 {
@@ -62,43 +64,42 @@ a.rounded-2xl {
   max-width: 1200px;
 }
 
-/* A softer, more refined default treatment for common dark CTAs. */
-a.bg-black,
-button.bg-black,
-.bg-black > a.bg-white {
-  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease,
-    border-color 180ms ease, color 180ms ease;
-}
-
+/* Bali Zen palette: deep botanical green for primary calls to action. */
 a.bg-black,
 button.bg-black {
   background-color: rgb(var(--accent-dark)) !important;
   border-color: rgb(var(--accent-dark)) !important;
-  box-shadow: 0 10px 28px rgb(67 58 46 / 0.14);
+  box-shadow: 0 10px 28px rgb(45 72 55 / 0.13);
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease,
+    border-color 180ms ease, color 180ms ease;
 }
 
 a.bg-black:hover,
 button.bg-black:hover {
   background-color: rgb(var(--accent)) !important;
+  border-color: rgb(var(--accent)) !important;
   transform: translateY(-1px);
-  box-shadow: 0 14px 32px rgb(67 58 46 / 0.18);
+  box-shadow: 0 14px 32px rgb(45 72 55 / 0.17);
 }
 
-/* White and outlined pill CTAs feel lighter and less heavy than solid black. */
+/* Light secondary actions with a soft botanical outline. */
 a.rounded-full.bg-white,
 button.rounded-full.bg-white {
   border: 1px solid rgb(var(--line));
-  box-shadow: 0 8px 24px rgb(60 52 43 / 0.08);
+  box-shadow: 0 8px 24px rgb(48 65 53 / 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease,
+    color 180ms ease, background-color 180ms ease;
 }
 
 a.rounded-full.bg-white:hover,
 button.rounded-full.bg-white:hover {
   border-color: rgb(var(--accent));
+  background-color: rgb(var(--accent-light)) !important;
   color: rgb(var(--accent-dark));
   transform: translateY(-1px);
 }
 
-/* Softer body copy throughout the site without reducing readability. */
+/* Softer text throughout the site: charcoal-green rather than pure black. */
 .text-neutral-900,
 .text-black {
   color: rgb(var(--fg));
@@ -115,10 +116,21 @@ button.rounded-full.bg-white:hover {
   color: #fff !important;
 }
 
-/* Preserve intentionally dark sections while using warm charcoal rather than pure black. */
+/* Dark feature sections become a deep jungle green instead of black. */
 section.bg-black,
 div.bg-black:not(.absolute) {
-  background-color: rgb(39 37 34) !important;
+  background-color: rgb(35 61 47) !important;
+}
+
+/* Subtle Zen surfaces: warm white with a very light botanical cast. */
+.bg-neutral-50,
+.bg-neutral-100 {
+  background-color: rgb(246 247 242) !important;
+}
+
+.border-neutral-200,
+.border-neutral-300 {
+  border-color: rgb(var(--line)) !important;
 }
 
 /* Mobile touch targets and calmer typography. */
