@@ -154,19 +154,22 @@ section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-ne
 }
 
 section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 h2 {
-  font-weight: 700;
-  color: rgb(26 60 49);
-  text-shadow: 0 1px 10px rgb(255 255 255 / 0.55);
+  font-weight: 800 !important;
+  color: rgb(20 52 42) !important;
+  text-shadow: 0 1px 12px rgb(255 255 255 / 0.78), 0 0 1px rgb(20 52 42 / 0.25);
+  -webkit-text-stroke: 0.15px rgb(20 52 42 / 0.35);
 }
 
 section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 p {
-  font-weight: 700;
-  color: rgb(38 76 63) !important;
-  text-shadow: 0 1px 8px rgb(255 255 255 / 0.6);
+  font-weight: 800 !important;
+  color: rgb(27 64 51) !important;
+  text-shadow: 0 1px 10px rgb(255 255 255 / 0.82), 0 0 1px rgb(27 64 51 / 0.22);
+  -webkit-text-stroke: 0.12px rgb(27 64 51 / 0.25);
 }
 
 section.container.mx-auto.px-4.max-w-6xl.pb-6 > div.rounded-3xl.border.border-neutral-200.bg-neutral-50 a {
-  font-weight: 700;
+  font-weight: 800 !important;
+  color: rgb(24 64 50) !important;
 }
 
 /* Main villa hero: lifestyle image with floating breakfast instead of the old slideshow.
