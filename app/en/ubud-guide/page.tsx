@@ -112,7 +112,7 @@ export default function UbudGuidePage() {
             priority
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-black/45 md:bg-gradient-to-r md:from-black/65 md:via-black/35 md:to-black/10" />
+          <div className="absolute inset-0 bg-black/45 md:bg-gradient-to-r md:from-black/35 md:via-black/15 md:to-transparent" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-5 py-8 text-white md:px-4 md:py-10">
