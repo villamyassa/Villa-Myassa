@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import MobileDescriptionToggle from "@/components/MobileDescriptionToggle";
+import BookingRedirect from "@/components/BookingRedirect";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -84,6 +85,7 @@ export default function RootLayout({
       <body className={`${manrope.variable} ${cormorant.variable}`}>
         {children}
         <MobileDescriptionToggle />
+        <BookingRedirect />
       </body>
     </html>
   );
