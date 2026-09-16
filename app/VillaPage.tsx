@@ -723,7 +723,28 @@ export default function VillaPage({ lang }: { lang: Lang }) {
           </div>
         </motion.div>
       </section>
+      {/* Lien interne vers la page SEO Ubud — anglais uniquement */}
+      {lang === "en" && (
+        <section className="container mx-auto px-4 max-w-6xl pb-6">
+          <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-6 md:p-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Looking for a 3-bedroom private pool villa in Ubud?
+            </h2>
 
+            <p className="mx-auto mt-3 max-w-2xl text-neutral-600">
+              Discover Villa Myassa in more detail, including its private pool,
+              three bedrooms, tropical garden, amenities and photos.
+            </p>
+
+            <Link
+              href="/en/3-bedroom-private-pool-villa-ubud"
+              className="mt-5 inline-flex items-center justify-center rounded-full bg-black px-6 py-3 font-semibold text-white transition hover:bg-neutral-800"
+            >
+              Discover Villa Myassa
+            </Link>
+          </div>
+        </section>
+      )}
       {/* Description */}
       <Section id="description" title={TEXT(lang).description.title}>
         <Card className="rounded-2xl">
