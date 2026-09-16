@@ -3,15 +3,148 @@
 @tailwind utilities;
 
 :root {
-  --bg: 255 255 255;
-  --fg: 17 24 39;
+  --bg: 252 250 247;
+  --fg: 47 45 42;
+  --ink-soft: 91 87 81;
+  --accent: 128 111 88;
+  --accent-dark: 91 78 61;
+  --line: 224 218 209;
 }
-html, body { height: 100%; }
-body { color: rgb(var(--fg)); background: rgb(var(--bg)); }
 
-.container { max-width: 1200px; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  color: rgb(var(--fg));
+  background: rgb(var(--bg));
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+h1 {
+  line-height: 0.98;
+}
+
+h2,
+h3 {
+  line-height: 1.05;
+}
+
+p {
+  line-height: 1.7;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a.rounded-full,
+a.rounded-2xl {
+  letter-spacing: 0.01em;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+/* A softer, more refined default treatment for common dark CTAs. */
+a.bg-black,
+button.bg-black,
+.bg-black > a.bg-white {
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease,
+    border-color 180ms ease, color 180ms ease;
+}
+
+a.bg-black,
+button.bg-black {
+  background-color: rgb(var(--accent-dark)) !important;
+  border-color: rgb(var(--accent-dark)) !important;
+  box-shadow: 0 10px 28px rgb(67 58 46 / 0.14);
+}
+
+a.bg-black:hover,
+button.bg-black:hover {
+  background-color: rgb(var(--accent)) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgb(67 58 46 / 0.18);
+}
+
+/* White and outlined pill CTAs feel lighter and less heavy than solid black. */
+a.rounded-full.bg-white,
+button.rounded-full.bg-white {
+  border: 1px solid rgb(var(--line));
+  box-shadow: 0 8px 24px rgb(60 52 43 / 0.08);
+}
+
+a.rounded-full.bg-white:hover,
+button.rounded-full.bg-white:hover {
+  border-color: rgb(var(--accent));
+  color: rgb(var(--accent-dark));
+  transform: translateY(-1px);
+}
+
+/* Softer body copy throughout the site without reducing readability. */
+.text-neutral-900,
+.text-black {
+  color: rgb(var(--fg));
+}
+
+.text-neutral-700,
+.text-neutral-600,
+.text-neutral-500 {
+  color: rgb(var(--ink-soft));
+}
+
+/* Keep text over photographic/dark backgrounds genuinely white. */
+.text-white {
+  color: #fff !important;
+}
+
+/* Preserve intentionally dark sections while using warm charcoal rather than pure black. */
+section.bg-black,
+div.bg-black:not(.absolute) {
+  background-color: rgb(39 37 34) !important;
+}
+
+/* Mobile touch targets and calmer typography. */
+@media (max-width: 767px) {
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    letter-spacing: -0.035em;
+  }
+
+  a.rounded-full,
+  button.rounded-full,
+  button.rounded-2xl {
+    min-height: 48px;
+  }
+}
+
 /* Masque le bandeau langue très fin tout en haut (celui avec FR/EN/ID/ZH) */
-body > header:has(img[src^="/flags/"]) { display: none !important; }
-body > nav:has(img[src^="/flags/"])    { display: none !important; }
-body > div:has(> img[src^="/flags/"])  { display: none !important; }
-
+body > header:has(img[src^="/flags/"]) {
+  display: none !important;
+}
+body > nav:has(img[src^="/flags/"]) {
+  display: none !important;
+}
+body > div:has(> img[src^="/flags/"]) {
+  display: none !important;
+}
