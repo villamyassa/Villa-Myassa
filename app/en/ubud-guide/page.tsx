@@ -106,13 +106,13 @@ export default function UbudGuidePage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/ubud-guide/hero-ubud-bali.jpg"
-            alt="Ubud Bali landscape with rice terraces and Balinese temple"
-            fill
-            priority
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-black/10" />
+  src="/ubud-guide/hero-ubud-bali.png"
+  alt="Ubud Bali landscape with rice terraces and Balinese temple"
+  fill
+  priority
+  className="object-cover"
+/>
+<div className="absolute inset-0 bg-gradient-to-r from-white/35 via-white/10 to-transparent" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 py-14 md:py-24">
