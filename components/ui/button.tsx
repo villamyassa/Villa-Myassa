@@ -9,13 +9,13 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const base =
-  "inline-flex items-center justify-center rounded-full border text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#66846f]/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center rounded-full border text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a6ccbf]/40 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
 
 const variants = {
   default:
-    "border-[#3d5b48] bg-[#3d5b48] text-white shadow-[0_10px_28px_rgba(45,72,55,0.13)] hover:-translate-y-0.5 hover:border-[#66846f] hover:bg-[#66846f] hover:shadow-[0_14px_32px_rgba(45,72,55,0.17)]",
+    "border-[#a6ccbf] bg-[#a6ccbf] text-[#2b4c41] shadow-[0_10px_28px_rgba(79,124,109,0.12)] hover:-translate-y-0.5 hover:border-[#80b2a1] hover:bg-[#80b2a1] hover:text-white hover:shadow-[0_14px_32px_rgba(79,124,109,0.16)]",
   outline:
-    "border-[#dae0d8] bg-white/90 text-[#354239] shadow-[0_6px_20px_rgba(48,65,53,0.06)] hover:-translate-y-0.5 hover:border-[#66846f] hover:bg-[#e2ebe2] hover:text-[#3d5b48] hover:shadow-[0_10px_24px_rgba(48,65,53,0.1)]",
+    "border-[#dae6e1] bg-white/90 text-[#3f514a] shadow-[0_6px_20px_rgba(79,124,109,0.05)] hover:-translate-y-0.5 hover:border-[#80b2a1] hover:bg-[#e7f2ee] hover:text-[#2b4c41] hover:shadow-[0_10px_24px_rgba(79,124,109,0.09)]",
 };
 
 const sizes = {
