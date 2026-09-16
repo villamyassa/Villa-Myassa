@@ -219,6 +219,18 @@ section.h-\[70vh\] > .absolute.inset-0 {
   }
 }
 
+/* Phone in landscape: remove the large sticky navigation so the content stays visible. */
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 950px) {
+  div.min-h-screen > header.sticky {
+    display: none !important;
+  }
+
+  section.h-\[70vh\] {
+    height: 100vh !important;
+    min-height: 0 !important;
+  }
+}
+
 /* Masque le bandeau langue très fin tout en haut (celui avec FR/EN/ID/ZH) */
 body > header:has(img[src^="/flags/"]) {
   display: none !important;
