@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 type Lang = "fr" | "en" | "id" | "zh";
 
 const BOOK_URL =
-  "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
+  "https://www.airbnb.fr/rooms/1505417552730386824";
 
 const COPY: Record<
   Lang,
@@ -37,8 +37,8 @@ const COPY: Record<
       "Profitez du balé bengong, d'un bain fleuri, de la piscine et des espaces ouverts de la villa pour ralentir et savourer l'atmosphère d'Ubud.",
     videoTitle: "Villa Myassa en mouvement",
     videoText:
-      "Découvrez l'ambiance de la villa à travers notre nouveau shooting vidéo. Les vidéos ne se chargent qu'au lancement afin de préserver la rapidité du site.",
-    book: "Réserver votre séjour",
+      "Découvrez l'ambiance de la villa à travers notre nouveau shooting vidéo. Les vidéos se chargent uniquement lorsque vous lancez la lecture afin de préserver la rapidité du site.",
+    book: "Voir sur Airbnb",
     note: "Le floating breakfast est disponible sur demande et peut entraîner un supplément.",
   },
   en: {
@@ -55,7 +55,7 @@ const COPY: Record<
     videoTitle: "Experience Villa Myassa in motion",
     videoText:
       "Discover the atmosphere of the villa through our new lifestyle videos. Videos load only when played to keep the site fast on mobile.",
-    book: "Book your stay",
+    book: "View on Airbnb",
     note: "Floating breakfast is available on request and may incur an additional charge.",
   },
   id: {
@@ -72,7 +72,7 @@ const COPY: Record<
     videoTitle: "Rasakan Villa Myassa lewat video",
     videoText:
       "Lihat suasana vila melalui video lifestyle terbaru kami. Video hanya dimuat saat diputar agar situs tetap cepat di ponsel.",
-    book: "Pesan sekarang",
+    book: "Lihat di Airbnb",
     note: "Floating breakfast tersedia berdasarkan permintaan dan dapat dikenakan biaya tambahan.",
   },
   zh: {
@@ -89,7 +89,7 @@ const COPY: Record<
     videoTitle: "用视频感受 Villa Myassa",
     videoText:
       "通过全新的生活方式短片感受别墅氛围。视频仅在播放时加载，以保持手机端访问速度。",
-    book: "预订住宿",
+    book: "在 Airbnb 查看",
     note: "漂浮早餐可按需安排，并可能产生额外费用。",
   },
 };
@@ -205,7 +205,7 @@ export default function LifestyleExperience({ lang }: { lang: Lang }) {
           <video
             controls
             playsInline
-            preload="none"
+            preload="metadata"
             poster="/lifestyle/reel-1-poster.webp"
             className="aspect-[9/16] w-full rounded-[1.6rem] object-cover"
           >
@@ -216,7 +216,7 @@ export default function LifestyleExperience({ lang }: { lang: Lang }) {
           <video
             controls
             playsInline
-            preload="none"
+            preload="metadata"
             poster="/lifestyle/reel-2-poster.webp"
             className="aspect-[9/16] w-full rounded-[1.6rem] object-cover"
           >
