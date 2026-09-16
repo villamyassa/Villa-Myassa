@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -14,10 +15,45 @@ export const metadata: Metadata = {
 const AIRBNB_URL =
   "https://www.airbnb.fr/rooms/1505417552730386824";
 
+const gallery = [
+  {
+    src: "/photos/001-hero-piscine.jpg",
+    alt: "Villa Myassa private swimming pool in Ubud, Bali",
+  },
+  {
+    src: "/photos/002-salon.jpg",
+    alt: "Villa Myassa contemporary living room in Ubud",
+  },
+  {
+    src: "/photos/003-suite1.jpg",
+    alt: "Bedroom at Villa Myassa, 3-bedroom villa in Ubud",
+  },
+  {
+    src: "/photos/004-suite2.jpg",
+    alt: "Second bedroom at Villa Myassa in Singakerta, Ubud",
+  },
+  {
+    src: "/photos/005-suite3.jpg",
+    alt: "Third bedroom at Villa Myassa private villa in Bali",
+  },
+  {
+    src: "/photos/005-cuisine.jpg",
+    alt: "Fully equipped kitchen at Villa Myassa in Ubud",
+  },
+  {
+    src: "/photos/008-jardin.jpg",
+    alt: "Tropical garden at Villa Myassa in Ubud, Bali",
+  },
+  {
+    src: "/photos/006-facade-nuit.jpg",
+    alt: "Villa Myassa exterior at night in Ubud, Bali",
+  },
+];
+
 export default function PrivatePoolVillaUbudPage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      <section className="mx-auto max-w-5xl px-4 py-16 md:py-24">
+      <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div className="mb-6">
           <Link
             href="/en"
@@ -61,6 +97,17 @@ export default function PrivatePoolVillaUbudPage() {
           </div>
         </header>
 
+        <section className="mt-12 overflow-hidden rounded-3xl">
+          <Image
+            src="/photos/001-hero-piscine.jpg"
+            alt="Villa Myassa private pool villa in Ubud, Bali"
+            width={1600}
+            height={1000}
+            priority
+            className="h-auto w-full object-cover"
+          />
+        </section>
+
         <section className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <InfoCard title="3 Bedrooms" text="Queen-size beds" />
           <InfoCard title="Up to 6 Guests" text="Families or groups" />
@@ -88,6 +135,38 @@ export default function PrivatePoolVillaUbudPage() {
               designed for groups of up to six guests who want the privacy and
               space of an entire villa.
             </p>
+          </div>
+        </section>
+
+        <section className="mt-20">
+          <h2 className="text-3xl font-bold md:text-4xl">
+            Explore Villa Myassa
+          </h2>
+
+          <p className="mt-4 max-w-3xl text-lg text-neutral-700">
+            Discover the private pool, bedrooms, living spaces, kitchen and
+            tropical garden of Villa Myassa.
+          </p>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {gallery.map((image, index) => (
+              <figure
+                key={image.src}
+                className={
+                  index === 0
+                    ? "overflow-hidden rounded-3xl md:col-span-2"
+                    : "overflow-hidden rounded-3xl"
+                }
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={1200}
+                  height={800}
+                  className="h-full w-full object-cover"
+                />
+              </figure>
+            ))}
           </div>
         </section>
 
