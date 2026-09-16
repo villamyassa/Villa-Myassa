@@ -95,7 +95,7 @@ const COPY: Record<
 };
 
 const lifestylePhotos = [
-  { src: "/lifestyle/DSCF7660.webp", alt: "Floating breakfast in the private pool at Villa Myassa" },
+  { src: "/lifestyle/DSCF7657.webp", alt: "Floating breakfast in the private pool at Villa Myassa" },
   { src: "/lifestyle/DSCF7662.webp", alt: "Flower bath experience at Villa Myassa in Ubud" },
   { src: "/lifestyle/DSCF7669.webp", alt: "Balinese gazebo and tropical lifestyle at Villa Myassa" },
   { src: "/lifestyle/DSCF7674.webp", alt: "Relaxing bedroom moment at Villa Myassa in Bali" },
@@ -126,7 +126,7 @@ export default function LifestyleExperience({ lang }: { lang: Lang }) {
         <div className="grid lg:grid-cols-[1.08fr_.92fr]">
           <div className="relative min-h-[440px] sm:min-h-[560px] lg:min-h-[680px]">
             <img
-              src="/lifestyle/DSCF7659.webp"
+              src="/lifestyle/DSCF7660.webp"
               alt="Floating breakfast experience in the private pool at Villa Myassa Ubud"
               className="absolute inset-0 h-full w-full object-cover object-center"
               loading="eager"
