@@ -4,6 +4,7 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import MobileDescriptionToggle from "@/components/MobileDescriptionToggle";
 import LocalizedSeoDiscoveryCard from "@/components/LocalizedSeoDiscoveryCard";
 import BookingRedirect from "@/components/BookingRedirect";
+import GoogleAdsTracking from "@/components/GoogleAdsTracking";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -86,6 +87,7 @@ export default function RootLayout({
         <LocalizedSeoDiscoveryCard />
         <MobileDescriptionToggle />
         <BookingRedirect />
+        <GoogleAdsTracking />
       </body>
     </html>
   );
