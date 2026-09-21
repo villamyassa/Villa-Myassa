@@ -8,6 +8,17 @@ export const metadata: Metadata = {
     "Explore Ubud from Villa Myassa: Tegallalang Rice Terraces, Monkey Forest, Goa Gajah, Campuhan Ridge Walk, waterfalls, temples, ATV quad adventures, restaurants and more.",
   alternates: {
     canonical: "https://www.villamyassa.com/en/ubud-guide",
+    languages: {
+      en: "https://www.villamyassa.com/en/ubud-guide",
+      fr: "https://www.villamyassa.com/fr/guide-ubud",
+      id: "https://www.villamyassa.com/id/panduan-ubud",
+      zh: "https://www.villamyassa.com/zh/ubud-guide",
+      "x-default": "https://www.villamyassa.com/en/ubud-guide",
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
   openGraph: {
     title: "Ubud Travel Guide | Villa Myassa Bali",
