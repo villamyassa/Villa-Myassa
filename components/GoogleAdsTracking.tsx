@@ -21,7 +21,7 @@ const copy = {
   },
   fr: {
     title: "Mesure publicitaire",
-    text: "Autoriser les cookies Google Ads et le partage de données avec Google pour mesurer les clics vers Airbnb ? Ce choix est facultatif et modifiable à tout moment.",
+    text: "Autoriser les cookies Google Ads et le partage de données avec Google pour mesurer les clics vers Guesty ? Ce choix est facultatif et modifiable à tout moment.",
     accept: "Accepter", reject: "Refuser", settings: "Réglages de mesure publicitaire",
   },
   id: {
@@ -31,7 +31,7 @@ const copy = {
   },
   zh: {
     title: "广告效果衡量",
-    text: "是否允许 Google Ads Cookie 并与 Google 共享数据，以衡量前往 Airbnb 的点击？此选项非必选，您可以随时更改。",
+    text: "是否允许 Google Ads Cookie 并与 Google 共享数据，以衡量前往 Guesty 的点击？此选项非必选，您可以随时更改。",
     accept: "接受", reject: "拒绝", settings: "广告衡量设置",
   },
 };
@@ -111,8 +111,8 @@ export default function GoogleAdsTracking() {
       if (!(anchor instanceof HTMLAnchorElement)) return;
       const url = new URL(anchor.href);
       if (url.protocol !== "https:" ||
-          !["airbnb.fr", "www.airbnb.fr", "airbnb.com", "www.airbnb.com"].includes(url.hostname) ||
-          !/^\/rooms\/1505417552730386824\/?$/.test(url.pathname)) return;
+          url.hostname !== "villamyassa.guestybookings.com" ||
+          !/^\/en\/properties\/68be42d2e105720013f38336\/?$/.test(url.pathname)) return;
       // Keep native navigation, including new tabs and modifier keys.
       (window as TagWindow).gtag?.("event", "conversion", {
         send_to: SEND_TO, value: 1.0, currency: "EUR", transport_type: "beacon",
