@@ -4,7 +4,7 @@ import Link from "next/link";
 type Lang = "fr" | "id" | "zh";
 
 const AIRBNB_URL = "https://www.airbnb.fr/rooms/1505417552730386824";
-const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
+const BESTAY_URL = "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
 const BESTAY_HERO_IMAGE =
   "https://assets.guesty.com/image/upload/listing_images_s3/production/property-photos/37f7ddd453308192cf43238e05e134856084c1d6589fdb95/68be42d2e105720013f38336/c4dd9bc1-3641-4e-7nNBl";
 
