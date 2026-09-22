@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-const GUESTY_URL = "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
+const AIRBNB_URL = "https://www.airbnb.fr/rooms/1505417552730386824";
 const BOOKING_LABELS = new Set([
   "réserver",
   "réserver maintenant",
@@ -26,7 +26,7 @@ export default function BookingRedirect() {
         const label = (anchor.textContent || "").trim().toLowerCase().replace(/\s+/g, " ");
         if (!BOOKING_LABELS.has(label)) return;
 
-        anchor.href = GUESTY_URL;
+        anchor.href = AIRBNB_URL;
         anchor.target = "_blank";
         anchor.rel = "noreferrer noopener";
       });
