@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const TAG_ID = "AW-18456944751";
-const SEND_TO = `${TAG_ID}/_WAQCOfj7_ocEO_A-uBE`;
+const SEND_TO = `${TAG_ID}/wC8WCKyomIEdEO_A-uBE`;
 const STORAGE_KEY = "vm-google-ads-consent-v1";
 const MAX_AGE = 180 * 24 * 60 * 60 * 1000;
 type Choice = "granted" | "denied";
@@ -16,7 +16,7 @@ type TagWindow = Window & {
 const copy = {
   en: {
     title: "Advertising measurement",
-    text: "Allow Google Ads cookies and data sharing with Google to measure clicks to Airbnb? This is optional. You can change your choice at any time.",
+    text: "Allow Google Ads cookies and data sharing with Google to measure clicks to Guesty? This is optional. You can change your choice at any time.",
     accept: "Accept", reject: "Refuse", settings: "Ad measurement settings",
   },
   fr: {
@@ -26,7 +26,7 @@ const copy = {
   },
   id: {
     title: "Pengukuran iklan",
-    text: "Izinkan cookie Google Ads dan berbagi data dengan Google untuk mengukur klik ke Airbnb? Ini opsional. Anda dapat mengubah pilihan kapan saja.",
+    text: "Izinkan cookie Google Ads dan berbagi data dengan Google untuk mengukur klik ke Guesty? Ini opsional. Anda dapat mengubah pilihan kapan saja.",
     accept: "Terima", reject: "Tolak", settings: "Pengaturan pengukuran iklan",
   },
   zh: {
@@ -115,7 +115,7 @@ export default function GoogleAdsTracking() {
           !/^\/rooms\/1505417552730386824\/?$/.test(url.pathname)) return;
       // Keep native navigation, including new tabs and modifier keys.
       (window as TagWindow).gtag?.("event", "conversion", {
-        send_to: SEND_TO, value: 0, currency: "EUR", transport_type: "beacon",
+        send_to: SEND_TO, value: 1.0, currency: "EUR", transport_type: "beacon",
       });
     };
     document.addEventListener("click", track);
