@@ -4,6 +4,9 @@ import Link from "next/link";
 type Lang = "fr" | "id" | "zh";
 
 const AIRBNB_URL = "https://www.airbnb.fr/rooms/1505417552730386824";
+const TRIP_URL = "https://www.trip.com/hotels/bali-hotel-detail-131766860/villa-myassa-by-balisuperhost/";
+const AGODA_URL = "https://www.agoda.com/villa-myassa-by-balisuperhost/hotel/badung-id.html";
+const BOOKING_URL = "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
 const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
 const BESTAY_HERO_IMAGE =
   "https://assets.guesty.com/image/upload/listing_images_s3/production/property-photos/37f7ddd453308192cf43238e05e134856084c1d6589fdb95/68be42d2e105720013f38336/c4dd9bc1-3641-4e-7nNBl";
@@ -174,7 +177,14 @@ export default function LocalizedVillaSeoPage({ lang }: { lang: Lang }) {
           <h1 className="text-4xl font-extrabold leading-tight md:text-6xl">{t.title}</h1>
           <p className="mt-6 text-xl leading-relaxed text-neutral-700">{t.intro}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">{t.airbnb}</a>
+            {lang === "zh" ? (
+              <>
+                <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">在 Trip.com / 携程查看价格</a>
+                <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 px-6 py-3 font-semibold">在 Airbnb 查看</a>
+              </>
+            ) : (
+              <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">{t.airbnb}</a>
+            )}
             <Link href={routes[lang].home} className="rounded-full border border-neutral-300 px-6 py-3 font-semibold">{t.viewVilla}</Link>
             <Link href={routes[lang].guide} className="rounded-full border border-neutral-300 px-6 py-3 font-semibold">{t.guide}</Link>
           </div>
@@ -187,6 +197,28 @@ export default function LocalizedVillaSeoPage({ lang }: { lang: Lang }) {
         <section className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {t.cards.map(([title, text]) => <InfoCard key={title} title={title} text={text} />)}
         </section>
+
+        {lang === "zh" && (
+          <section className="mt-16 rounded-3xl border border-neutral-200 bg-neutral-50 p-7 md:p-10">
+            <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500">中国旅客</p>
+            <h2 className="mt-2 text-3xl font-bold md:text-4xl">中国旅客预订渠道</h2>
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-700">
+              Villa Myassa 已在多家国际住宿平台上线。中国旅客可优先通过 Trip.com / 携程国际版查看实时价格与可订日期，也可使用 Agoda、Booking.com 或 Airbnb 完成预订。
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">Trip.com / 携程</a>
+              <a href={AGODA_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 bg-white px-6 py-3 font-semibold">Agoda</a>
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 bg-white px-6 py-3 font-semibold">Booking.com</a>
+              <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 bg-white px-6 py-3 font-semibold">Airbnb</a>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <InfoCard title="适合家庭与朋友" text="3 间卧室，最多 6 位宾客" />
+              <InfoCard title="私人泳池" text="独享泳池与热带花园" />
+              <InfoCard title="机场接送" text="可向别墅团队另行咨询安排" />
+              <InfoCard title="每日客房清洁" text="当前房源包含日常客房服务" />
+            </div>
+          </section>
+        )}
 
         <TextSection title={t.section1} paragraphs={t.section1p} />
 
@@ -233,8 +265,17 @@ export default function LocalizedVillaSeoPage({ lang }: { lang: Lang }) {
           <h2 className="text-3xl font-bold">{t.ctaTitle}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-700">{t.ctaP}</p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full bg-black px-7 py-3 font-semibold text-white">{t.ctaAirbnb}</a>
-            <a href={BESTAY_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border border-neutral-300 bg-white px-7 py-3 font-semibold text-black">{t.ctaBestay}</a>
+            {lang === "zh" ? (
+              <>
+                <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full bg-black px-7 py-3 font-semibold text-white">在 Trip.com / 携程查看价格</a>
+                <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border border-neutral-300 bg-white px-7 py-3 font-semibold text-black">在 Airbnb 查看</a>
+              </>
+            ) : (
+              <>
+                <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full bg-black px-7 py-3 font-semibold text-white">{t.ctaAirbnb}</a>
+                <a href={BESTAY_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border border-neutral-300 bg-white px-7 py-3 font-semibold text-black">{t.ctaBestay}</a>
+              </>
+            )}
           </div>
         </section>
       </section>
