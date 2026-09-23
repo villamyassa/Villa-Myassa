@@ -24,7 +24,7 @@ const COPY = {
   zh: {
     eyebrow: "中国旅客预订",
     title: "查看实时价格与可订日期",
-    detail: "Trip.com / 携程 · 3 间卧室 · 私人泳池",
+    detail: "Trip.com（携程集团） · 3 间卧室 · 私人泳池",
   },
 } as const;
 
