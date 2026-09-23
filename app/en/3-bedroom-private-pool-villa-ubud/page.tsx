@@ -116,6 +116,13 @@ export default function PrivatePoolVillaUbudPage() {
             >
               View Villa Myassa
             </Link>
+
+            <Link
+              href="/en/family-villa-ubud"
+              className="rounded-full border border-neutral-300 px-6 py-3 font-semibold"
+            >
+              Family stays in Ubud
+            </Link>
           </div>
         </header>
 
