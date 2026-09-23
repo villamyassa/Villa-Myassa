@@ -38,7 +38,7 @@ const SEO: Record<
   zh: {
     title: "巴厘岛乌布私人泳池别墅｜3卧室 Villa Myassa",
     description:
-      "Villa Myassa 是巴厘岛乌布 Singakerta 的三卧室私人泳池别墅，适合家庭和朋友，最多 6 位宾客。可通过 Trip.com / 携程、Airbnb 等平台查看价格与可订日期。",
+      "Villa Myassa 是巴厘岛乌布 Singakerta 的三卧室私人泳池别墅，适合家庭和朋友，最多 6 位宾客。可通过 Trip.com（携程集团）、Airbnb 等平台查看价格与可订日期。",
   },
 };
 
