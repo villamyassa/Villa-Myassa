@@ -296,7 +296,7 @@ const TEXT = (l: Lang) => ({
     { fr: "Choisir une plateforme", en: "Choose a platform", id: "Pilih platform", zh: "选择预订平台" },
     l
   ),
-  bookNow: tr({ fr: "Voir sur Airbnb", en: "View on Airbnb", id: "Lihat di Airbnb", zh: "在 Trip.com / 携程查看" }, l),
+  bookNow: tr({ fr: "Voir sur Airbnb", en: "View on Airbnb", id: "Lihat di Airbnb", zh: "在 Trip.com（携程集团）查看" }, l),
 });
 
 /* Liens de réservation — logos dans /public/logos/ */
@@ -736,7 +736,7 @@ export default function VillaPage({ lang }: { lang: Lang }) {
                 fr: "Accès direct à l’annonce Airbnb · 3 chambres · piscine privée · jusqu’à 6 voyageurs",
                 en: "Direct Airbnb access · 3 bedrooms · private pool · up to 6 guests",
                 id: "Akses langsung ke Airbnb · 3 kamar · kolam pribadi · hingga 6 tamu",
-                zh: "Trip.com / 携程可订 · 3 间卧室 · 私人泳池 · 最多 6 位住客",
+                zh: "Trip.com（携程集团）可订 · 3 间卧室 · 私人泳池 · 最多 6 位住客",
               },
               lang
             )}
