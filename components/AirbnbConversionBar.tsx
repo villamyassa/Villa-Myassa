@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 
 const AIRBNB_URL = "https://www.airbnb.fr/rooms/1505417552730386824";
+const TRIP_URL = "https://www.trip.com/hotels/bali-hotel-detail-131766860/villa-myassa-by-balisuperhost/";
 
 const COPY = {
   fr: {
@@ -21,9 +22,9 @@ const COPY = {
     detail: "3 kamar · kolam pribadi · hingga 6 tamu",
   },
   zh: {
-    eyebrow: "Airbnb 预订",
-    title: "查看可订日期",
-    detail: "3 间卧室 · 私人泳池 · 最多 6 位住客",
+    eyebrow: "中国旅客预订",
+    title: "查看实时价格与可订日期",
+    detail: "Trip.com / 携程 · 3 间卧室 · 私人泳池",
   },
 } as const;
 
@@ -34,11 +35,13 @@ export default function AirbnbConversionBar() {
   const first = pathname.split("/").filter(Boolean)[0] as Lang | undefined;
   const lang: Lang = first && first in COPY ? first : "en";
   const t = COPY[lang];
+  const bookingUrl = lang === "zh" ? TRIP_URL : AIRBNB_URL;
+  const bookingLabel = lang === "zh" ? "Trip.com" : "Airbnb";
 
   return (
     <div className="fixed inset-x-3 bottom-20 z-[55] md:hidden">
       <a
-        href={AIRBNB_URL}
+        href={bookingUrl}
         target="_blank"
         rel="noreferrer noopener"
         aria-label={t.title}
@@ -52,7 +55,7 @@ export default function AirbnbConversionBar() {
           <p className="mt-0.5 truncate text-xs text-neutral-600">{t.detail}</p>
         </div>
         <span className="shrink-0 rounded-full bg-black px-4 py-2 text-sm font-semibold text-white">
-          Airbnb
+          {bookingLabel}
         </span>
       </a>
     </div>
