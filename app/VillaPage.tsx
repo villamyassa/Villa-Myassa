@@ -101,6 +101,7 @@ const tr = (table: Record<Lang, string>, l: Lang) => table[l];
 
 const BESTAY_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
+const AIRBNB_URL = "https://www.airbnb.fr/rooms/1505417552730386824";
 
 const WA_NUMBER_INTL = "33688647659";
 const WA_TEXT_DEFAULT =
@@ -294,13 +295,13 @@ const TEXT = (l: Lang) => ({
     { fr: "Choisir une plateforme", en: "Choose a platform", id: "Pilih platform", zh: "选择预订平台" },
     l
   ),
-  bookNow: tr({ fr: "Réserver maintenant", en: "Book now", id: "Pesan sekarang", zh: "立即预订" }, l),
+  bookNow: tr({ fr: "Voir sur Airbnb", en: "View on Airbnb", id: "Lihat di Airbnb", zh: "在 Airbnb 查看" }, l),
 });
 
 /* Liens de réservation — logos dans /public/logos/ */
 const BOOK_LINKS = [
   { name: "Bestay", logo: "/logos/bestay.svg", url: BESTAY_URL },
-  { name: "Airbnb", logo: "/logos/airbnb.svg", url: "https://www.airbnb.com/rooms/1505417552730386824" },
+  { name: "Airbnb", logo: "/logos/airbnb.svg", url: AIRBNB_URL },
   { name: "Booking.com", logo: "/logos/booking.svg", url: "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html" },
   {
     name: "Marriott Homes & Villas",
@@ -716,11 +717,22 @@ export default function VillaPage({ lang }: { lang: Lang }) {
               <a href="#galerie">{TEXT(lang).nav.gallery}</a>
             </Button>
             <Button size="lg" asChild>
-              <a href={BESTAY_URL} target="_blank" rel="noreferrer">
+              <a href={AIRBNB_URL} target="_blank" rel="noreferrer noopener">
                 {TEXT(lang).bookNow}
               </a>
             </Button>
           </div>
+          <p className="mt-3 text-sm text-neutral-500">
+            {tr(
+              {
+                fr: "Accès direct à l’annonce Airbnb · 3 chambres · piscine privée · jusqu’à 6 voyageurs",
+                en: "Direct Airbnb access · 3 bedrooms · private pool · up to 6 guests",
+                id: "Akses langsung ke Airbnb · 3 kamar · kolam pribadi · hingga 6 tamu",
+                zh: "直达 Airbnb 房源 · 3 间卧室 · 私人泳池 · 最多 6 位住客",
+              },
+              lang
+            )}
+          </p>
         </motion.div>
       </section>
       {/* Lien interne vers la page SEO Ubud — anglais uniquement */}
