@@ -7,7 +7,7 @@ const AIRBNB_URL = "https://www.airbnb.fr/rooms/1505417552730386824";
 const TRIP_URL = "https://www.trip.com/hotels/bali-hotel-detail-131766860/villa-myassa-by-balisuperhost/";
 const AGODA_URL = "https://www.agoda.com/villa-myassa-by-balisuperhost/hotel/badung-id.html";
 const BOOKING_URL = "https://www.booking.com/hotel/id/villa-myassa-by-balisuperhost.html";
-const BESTAY_URL = "https://bestay.co/villa/villa-myassa";
+const BESTAY_URL = "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
 const BESTAY_HERO_IMAGE =
   "https://assets.guesty.com/image/upload/listing_images_s3/production/property-photos/37f7ddd453308192cf43238e05e134856084c1d6589fdb95/68be42d2e105720013f38336/c4dd9bc1-3641-4e-7nNBl";
 
@@ -50,7 +50,7 @@ const copy = {
     staffP: "L’annonce Airbnb actuelle de Villa Myassa mentionne un villa manager dédié, un hôte sur place, un service de ménage quotidien ainsi que du personnel pour le jardin et la piscine. Des services supplémentaires comme les transferts aéroport, chauffeurs, petit-déjeuner, repas privés, massages et activités peuvent être organisés séparément, selon disponibilité et avec supplément.",
     staffCards: [["Villa Manager", "Assistance dédiée"], ["Hôte de villa", "Aide locale aux voyageurs"], ["Ménage", "Service quotidien"], ["Piscine & jardin", "Entretien régulier"]],
     feedback: "Avis voyageurs · Airbnb",
-    reviews: "sur 13 avis voyageurs",
+    reviews: "avis voyageurs vérifiés",
     reviewP: "Cette note est affichée sur l’annonce Airbnb de Villa Myassa et a été vérifiée en septembre 2026. Comme les notes évoluent avec les nouveaux séjours, Airbnb reste la référence pour le score le plus récent et les avis vérifiés.",
     readReviews: "Lire les avis vérifiés sur Airbnb",
     faqTitle: "Questions fréquentes",
@@ -94,7 +94,7 @@ const copy = {
     staffP: "Daftar Airbnb Villa Myassa saat ini mencantumkan villa manager khusus, villa host, housekeeping harian, serta staf kebun dan kolam. Layanan tambahan seperti antar-jemput bandara, pengemudi, sarapan, private dining, pijat, dan aktivitas dapat diatur terpisah, tergantung ketersediaan dan biaya tambahan.",
     staffCards: [["Villa Manager", "Dukungan khusus"], ["Villa Host", "Bantuan lokal untuk tamu"], ["Housekeeping", "Layanan harian"], ["Kolam & kebun", "Perawatan rutin"]],
     feedback: "Ulasan tamu · Airbnb",
-    reviews: "dari 13 ulasan tamu",
+    reviews: "ulasan tamu terverifikasi",
     reviewP: "Nilai ini ditampilkan pada daftar Airbnb Villa Myassa dan diperiksa pada September 2026. Karena rating dapat berubah seiring ulasan baru, Airbnb tetap menjadi acuan untuk skor terbaru dan ulasan terverifikasi.",
     readReviews: "Baca ulasan tamu terverifikasi di Airbnb",
     faqTitle: "Pertanyaan yang sering diajukan",
@@ -137,7 +137,7 @@ const copy = {
     staffP: "Villa Myassa 当前 Airbnb 房源信息包括专属别墅经理、别墅管家、每日客房清洁，以及花园和泳池维护人员。机场接送、司机、早餐、私人餐饮、按摩和活动等额外服务可另行安排，视供应情况而定，并可能产生额外费用。",
     staffCards: [["别墅经理", "专属协助"], ["别墅管家", "本地宾客支持"], ["客房清洁", "每日服务"], ["泳池与花园", "定期维护"]],
     feedback: "宾客评价 · Airbnb",
-    reviews: "来自 13 条宾客评价",
+    reviews: "Airbnb 已验证宾客评价",
     reviewP: "该评分显示于 Villa Myassa 的 Airbnb 房源，并于 2026 年 9 月核对。由于评分会随着新评价而变化，Airbnb 是查看最新评分和已验证宾客评价的参考来源。",
     readReviews: "在 Airbnb 阅读已验证宾客评价",
     faqTitle: "常见问题",
