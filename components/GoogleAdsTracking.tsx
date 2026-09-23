@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const TAG_ID = "AW-18456944751";
 const SEND_TO = `${TAG_ID}/_WAQCOfj7_ocEO_A-uBE`;
-const STORAGE_KEY = "vm-google-ads-consent-v1";
+const STORAGE_KEY = "vm-ads-consent-v2";
 const MAX_AGE = 180 * 24 * 60 * 60 * 1000;
 type Choice = "granted" | "denied";
 type TagWindow = Window & {
@@ -16,22 +16,22 @@ type TagWindow = Window & {
 const copy = {
   en: {
     title: "Advertising measurement",
-    text: "Allow Google Ads cookies and data sharing with Google to measure clicks to Airbnb? This is optional. You can change your choice at any time.",
+    text: "Allow Google Ads and Meta advertising cookies to measure visits and clicks to Airbnb? This is optional. You can change your choice at any time.",
     accept: "Accept", reject: "Refuse", settings: "Ad measurement settings",
   },
   fr: {
     title: "Mesure publicitaire",
-    text: "Autoriser les cookies Google Ads et le partage de données avec Google pour mesurer les clics vers Airbnb ? Ce choix est facultatif et modifiable à tout moment.",
+    text: "Autoriser les cookies publicitaires Google Ads et Meta pour mesurer les visites et les clics vers Airbnb ? Ce choix est facultatif et modifiable à tout moment.",
     accept: "Accepter", reject: "Refuser", settings: "Réglages de mesure publicitaire",
   },
   id: {
     title: "Pengukuran iklan",
-    text: "Izinkan cookie Google Ads dan berbagi data dengan Google untuk mengukur klik ke Airbnb? Ini opsional. Anda dapat mengubah pilihan kapan saja.",
+    text: "Izinkan cookie iklan Google Ads dan Meta untuk mengukur kunjungan dan klik ke Airbnb? Ini opsional. Anda dapat mengubah pilihan kapan saja.",
     accept: "Terima", reject: "Tolak", settings: "Pengaturan pengukuran iklan",
   },
   zh: {
     title: "广告效果衡量",
-    text: "是否允许 Google Ads Cookie 并与 Google 共享数据，以衡量前往 Airbnb 的点击？此选项非必选，您可以随时更改。",
+    text: "是否允许 Google Ads 和 Meta 广告 Cookie，以衡量访问和前往 Airbnb 的点击？此选项非必选，您可以随时更改。",
     accept: "接受", reject: "拒绝", settings: "广告衡量设置",
   },
 };
@@ -131,6 +131,7 @@ export default function GoogleAdsTracking() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ choice: next, at: Date.now() })); }
     catch { /* The current visit still honors the choice. */ }
     setChoice(next);
+    window.dispatchEvent(new Event("vm-ads-consent-changed"));
     setShowSettings(false);
   }
 
