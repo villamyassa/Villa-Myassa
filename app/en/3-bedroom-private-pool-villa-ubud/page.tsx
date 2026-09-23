@@ -3,12 +3,34 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "3-Bedroom Private Pool Villa in Ubud, Bali | Villa Myassa",
+  title: "Private Pool Villa Ubud | 3 Bedrooms, Sleeps 6 | Villa Myassa",
   description:
-    "Discover Villa Myassa, a private 3-bedroom villa with pool in Singakerta, Ubud, Bali. Sleeps up to 6 guests with 3.5 bathrooms, tropical garden, air conditioning, Wi-Fi and fully equipped kitchen.",
+    "Stay at Villa Myassa, a 3-bedroom private pool villa in Ubud, Bali for up to 6 guests, with 3.5 bathrooms, Wi-Fi, tropical garden and full kitchen.",
   alternates: {
     canonical:
       "https://www.villamyassa.com/en/3-bedroom-private-pool-villa-ubud",
+    languages: {
+      en: "https://www.villamyassa.com/en/3-bedroom-private-pool-villa-ubud",
+      fr: "https://www.villamyassa.com/fr/villa-3-chambres-piscine-privee-ubud",
+      id: "https://www.villamyassa.com/id/vila-3-kamar-kolam-pribadi-ubud",
+      "zh-CN": "https://www.villamyassa.com/zh/3-bedroom-private-pool-villa-ubud",
+    },
+  },
+  openGraph: {
+    title: "Private Pool Villa Ubud | 3 Bedrooms, Sleeps 6 | Villa Myassa",
+    description:
+      "A private 3-bedroom villa with pool in Ubud, Bali for up to 6 guests, set in peaceful Singakerta near central Ubud.",
+    url: "https://www.villamyassa.com/en/3-bedroom-private-pool-villa-ubud",
+    siteName: "Villa Myassa",
+    type: "website",
+    images: ["/photos/001-hero-piscine.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Private Pool Villa Ubud | Villa Myassa",
+    description:
+      "3-bedroom private pool villa in Ubud, Bali for up to 6 guests.",
+    images: ["/photos/001-hero-piscine.jpg"],
   },
 };
 
@@ -68,13 +90,14 @@ export default function PrivatePoolVillaUbudPage() {
           </p>
 
           <h1 className="text-4xl font-extrabold leading-tight md:text-6xl">
-            3-Bedroom Private Pool Villa in Ubud, Bali
+            Private Pool Villa in Ubud, Bali – 3 Bedrooms for Up to 6 Guests
           </h1>
 
           <p className="mt-6 text-xl leading-relaxed text-neutral-700">
-            Villa Myassa is a contemporary private villa in Singakerta, Ubud,
-            offering three bedrooms, a private swimming pool and a peaceful
-            tropical setting for up to six guests.
+            Looking for a private pool villa in Ubud for a family or small
+            group? Villa Myassa offers three bedrooms, 3.5 bathrooms and a
+            private swimming pool in peaceful Singakerta, close to central
+            Ubud.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -117,14 +140,14 @@ export default function PrivatePoolVillaUbudPage() {
 
         <section className="mt-20">
           <h2 className="text-3xl font-bold md:text-4xl">
-            A private villa near Ubud for families and groups
+            A 3-bedroom private villa near central Ubud
           </h2>
 
           <div className="mt-6 space-y-5 text-lg leading-relaxed text-neutral-700">
             <p>
-              Villa Myassa combines contemporary architecture with the
-              atmosphere of Bali&apos;s tropical landscape. Located in
-              Singakerta, south of central Ubud, the villa offers a quieter base
+              Villa Myassa combines contemporary architecture with Bali&apos;s
+              tropical setting. Located in Singakerta, south of central Ubud,
+              this 3-bedroom private pool villa offers a quieter place to stay
               while keeping Ubud&apos;s cultural attractions, restaurants, cafés
               and shops within easy reach.
             </p>
