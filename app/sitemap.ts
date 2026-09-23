@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     fr: `${base}/fr`,
     id: `${base}/id`,
     zh: `${base}/zh`,
+    "zh-CN": `${base}/zh`,
     "x-default": `${base}/en`,
   };
 
@@ -16,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     fr: `${base}/fr/villa-3-chambres-piscine-privee-ubud`,
     id: `${base}/id/vila-3-kamar-kolam-pribadi-ubud`,
     zh: `${base}/zh/3-bedroom-private-pool-villa-ubud`,
+    "zh-CN": `${base}/zh/3-bedroom-private-pool-villa-ubud`,
     "x-default": `${base}/en/3-bedroom-private-pool-villa-ubud`,
   };
 
@@ -24,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     fr: `${base}/fr/guide-ubud`,
     id: `${base}/id/panduan-ubud`,
     zh: `${base}/zh/ubud-guide`,
+    "zh-CN": `${base}/zh/ubud-guide`,
     "x-default": `${base}/en/ubud-guide`,
   };
 
