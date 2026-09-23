@@ -6,6 +6,7 @@ import LocalizedSeoDiscoveryCard from "@/components/LocalizedSeoDiscoveryCard";
 import BookingRedirect from "@/components/BookingRedirect";
 import GoogleAdsTracking from "@/components/GoogleAdsTracking";
 import MetaPixelTracking from "@/components/MetaPixelTracking";
+import AirbnbConversionBar from "@/components/AirbnbConversionBar";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -60,6 +61,7 @@ export default function RootLayout({
         <BookingRedirect />
         <GoogleAdsTracking />
         <MetaPixelTracking />
+        <AirbnbConversionBar />
       </body>
     </html>
   );
