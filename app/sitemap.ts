@@ -21,6 +21,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "x-default": `${base}/en/3-bedroom-private-pool-villa-ubud`,
   };
 
+  const familyLanguages = {
+    en: `${base}/en/family-villa-ubud`,
+    zh: `${base}/zh/family-villa-ubud`,
+    "zh-CN": `${base}/zh/family-villa-ubud`,
+    "x-default": `${base}/en/family-villa-ubud`,
+  };
+
   const guideLanguages = {
     en: `${base}/en/ubud-guide`,
     fr: `${base}/fr/guide-ubud`,
@@ -48,11 +55,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page(`${base}/zh`, 0.8, homeLanguages),
 
     page(`${base}/en/3-bedroom-private-pool-villa-ubud`, 0.9, villaLanguages),
-    {
-      url: `${base}/en/family-villa-ubud`,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
+    page(`${base}/en/family-villa-ubud`, 0.8, familyLanguages),
+    page(`${base}/zh/family-villa-ubud`, 0.8, familyLanguages),
     page(`${base}/fr/villa-3-chambres-piscine-privee-ubud`, 0.9, villaLanguages),
     page(`${base}/id/vila-3-kamar-kolam-pribadi-ubud`, 0.9, villaLanguages),
     page(`${base}/zh/3-bedroom-private-pool-villa-ubud`, 0.9, villaLanguages),
