@@ -173,6 +173,11 @@ export default function LocalizedUbudGuidePage({ lang }: { lang: Lang }) {
             <h2 className="text-3xl font-bold">{t.stayTitle}</h2>
             <p className="mt-5 text-lg leading-relaxed text-neutral-600">{t.stayP}</p>
             <Link href={routes[lang].villa} className="mt-6 font-semibold underline">{t.viewVilla} →</Link>
+            {lang === "zh" && (
+              <Link href="/zh/family-villa-ubud" className="mt-3 font-semibold underline">
+                查看适合家庭与朋友的乌布三卧室别墅 →
+              </Link>
+            )}
           </div>
         </section>
 
