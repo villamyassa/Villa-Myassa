@@ -102,6 +102,7 @@ const tr = (table: Record<Lang, string>, l: Lang) => table[l];
 const BESTAY_URL =
   "https://villamyassa.guestybookings.com/en/properties/68be42d2e105720013f38336";
 const AIRBNB_URL = "https://www.airbnb.fr/rooms/1505417552730386824";
+const TRIP_URL = "https://www.trip.com/hotels/bali-hotel-detail-131766860/villa-myassa-by-balisuperhost/";
 
 const WA_NUMBER_INTL = "33688647659";
 const WA_TEXT_DEFAULT =
@@ -295,7 +296,7 @@ const TEXT = (l: Lang) => ({
     { fr: "Choisir une plateforme", en: "Choose a platform", id: "Pilih platform", zh: "选择预订平台" },
     l
   ),
-  bookNow: tr({ fr: "Voir sur Airbnb", en: "View on Airbnb", id: "Lihat di Airbnb", zh: "在 Airbnb 查看" }, l),
+  bookNow: tr({ fr: "Voir sur Airbnb", en: "View on Airbnb", id: "Lihat di Airbnb", zh: "在 Trip.com / 携程查看" }, l),
 });
 
 /* Liens de réservation — logos dans /public/logos/ */
@@ -308,7 +309,7 @@ const BOOK_LINKS = [
     logo: "/logos/marriott-hv.svg",
     url: "https://homes-and-villas.marriott.com/en/properties/40580237-ubud-villa-myassa-3br-in-ubud-w-pool-and-garden",
   },
-  { name: "Trip.com", logo: "/logos/trip.svg", url: "https://fr.trip.com/hotels/detail/?cityEnName=Bali&cityId=723&hotelId=131766860" },
+  { name: "Trip.com", logo: "/logos/trip.svg", url: TRIP_URL },
   { name: "WingOnTravel", logo: "/logos/wingontravel.svg", url: "https://www.wingontravel.com/hotel/detail-bali-131766860/villa-myassa-by-balisuperhost/" },
 ];
 
@@ -346,6 +347,13 @@ const Section = ({
 /** Menu Réserver custom — positionné *sous* le bouton */
 function ReserveMenu({ lang }: { lang: Lang }) {
   const [open, setOpen] = useState(false);
+  const bookingLinks =
+    lang === "zh"
+      ? [
+          BOOK_LINKS.find((item) => item.name === "Trip.com")!,
+          ...BOOK_LINKS.filter((item) => item.name !== "Trip.com"),
+        ]
+      : BOOK_LINKS;
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -384,7 +392,7 @@ function ReserveMenu({ lang }: { lang: Lang }) {
         >
           <div className="px-3 py-2 text-xs text-neutral-500">{TEXT(lang).choose}</div>
           <ul className="max-h-[60vh] overflow-auto">
-            {BOOK_LINKS.map((b) => (
+            {bookingLinks.map((b) => (
               <li key={b.name}>
                 <a
                   href={b.url}
@@ -717,7 +725,7 @@ export default function VillaPage({ lang }: { lang: Lang }) {
               <a href="#galerie">{TEXT(lang).nav.gallery}</a>
             </Button>
             <Button size="lg" asChild>
-              <a href={AIRBNB_URL} target="_blank" rel="noreferrer noopener">
+              <a href={lang === "zh" ? TRIP_URL : AIRBNB_URL} target="_blank" rel="noreferrer noopener">
                 {TEXT(lang).bookNow}
               </a>
             </Button>
@@ -728,7 +736,7 @@ export default function VillaPage({ lang }: { lang: Lang }) {
                 fr: "Accès direct à l’annonce Airbnb · 3 chambres · piscine privée · jusqu’à 6 voyageurs",
                 en: "Direct Airbnb access · 3 bedrooms · private pool · up to 6 guests",
                 id: "Akses langsung ke Airbnb · 3 kamar · kolam pribadi · hingga 6 tamu",
-                zh: "直达 Airbnb 房源 · 3 间卧室 · 私人泳池 · 最多 6 位住客",
+                zh: "Trip.com / 携程可订 · 3 间卧室 · 私人泳池 · 最多 6 位住客",
               },
               lang
             )}
