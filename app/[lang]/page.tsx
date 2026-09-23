@@ -36,9 +36,9 @@ const SEO: Record<
   },
 
   zh: {
-    title: "Villa Myassa Ubud | 巴厘岛乌布三卧室私人泳池别墅",
+    title: "巴厘岛乌布私人泳池别墅｜3卧室 Villa Myassa",
     description:
-      "探索位于巴厘岛乌布 Singakerta 的 Villa Myassa：三卧室私人别墅，配有私人泳池、热带花园和完善设施。",
+      "Villa Myassa 是巴厘岛乌布 Singakerta 的三卧室私人泳池别墅，适合家庭和朋友，最多 6 位宾客。可通过 Trip.com / 携程、Airbnb 等平台查看价格与可订日期。",
   },
 };
 
@@ -71,6 +71,7 @@ export function generateMetadata({
         en: "https://www.villamyassa.com/en",
         id: "https://www.villamyassa.com/id",
         zh: "https://www.villamyassa.com/zh",
+        "zh-CN": "https://www.villamyassa.com/zh",
         "x-default": "https://www.villamyassa.com/en",
       },
     },
