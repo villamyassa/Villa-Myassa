@@ -1,14 +1,12 @@
-// app/robots.ts
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const base = "https://www.villamyassa.com";
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: `${base}/sitemap.xml`,
-    host: base,
+    rules: [
+      { userAgent: "*", allow: "/" },
+      { userAgent: "Baiduspider", allow: "/" },
+    ],
+    sitemap: "https://www.villamyassa.com/sitemap.xml",
+    host: "https://www.villamyassa.com",
   };
 }
