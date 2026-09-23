@@ -179,7 +179,7 @@ export default function LocalizedVillaSeoPage({ lang }: { lang: Lang }) {
           <div className="mt-8 flex flex-wrap gap-3">
             {lang === "zh" ? (
               <>
-                <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">在 Trip.com / 携程查看价格</a>
+                <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">在 Trip.com（携程集团）查看价格</a>
                 <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 px-6 py-3 font-semibold">在 Airbnb 查看</a>
               </>
             ) : (
@@ -203,10 +203,10 @@ export default function LocalizedVillaSeoPage({ lang }: { lang: Lang }) {
             <p className="text-sm font-semibold uppercase tracking-wider text-neutral-500">中国旅客</p>
             <h2 className="mt-2 text-3xl font-bold md:text-4xl">中国旅客预订渠道</h2>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-700">
-              Villa Myassa 已在多家国际住宿平台上线。中国旅客可优先通过 Trip.com / 携程国际版查看实时价格与可订日期，也可使用 Agoda、Booking.com 或 Airbnb 完成预订。
+              Villa Myassa 已在多家国际住宿平台上线。中国旅客可优先通过 Trip.com（携程集团国际平台）查看实时价格与可订日期，也可使用 Agoda、Booking.com 或 Airbnb 完成预订。
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">Trip.com / 携程</a>
+              <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full bg-black px-6 py-3 font-semibold text-white">Trip.com（携程集团）</a>
               <a href={AGODA_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 bg-white px-6 py-3 font-semibold">Agoda</a>
               <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 bg-white px-6 py-3 font-semibold">Booking.com</a>
               <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-neutral-300 bg-white px-6 py-3 font-semibold">Airbnb</a>
@@ -267,7 +267,7 @@ export default function LocalizedVillaSeoPage({ lang }: { lang: Lang }) {
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             {lang === "zh" ? (
               <>
-                <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full bg-black px-7 py-3 font-semibold text-white">在 Trip.com / 携程查看价格</a>
+                <a href={TRIP_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full bg-black px-7 py-3 font-semibold text-white">在 Trip.com（携程集团）查看价格</a>
                 <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border border-neutral-300 bg-white px-7 py-3 font-semibold text-black">在 Airbnb 查看</a>
               </>
             ) : (
