@@ -138,7 +138,7 @@ export default function GoogleAdsTracking() {
   if (!ready) return null;
   if (choice !== null && !showSettings) {
     return <button type="button" onClick={() => setShowSettings(true)}
-      className="fixed bottom-3 left-3 z-[60] max-w-[45vw] rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs text-stone-800 shadow-sm">{t.settings}</button>;
+      className="fixed bottom-[calc(env(safe-area-inset-bottom)+7rem)] left-20 z-[60] max-w-[45vw] rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs text-stone-800 shadow-sm md:bottom-3 md:left-3">{t.settings}</button>;
   }
   return (
     <section aria-label={t.title} className="fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-xl border border-stone-300 bg-white p-5 text-stone-900 shadow-xl">
