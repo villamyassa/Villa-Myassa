@@ -63,7 +63,7 @@ export default function ZenMusic() {
       onClick={toggleMusic}
       aria-label={playing ? "Mute Zen music" : "Play Zen music"}
       title={playing ? "Mute Zen music" : "Play Zen music"}
-      className="fixed bottom-5 left-5 right-auto z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-white/70 bg-white/75 text-[#3a5b50] shadow-lg backdrop-blur-md transition hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-[#b5dbcf] md:bottom-7 md:left-auto md:right-7"
+      className="fixed bottom-[calc(env(safe-area-inset-bottom)+7rem)] left-4 right-auto z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-white/70 bg-white/75 text-[#3a5b50] shadow-lg backdrop-blur-md transition hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-[#b5dbcf] md:bottom-7 md:left-auto md:right-7"
     >
       <span aria-hidden="true" className="text-xl leading-none">
         {playing ? "🔊" : "🔇"}
