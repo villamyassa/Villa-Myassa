@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const TAG_ID = "AW-18456944751";
-const SEND_TO = `${TAG_ID}/_WAQCOfj7_ocEO_A-uBE`;
+const SEND_TO = `${TAG_ID}/wC8WCKyomIEdEO_A-uBE`;
 const STORAGE_KEY = "vm-ads-consent-v2";
 const MAX_AGE = 180 * 24 * 60 * 60 * 1000;
 type Choice = "granted" | "denied";
@@ -16,22 +16,22 @@ type TagWindow = Window & {
 const copy = {
   en: {
     title: "Advertising measurement",
-    text: "Allow Google Ads and Meta advertising cookies to measure visits and clicks to Airbnb? This is optional. You can change your choice at any time.",
+    text: "Allow Google Ads and Meta advertising cookies to measure visits and clicks to Guesty? This is optional.",
     accept: "Accept", reject: "Refuse", settings: "Ad measurement settings",
   },
   fr: {
     title: "Mesure publicitaire",
-    text: "Autoriser les cookies publicitaires Google Ads et Meta pour mesurer les visites et les clics vers Airbnb ? Ce choix est facultatif et modifiable à tout moment.",
+    text: "Autoriser les cookies publicitaires Google Ads et Meta pour mesurer les visites et les clics vers Guesty ? Ce choix est facultatif.",
     accept: "Accepter", reject: "Refuser", settings: "Réglages de mesure publicitaire",
   },
   id: {
     title: "Pengukuran iklan",
-    text: "Izinkan cookie iklan Google Ads dan Meta untuk mengukur kunjungan dan klik ke Airbnb? Ini opsional. Anda dapat mengubah pilihan kapan saja.",
+    text: "Izinkan cookie iklan Google Ads dan Meta untuk mengukur kunjungan dan klik ke Guesty? Ini opsional.",
     accept: "Terima", reject: "Tolak", settings: "Pengaturan pengukuran iklan",
   },
   zh: {
     title: "广告效果衡量",
-    text: "是否允许 Google Ads 和 Meta 广告 Cookie，以衡量访问和前往 Airbnb 的点击？此选项非必选，您可以随时更改。",
+    text: "是否允许 Google Ads 和 Meta 广告 Cookie，以衡量访问和前往 Guesty 的点击？此选项非必选。",
     accept: "接受", reject: "拒绝", settings: "广告衡量设置",
   },
 };
@@ -53,7 +53,6 @@ export default function GoogleAdsTracking() {
   const t = copy[language] || copy.en;
   const [choice, setChoice] = useState<Choice | null>(null);
   const [ready, setReady] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const allowed = useRef(false);
   const initialized = useRef(false);
 
@@ -111,11 +110,11 @@ export default function GoogleAdsTracking() {
       if (!(anchor instanceof HTMLAnchorElement)) return;
       const url = new URL(anchor.href);
       if (url.protocol !== "https:" ||
-          !["airbnb.fr", "www.airbnb.fr", "airbnb.com", "www.airbnb.com"].includes(url.hostname) ||
-          !/^\/rooms\/1505417552730386824\/?$/.test(url.pathname)) return;
+          url.hostname !== "villamyassa.guestybookings.com" ||
+          !/^\/en\/properties\/68be42d2e105720013f38336\/?$/.test(url.pathname)) return;
       // Keep native navigation, including new tabs and modifier keys.
       (window as TagWindow).gtag?.("event", "conversion", {
-        send_to: SEND_TO, value: 0, currency: "EUR", transport_type: "beacon",
+        send_to: SEND_TO, value: 1.0, currency: "EUR", transport_type: "beacon",
       });
     };
     document.addEventListener("click", track);
@@ -132,14 +131,10 @@ export default function GoogleAdsTracking() {
     catch { /* The current visit still honors the choice. */ }
     setChoice(next);
     window.dispatchEvent(new Event("vm-ads-consent-changed"));
-    setShowSettings(false);
   }
 
   if (!ready) return null;
-  if (choice !== null && !showSettings) {
-    return <button type="button" onClick={() => setShowSettings(true)}
-      className="fixed bottom-[calc(env(safe-area-inset-bottom)+7rem)] left-20 z-[60] max-w-[45vw] rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs text-stone-800 shadow-sm md:bottom-3 md:left-3">{t.settings}</button>;
-  }
+  if (choice !== null) return null;
   return (
     <section aria-label={t.title} className="fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-xl border border-stone-300 bg-white p-5 text-stone-900 shadow-xl">
       <h2 className="text-base font-semibold">{t.title}</h2>
