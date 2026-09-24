@@ -39,7 +39,7 @@ export default function AirbnbConversionBar() {
   const bookingLabel = lang === "zh" ? "Trip.com" : "Airbnb";
 
   return (
-    <div className="fixed inset-x-3 bottom-20 z-[55] md:hidden">
+    <div className="fixed inset-x-3 bottom-[max(0.25rem,env(safe-area-inset-bottom))] z-[55] md:hidden">
       <a
         href={bookingUrl}
         target="_blank"
