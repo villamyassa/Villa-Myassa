@@ -54,7 +54,7 @@ export default function AirbnbConversionBar() {
           <p className="mt-0.5 text-sm font-bold text-neutral-950">{t.title}</p>
           <p className="mt-0.5 truncate text-xs text-neutral-600">{t.detail}</p>
         </div>
-        <span className="shrink-0 rounded-full bg-black px-4 py-2 text-sm font-semibold text-white">
+        <span className="shrink-0 rounded-full border border-[#bdddd3]/70 bg-[#d7eee7]/75 px-4 py-2 text-sm font-semibold text-[#3a5b50] shadow-[0_8px_24px_rgba(79,124,109,0.08)]">
           {bookingLabel}
         </span>
       </a>
