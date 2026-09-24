@@ -975,7 +975,7 @@ export default function VillaPage({ lang }: { lang: Lang }) {
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
-        className="fixed bottom-4 right-4 z-[1000] inline-flex items-center justify-center h-12 w-12 rounded-full bg-green-500 text-white shadow-lg hover:scale-105 transition"
+        className="fixed bottom-[calc(env(safe-area-inset-bottom)+7rem)] right-4 z-[1000] inline-flex items-center justify-center h-12 w-12 rounded-full bg-green-500 text-white shadow-lg hover:scale-105 transition md:bottom-4"
         title="WhatsApp"
       >
         <MessageCircle className="h-6 w-6" />
