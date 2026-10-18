@@ -585,7 +585,7 @@ export default function VillaPage({ lang }: { lang: Lang }) {
         </div>
 
         {/* Mobile */}
-        <div className="relative z-10 flex flex-col items-center py-3 sm:hidden">
+        <div className="relative z-20 flex flex-col items-center py-3 sm:hidden">
           <div className="text-center font-extrabold text-[8vw] leading-tight">
             Villa Myassa, <span className="italic">Ubud</span>, <span className="uppercase">Bali</span>
           </div>
